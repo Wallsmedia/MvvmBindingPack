@@ -1,0 +1,15 @@
+﻿<Window x:Name="AppMainWindow"
+        x:Class="WpfMvvmBindingPackDemo.Main"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mark="Mvvm" 
+        Title="WPF MvvmBindingPack Demo " Height="600" Width="800">
+    <Grid>
+        
+        <TabControl >
+            <TabItem Header="AutoBinding Context" Content="{mark:IocBinding ServiceType=AutoBindingView}" />
+            <TabItem Header="D.Injection Binding Context" Content="{mark:IocBinding ServiceType=IocBindingView}" />
+        </TabControl>
+
+    </Grid>
+</Window>

@@ -1,0 +1,50 @@
+﻿<UserControl x:Class="WpfMvvmBindingPackDemo.Views.IocBindingView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:mvvm="Mvvm"
+             xmlns:local="clr-namespace:WpfMvvmBindingPackDemo.Views"
+             mc:Ignorable="d" 
+             DataContext="{mvvm:IocBinding ServiceType=IocBindingViewModel}"
+             d:DesignHeight="540" d:DesignWidth="720">
+    <Grid>
+        <StackPanel>
+            <Label  x:Name="TextOfTitle" Content="{Binding TextOfTitle}"/>
+            <DockPanel>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="30"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Button Grid.Row="0"   Content="Enable/Disable" 
+                            Click="{mvvm:BindEventHandler MethodName=EnableDisable_Click}"
+                            HorizontalAlignment="Left" Margin="3" VerticalAlignment="Center" Width="100"/>
+
+                    <Button Grid.Row="1" IsEnabled="{Binding AllFuncButtonsState}"
+                            Click="{mvvm:BindEventHandler MethodName=IncCounterClickMethod}"
+                            Content="Inc by Click" HorizontalAlignment="Left" Margin="3" VerticalAlignment="Center" Width="100"/>
+                    <TextBox Grid.Row="1" Grid.Column="1" IsReadOnly="True" Text="{Binding CountClick_Text}"    HorizontalAlignment="Left" Margin="3" VerticalAlignment="Center" Width="100"/>
+
+                    <Button Grid.Row="2" 
+                            Command="{mvvm:BindCommand CanExecuteBooleanPropertyName=AllFuncButtonsState,ExecuteMethodName=IncCounterCmdMethod}"
+                            Content="Inc By Cmd"   HorizontalAlignment="Left" Margin="3" VerticalAlignment="Center" Width="100"/>
+                    <TextBox Grid.Row="2" Grid.Column="1" IsReadOnly="True" Text="{Binding CountCmd}"    HorizontalAlignment="Left" Margin="3" VerticalAlignment="Center" Width="100"/>
+
+                    <Button Grid.Row="3"   
+                            Command="{mvvm:BindCommand CanExecuteMethodName=IncCounterCmdCnExMethod,ExecuteMethodName=IncCounterCmdExMethod}"
+                            Content="Inc By CmdEx"   HorizontalAlignment="Left" Margin="3" VerticalAlignment="Center" Width="100"/>
+                    <TextBox Grid.Row="3" Grid.Column="1" IsReadOnly="True" Text="{Binding CntCmdEx}"    HorizontalAlignment="Left" Margin="3" VerticalAlignment="Center" Width="100"/>
+
+                </Grid>
+            </DockPanel>
+        </StackPanel>
+        
+    </Grid>
+</UserControl>
