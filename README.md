@@ -6,6 +6,9 @@ Supports only: **net452, net46, uap10.0**
 
 NuGet.org package [http://www.nuget.org/packages/MvvmBindingPack/] 
 
+Debug version:
+NuGet.org package [http://www.nuget.org/packages/MvvmBindingPack.Debug/] 
+
 The decision to develop this binding package had been made in response of minimizing a the cost of  the quality UI development along with using Agile development style. It is a big advantage to have a solution where you are able to refactor a dozen of Views and View Models, in a couple hours, by a customer request.
 
  
