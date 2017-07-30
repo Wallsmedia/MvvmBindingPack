@@ -149,7 +149,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
-      <Version>5.3.2</Version>
+      <Version>5.3.3</Version>
     </PackageReference>
     <PackageReference Include="MvvmBindingPack.Debug">
       <Version>1.9.0</Version>

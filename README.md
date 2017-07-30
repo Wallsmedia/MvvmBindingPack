@@ -1,7 +1,7 @@
 ### Model - View - ViewModel binding package.
 
 Full details version 1.9 (16-04-2017) in MvvmBindingPack.1.9.pdf
-Supports only: **net452, net46, uap10.0**
+Supports only: **net452, net462, net47, uap10.0**
 
 
 NuGet.org package [http://www.nuget.org/packages/MvvmBindingPack/] 
