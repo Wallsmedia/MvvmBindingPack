@@ -12,10 +12,10 @@
 // implied. See the License for the specific language governing permissions
 // and limitations under the License.
 
+using CommonServiceLocator;
 using System.Windows;
-using Microsoft.Practices.Unity;
-using Microsoft.Practices.ServiceLocation;
-using System.Windows.Input;
+using Unity;
+using Unity.ServiceLocation;
 
 namespace WpfDemoApplication
 {

@@ -1,13 +1,25 @@
 ### Model - View - ViewModel binding package.
 
-Full details version 1.9 (16-04-2017) in MvvmBindingPack.1.9.pdf
-Supports only: **net452, net462, net47, uap10.0**
+Full details package using details in MvvmBindingPack.1.9.pdf
 
+**Microsoft.Practices.ServiceLocation Support**
 
-NuGet.org package [http://www.nuget.org/packages/MvvmBindingPack/] 
+Version: 2.0.1
+- NuGet.org package [http://www.nuget.org/packages/MvvmBindingPack/] 
+- NuGet.org package [http://www.nuget.org/packages/MvvmBindingPack.Debug/] 
+- Supports: **net452, net462, net47, uap10.0**
+- Signed assembly;
+- Supports CommonServiceLocator V.1.3.0 {namespace **Microsoft.Practices.ServiceLocation**}
 
-Debug version:
-NuGet.org package [http://www.nuget.org/packages/MvvmBindingPack.Debug/] 
+**Unity Container Support**
+
+Version: 2.0.1
+- NuGet.org package [http://www.nuget.org/packages/MvvmBindingPack.Unity/] 
+- NuGet.org package [http://www.nuget.org/packages/MvvmBindingPack.Unity.Debug/] 
+- Supports: **net452, net462, net47**
+- Signed assembly;
+- Supports Unity 5.5.4-* CommonServiceLocator 2.0.3-* {namespace **CommonServiceLocator**}
+
 
 The decision to develop this binding package had been made in response of minimizing a the cost of  the quality UI development along with using Agile development style. It is a big advantage to have a solution where you are able to refactor a dozen of Views and View Models, in a couple hours, by a customer request.
 
