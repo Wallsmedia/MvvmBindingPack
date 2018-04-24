@@ -9,7 +9,10 @@ Version: 2.0.1
 - NuGet.org package [http://www.nuget.org/packages/MvvmBindingPack.Debug/] 
 - Supports: **net452, net462, net47, uap10.0**
 - Signed assembly;
-- Supports CommonServiceLocator V.1.3.0 {namespace **Microsoft.Practices.ServiceLocation**}
+
+**Dependences:**
+
+CommonServiceLocator  (== 1.3.0) {namespace **Microsoft.Practices.ServiceLocation**}
 
 **Unity Container Support**
 
@@ -18,7 +21,13 @@ Version: 2.0.1
 - NuGet.org package [http://www.nuget.org/packages/MvvmBindingPack.Unity.Debug/] 
 - Supports: **net452, net462, net47**
 - Signed assembly;
-- Supports Unity 5.5.4-* CommonServiceLocator 2.0.3-* {namespace **CommonServiceLocator**}
+
+**Dependences:**
+ CommonServiceLocator (>= 2.0.2) {namespace **CommonServiceLocator**}
+ 
+**Recommended Unity Nuget Dependences:**
+https://www.nuget.org/packages/Unity.Container    (>= 5.8.6)
+https://www.nuget.org/packages/Unity.ServiceLocation (>= 2.1.1)
 
 
 The decision to develop this binding package had been made in response of minimizing a the cost of  the quality UI development along with using Agile development style. It is a big advantage to have a solution where you are able to refactor a dozen of Views and View Models, in a couple hours, by a customer request.
