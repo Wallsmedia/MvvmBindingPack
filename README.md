@@ -1,6 +1,17 @@
 ### Model - View - ViewModel binding package.
 
-Full details package using details in MvvmBindingPack.1.9.pdf
+Full details package using details in MvvmBindingPack.2.5.pdf
+**.Net Core transition support**
+Version: 2.5.0
+- NuGet.org package [http://www.nuget.org/packages/MvvmBindingPack.NetCore/] 
+- NuGet.org package [http://www.nuget.org/packages/MvvmBindingPack.NetCore.Debug/] 
+- Supports: **net462, net472, uap10.0**
+- Signed assembly;
+
+**Dependences:**
+ - None
+
+
 
 **Microsoft.Practices.ServiceLocation Support**
 

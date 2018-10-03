@@ -12,10 +12,11 @@
 // implied. See the License for the specific language governing permissions
 // and limitations under the License.
 
-using CommonServiceLocator;
+using Microsoft.Extensions.DependencyInjection;
+using MvvmBindingPack;
 using System.Windows;
-using Unity;
-using Unity.ServiceLocation;
+using System.Windows.Input;
+using WpfMvvmBindingPackDemo.ViewModels;
 
 namespace WpfDemoApplication
 {
@@ -25,15 +26,15 @@ namespace WpfDemoApplication
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1001:TypesThatOwnDisposableFieldsShouldBeDisposable")]
     public partial class App
     {
-        UnityContainer _unityContainer;
-        UnityServiceLocator _servicelocator;
+        
 
         private void Application_Startup(object sender, StartupEventArgs e)
         {
 
-            _unityContainer = new UnityContainer();
-            _servicelocator = new UnityServiceLocator(_unityContainer);
-            ServiceLocator.SetLocatorProvider(() => _servicelocator);
+            ServiceCollection services = new ServiceCollection();
+            services.AddSingleton<AutoBindingViewModel>();
+            services.AddSingleton<IocBindingViewModel>();
+            AutoWireVmDataContext.ServiceProvider = services.BuildServiceProvider();
 
         }
     }

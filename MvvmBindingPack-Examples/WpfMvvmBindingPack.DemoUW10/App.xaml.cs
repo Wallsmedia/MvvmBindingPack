@@ -1,5 +1,5 @@
-﻿using Microsoft.Practices.ServiceLocation;
-using Microsoft.Practices.Unity;
+﻿using Microsoft.Extensions.DependencyInjection;
+using MvvmBindingPack;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -16,6 +16,7 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using WpfMvvmBindingPack.DemoUW10.ViewModels;
 
 namespace WpfMvvmBindingPack.DemoUW10
 {
@@ -34,9 +35,6 @@ namespace WpfMvvmBindingPack.DemoUW10
             this.Suspending += OnSuspending;
         }
 
-        UnityContainer _unityContainer;
-        UnityServiceLocator _servicelocator;
-
         /// <summary>
         /// Invoked when the application is launched normally by the end user.  Other entry points
         /// will be used such as when the application is launched to open a specific file.
@@ -44,9 +42,10 @@ namespace WpfMvvmBindingPack.DemoUW10
         /// <param name="e">Details about the launch request and process.</param>
         protected override void OnLaunched(LaunchActivatedEventArgs e)
         {
-            _unityContainer = new UnityContainer();
-            _servicelocator = new UnityServiceLocator(_unityContainer);
-            ServiceLocator.SetLocatorProvider(() => _servicelocator);
+            ServiceCollection services = new ServiceCollection();
+            services.AddSingleton<AutoBindingViewModel>();
+            services.AddSingleton<IocBindingViewModel>();
+            AutoWireVmDataContext.ServiceProvider = services.BuildServiceProvider();
 
             Frame rootFrame = Window.Current.Content as Frame;
 
