@@ -1,0 +1,62 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2010
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{DB1439E1-BD81-479D-805F-0C189B8849A7}"
+	ProjectSection(SolutionItems) = preProject
+		..\.gitattributes = ..\.gitattributes
+		..\.gitignore = ..\.gitignore
+		..\README.md = ..\README.md
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MvvmBindingPack", "src\MvvmBindingPack\MvvmBindingPack.csproj", "{7BBC071E-4845-4787-8753-DDE83E7FF700}"
+	ProjectSection(ProjectDependencies) = postProject
+		{528BC263-7E93-49DD-9A44-5C13F5DC4113} = {528BC263-7E93-49DD-9A44-5C13F5DC4113}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvvmBindingPack.UW10", "src\MvvmBindingPack.UW10\MvvmBindingPack.UW10.csproj", "{528BC263-7E93-49DD-9A44-5C13F5DC4113}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{12771E1A-412E-4F23-9BC7-5A813F0A74AC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "doc", "doc", "{51690BE9-A8FE-4A1C-B1CB-4A54132129F7}"
+	ProjectSection(SolutionItems) = preProject
+		doc\MvvmBindingPack.docx = doc\MvvmBindingPack.docx
+		doc\MvvmBindingPack.pdf = doc\MvvmBindingPack.pdf
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{F1638A70-28BF-4D81-A488-388CA6A3EFFD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTestMvvmBindingPack", "test\UnitTestMvvmBindingPack\UnitTestMvvmBindingPack.csproj", "{CC85DCD5-A1D0-4095-B6D9-3F8ECA82BA0F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7BBC071E-4845-4787-8753-DDE83E7FF700}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7BBC071E-4845-4787-8753-DDE83E7FF700}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7BBC071E-4845-4787-8753-DDE83E7FF700}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7BBC071E-4845-4787-8753-DDE83E7FF700}.Release|Any CPU.Build.0 = Release|Any CPU
+		{528BC263-7E93-49DD-9A44-5C13F5DC4113}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{528BC263-7E93-49DD-9A44-5C13F5DC4113}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{528BC263-7E93-49DD-9A44-5C13F5DC4113}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{528BC263-7E93-49DD-9A44-5C13F5DC4113}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CC85DCD5-A1D0-4095-B6D9-3F8ECA82BA0F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CC85DCD5-A1D0-4095-B6D9-3F8ECA82BA0F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CC85DCD5-A1D0-4095-B6D9-3F8ECA82BA0F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CC85DCD5-A1D0-4095-B6D9-3F8ECA82BA0F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{7BBC071E-4845-4787-8753-DDE83E7FF700} = {12771E1A-412E-4F23-9BC7-5A813F0A74AC}
+		{528BC263-7E93-49DD-9A44-5C13F5DC4113} = {12771E1A-412E-4F23-9BC7-5A813F0A74AC}
+		{CC85DCD5-A1D0-4095-B6D9-3F8ECA82BA0F} = {F1638A70-28BF-4D81-A488-388CA6A3EFFD}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {785E2C3E-634D-4473-870D-E2DE9E3C2852}
+	EndGlobalSection
+EndGlobal

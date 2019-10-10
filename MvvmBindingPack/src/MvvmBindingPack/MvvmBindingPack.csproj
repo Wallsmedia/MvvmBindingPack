@@ -1,0 +1,57 @@
+﻿<Project Sdk="Microsoft.NET.Sdk" ToolsVersion="15.0">
+
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+    <NuspecFile>Nuget.Release.nuspec</NuspecFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+    <NuspecFile>Nuget.Debug.nuspec</NuspecFile>
+
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <TargetFrameworks>net462;net472;</TargetFrameworks>
+    <Version>2.5.0</Version>
+    <AssemblyVersion>2.5.0</AssemblyVersion>
+    <FileVersion>2.5.0</FileVersion>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <AssemblyName>MvvmBindingPack.DotNet</AssemblyName>
+    <RootNamespace>MvvmBindingPack</RootNamespace>
+    <OutputPath>..\..\MvvmBindingPack.Bin\$(Configuration)\</OutputPath>
+    <PackageOutputPath>..\..\MvvmBindingPack.Bin\$(Configuration)\</PackageOutputPath>
+    <DocumentationFile>..\..\MvvmBindingPack.Bin\$(Configuration)\$(AssemblyName).xml</DocumentationFile>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\..\build\Key.snk</AssemblyOriginatorKeyFile>
+    <Copyright>Copyright © 2013-2018 Alexander Paskhin /paskhin@hotmail.co.uk/ All rights reserved</Copyright>
+    <Company>Wallsmedia LTD</Company>
+    <PackageLicenseUrl>http://www.apache.org/licenses/LICENSE-2.0</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/Wallsmedia/MvvmBindingPack</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/Wallsmedia/MvvmBindingPack</RepositoryUrl>
+    <PackageTags>Mvvm Xaml Wpf Uwp MvvmBinding Binding</PackageTags>
+    <Description>
+      Revolutionary features:
+      AutoWireVmDataContext - setups "DataContext".
+      AutoWireViewConrols - wires and binds XAML elements to View Model.
+      See demo examples: https://github.com/Wallsmedia/MvvmBindingPack
+      See How to use: https://github.com/Wallsmedia/MvvmBindingPack/blob/master/MvvmBindingPack.2.5.pdf
+    </Description>
+    <Authors>Alexander Paskhin (paskhin@hotmail.co.uk)</Authors>
+    <PackageReleaseNotes>
+      Release: net462; net472, uap10.0;Signed Assembly;
+      Used Initialization SetupServiceProvider()
+    </PackageReleaseNotes>
+    
+  </PropertyGroup>
+
+
+  <ItemGroup Condition="'$(TargetFramework)' != 'uap10'">
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+
+</Project>
