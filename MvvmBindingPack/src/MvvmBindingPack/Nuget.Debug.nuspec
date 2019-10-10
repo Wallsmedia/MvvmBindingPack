@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
   <metadata>
     <id>MvvmBindingPack.NetCore.Debug</id>
-    <version>2.5.0</version>
+    <version>3.0.0</version>
     <authors>Alexander Paskhin (paskhin@hotmail.co.uk)</authors>
     <owners>Alexander Paskhin (paskhin@hotmail.co.uk)</owners>
     <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
@@ -21,11 +21,11 @@
       See How to use: https://github.com/Wallsmedia/MvvmBindingPack/blob/master/MvvmBindingPack.2.5.pdf
     </summary>
     <releaseNotes>
-      Release:  net462; net472, uap10.0;Signed Assembly;
+      Release: netcoreapp3.0 Windows WPF Only; Signed Assembly;
       Initialize MvvmBindingPack.AutoWireViewConrols.ServiceProvider static property with “Microsoft.Extensions.DependencyInjection” ServiceProvider.
     </releaseNotes>
-    <copyright>Copyright 2013-2018 © Alexander Paskhin</copyright>
-    <tags>Mvvm Xaml Wpf Uwp MvvmBinding Binding</tags>
+    <copyright>Copyright 2013-2019 © Alexander Paskhin</copyright>
+    <tags>Mvvm Xaml Wpf MvvmBinding Binding</tags>
   
   </metadata>
   <files>
