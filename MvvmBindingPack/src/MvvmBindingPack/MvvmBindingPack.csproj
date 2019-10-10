@@ -6,7 +6,6 @@
 
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
     <NuspecFile>Nuget.Debug.nuspec</NuspecFile>
-
   </PropertyGroup>
 
   <PropertyGroup>
@@ -28,7 +27,7 @@
     <AssemblyOriginatorKeyFile>..\..\build\Key.snk</AssemblyOriginatorKeyFile>
     <Copyright>Copyright © 2013-2019 Alexander Paskhin /paskhin@hotmail.co.uk/ All rights reserved</Copyright>
     <Company>Wallsmedia LTD</Company>
-    <PackageLicenseUrl>http://www.apache.org/licenses/LICENSE-2.0</PackageLicenseUrl>
+    <PackageLicenseUrl></PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/Wallsmedia/MvvmBindingPack</PackageProjectUrl>
     <RepositoryUrl>https://github.com/Wallsmedia/MvvmBindingPack</RepositoryUrl>
     <PackageTags>Mvvm Xaml Wpf Uwp MvvmBinding Binding</PackageTags>
@@ -44,7 +43,15 @@
       Release: netcoreapp3.0 Windows WPF Only; Signed Assembly;
       Used Initialization SetupServiceProvider()
     </PackageReleaseNotes>
+    <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
 
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\..\LICENSE.txt">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
 
 </Project>

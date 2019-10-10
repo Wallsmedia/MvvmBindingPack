@@ -5,20 +5,20 @@
     <version>3.0.0</version>
     <authors>Alexander Paskhin (paskhin@hotmail.co.uk)</authors>
     <owners>Alexander Paskhin (paskhin@hotmail.co.uk)</owners>
-    <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
+    <license type="file">LICENSE.txt</license>
     <projectUrl>https://github.com/Wallsmedia/MvvmBindingPack</projectUrl>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <description>
       WPF MVVM Binding Package.
       Features: AutoWireVmDataContext, AutoWireViewConrols.
-      How to use: https://github.com/Wallsmedia/MvvmBindingPack/blob/master/MvvmBindingPack.2.5.pdf
+      How to use: https://github.com/Wallsmedia/MvvmBindingPack/blob/master/MvvmBindingPack.pdf
     </description>
     <summary>
       Revolutionary features:
       AutoWireVmDataContext - setups "DataContext".
       AutoWireViewConrols - wires and binds XAML elements to View Model.
       See demo examples: https://github.com/Wallsmedia/MvvmBindingPack
-      See How to use: https://github.com/Wallsmedia/MvvmBindingPack/blob/master/MvvmBindingPack.2.5.pdf
+      See How to use: https://github.com/Wallsmedia/MvvmBindingPack/blob/master/MvvmBindingPack.pdf
     </summary>
     <releaseNotes>
       Release: netcoreapp3.0 Windows WPF Only; Signed Assembly;
@@ -26,11 +26,22 @@
     </releaseNotes>
     <copyright>Copyright 2013-2019 © Alexander Paskhin</copyright>
     <tags>Mvvm Xaml Wpf MvvmBinding Binding</tags>
-  
+
+    <dependencies>
+      <group targetFramework=".NETCoreApp3.0" />
+    </dependencies>
+
+    <frameworkReferences>
+      <group targetFramework=".NETCoreApp3.0">
+        <frameworkReference name="Microsoft.WindowsDesktop.App.WPF" />
+      </group>
+    </frameworkReferences>
+
   </metadata>
   <files>
-    <file src="..\..\MvvmBindingPack.Bin\Debug\uap10\Mvvm*.*" target="lib\uap10.0\" />
-    <file src="..\..\MvvmBindingPack.Bin\Debug\net472\Mvvm*.*" target="lib\net472\" />
-    <file src="..\..\MvvmBindingPack.Bin\Debug\net462\Mvvm*.*" target="lib\net462\" />
+    <file src="LICENSE.txt" target="" />
+    <file src="..\..\MvvmBindingPack.Bin\Debug\netcoreapp3.0\Mvvm*.dll" target="lib\netcoreapp3.0\" />
+    <file src="..\..\MvvmBindingPack.Bin\Debug\netcoreapp3.0\Mvvm*.xml" target="lib\netcoreapp3.0\" />
+    <file src="..\..\MvvmBindingPack.Bin\Debug\netcoreapp3.0\Mvvm*.pdb" target="lib\netcoreapp3.0\" />
   </files>
 </package>
