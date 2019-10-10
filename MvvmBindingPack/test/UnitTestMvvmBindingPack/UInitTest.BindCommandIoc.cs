@@ -1,4 +1,4 @@
-﻿// 
+// 
 //  MVVM-WPF Markup Dependency Injection Binding Extensions
 //  Copyright © 2013-2014 Alexander Paskhin /paskhin@hotmail.co.uk/ All rights reserved.
 // 
@@ -19,8 +19,7 @@ using Rhino.Mocks;
 using System.Windows.Markup;
 using MvvmBindingPack;
 using System.Windows.Input;
-using Microsoft.Practices.Unity;
-using Microsoft.Practices.ServiceLocation;
+using Microsoft.Extensions.DependencyInjection;
 using System.Collections.Generic;
 
 namespace UnitTestMvvmBindingPack

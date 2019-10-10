@@ -1,4 +1,4 @@
-﻿// 
+// 
 //  MVVM-WPF Markup Dependency Injection Binding Extensions
 //  Copyright © 2013-2014 Alexander Paskhin /paskhin@hotmail.co.uk/ All rights reserved.
 // 
@@ -14,8 +14,7 @@
 
 using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Microsoft.Practices.Unity;
-using Microsoft.Practices.ServiceLocation;
+using Microsoft.Extensions.DependencyInjection;
 using MvvmBindingPack;
 
 namespace UnitTestMvvmBindingPack
