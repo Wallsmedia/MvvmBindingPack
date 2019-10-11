@@ -28,22 +28,13 @@ namespace UnitTestMvvmBindingPack
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1001:TypesThatOwnDisposableFieldsShouldBeDisposable"), TestClass]
     public class UnitTestBindEventHandlerIoc
     {
-        readonly UnityServiceLocator _servicelocator;
-        readonly _TestBindEventHandlerIoc _viewModel;
-
+        _TestBindEventHandlerIoc _viewModel;
         public UnitTestBindEventHandlerIoc()
         {
-            var unityContainer = new UnityContainer();
-            _servicelocator = new UnityServiceLocator(unityContainer);
-            ServiceLocator.SetLocatorProvider(() => _servicelocator);
-
-            _viewModel = new _TestBindEventHandlerIoc();
-
-            // instance that will be resolved when it's used ServiceType 
-            unityContainer.RegisterInstance(typeof(_TestBindEventHandlerIoc), _viewModel, new ContainerControlledLifetimeManager());
-
-            // instance that will be resolved when it's used ServiceType & ServiceKey
-            unityContainer.RegisterInstance("ServiceKey", _viewModel, new ContainerControlledLifetimeManager());
+            ServiceCollection services = new ServiceCollection();
+            services.AddSingleton<_TestBindEventHandlerIoc>();
+            AutoWireVmDataContext.ServiceProvider = services.BuildServiceProvider();
+            _viewModel = AutoWireVmDataContext.ServiceProvider.GetService<_TestBindEventHandlerIoc>();
         }
 
         /// <summary>
@@ -97,10 +88,10 @@ namespace UnitTestMvvmBindingPack
             stubServiceProvider.Stub(x => x.GetService(typeof(IProvideValueTarget))).Return(stubProvideValueTarget);
 
             var bindEvent = new BindEventHandlerIoc
-                {
-                    ServiceType = typeof(_TestBindEventHandlerIoc),
-                    PropertyName = "ButtonClickPropDelegate"
-                };
+            {
+                ServiceType = typeof(_TestBindEventHandlerIoc),
+                PropertyName = "ButtonClickPropDelegate"
+            };
 
             var bindResolve = bindEvent.ProvideValue(stubServiceProvider);
             FakeTargetHandler += (RoutedEventHandler)bindResolve;
@@ -123,10 +114,10 @@ namespace UnitTestMvvmBindingPack
             stubServiceProvider.Stub(x => x.GetService(typeof(IProvideValueTarget))).Return(stubProvideValueTarget);
 
             var bindEvent = new BindEventHandlerIoc
-                {
-                    ServiceType = typeof(_TestBindEventHandlerIoc),
-                    MethodName = "ButtonClick"
-                };
+            {
+                ServiceType = typeof(_TestBindEventHandlerIoc),
+                MethodName = "ButtonClick"
+            };
 
             var bindResolve = bindEvent.ProvideValue(stubServiceProvider);
             FakeTargetHandler += (RoutedEventHandler)bindResolve;
@@ -152,7 +143,7 @@ namespace UnitTestMvvmBindingPack
             var provider = stubServiceProvider;
             // ReSharper disable ImplicitlyCapturedClosure
             UnitTestInternal.AssertThrows(typeof(ArgumentException), () => bindEvent.ProvideValue(provider),
-                // ReSharper restore ImplicitlyCapturedClosure
+            // ReSharper restore ImplicitlyCapturedClosure
             "ProvideValueExceptions - expected exception - ArgumentException");
             bindEvent.PropertyName = "ButtonClickPropDelegate";
             bindEvent.MethodName = "ButtonClick";

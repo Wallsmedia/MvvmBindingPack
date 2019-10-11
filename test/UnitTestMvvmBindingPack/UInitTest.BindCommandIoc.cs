@@ -30,22 +30,12 @@ namespace UnitTestMvvmBindingPack
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1001:TypesThatOwnDisposableFieldsShouldBeDisposable"), TestClass]
     public class UnitTestBindCommandIoc
     {
-        readonly UnityServiceLocator _servicelocator;
 
         public UnitTestBindCommandIoc()
         {
-            var unityContainer = new UnityContainer();
-            _servicelocator = new UnityServiceLocator(unityContainer);
-            ServiceLocator.SetLocatorProvider(() => _servicelocator);
-
-            // instance that will be resolved when it's used ServiceType 
-            unityContainer.RegisterInstance(typeof(UnityContainer), unityContainer, new ContainerControlledLifetimeManager());
-
-            // instance that will be resolved when it's used ServiceType  !!! every time new instance as not used  new ContainerControlledLifetimeManager()
-            unityContainer.RegisterType(typeof(_TestBindCommandIoc));
-
-            // instance that will be resolved when it's used ServiceType & ServiceKey !!! every time new instance as not used  new ContainerControlledLifetimeManager()
-            unityContainer.RegisterType(typeof(_TestBindCommandIoc), "ServiceKey");
+            ServiceCollection services = new ServiceCollection();
+            services.AddTransient<_TestBindCommandIoc>();
+            AutoWireVmDataContext.ServiceProvider = services.BuildServiceProvider();
         }
 
         /// <summary>

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using System.Collections;
@@ -11,7 +11,7 @@ using System.Windows.Markup;
 using System.Windows;
 using System.ComponentModel;
 using MvvmBindingPack;
-
+using System.Threading;
 
 namespace UnitTestMvvmBindingPack
 {
@@ -21,6 +21,10 @@ namespace UnitTestMvvmBindingPack
         [TestMethod]
         public void AddPropertyChangeEvents()
         {
+            Thread t = new Thread(ThreadProc);
+            t.SetApartmentState(ApartmentState.STA);
+            t.Start();
+
             UIElement dependencyObject = new UIElement();
             var bindEvent = new BindEventHandler();
             var viewModel = new _TestBindEventHandlerChange();
