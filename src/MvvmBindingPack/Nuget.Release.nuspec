@@ -38,7 +38,7 @@
 
   </metadata>
   <files>
-    <file src="LICENSE.txt" target="" />
+    <file src="..\..\LICENSE.txt" target="" />
     <file src="..\..\MvvmBindingPack.Bin\Release\netcoreapp3.0\Mvvm*.dll" target="lib\netcoreapp3.0\" />
     <file src="..\..\MvvmBindingPack.Bin\Release\netcoreapp3.0\Mvvm*.xml" target="lib\netcoreapp3.0\" />
   </files>

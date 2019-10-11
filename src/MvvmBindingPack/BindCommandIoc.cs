@@ -58,10 +58,10 @@ namespace MvvmBindingPack
         /// <summary>
         /// Key (string) of the requested object.
         /// </summary>
+        [Obsolete("ServiceKey not supported and ignored")]
         public String ServiceKey
         {
-            get { return IocSource.ServiceKey; }
-            set { IocSource.ServiceKey = value; }
+            get;set;
         }
 
         /// <summary>

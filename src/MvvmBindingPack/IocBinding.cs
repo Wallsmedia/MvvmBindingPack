@@ -1,4 +1,4 @@
-﻿// 
+// 
 //  MVVM-WPF-NetCore Markup, Binding and other Extensions.
 //  Copyright © 2013-2019 Alexander Paskhin /paskhin@hotmail.co.uk/ All rights reserved.
 // 
@@ -68,14 +68,13 @@ namespace MvvmBindingPack
             set { _serviceType = value; }
         }
 
-        String _serviceKey;
         /// <summary>
         /// The key of the requested object.
         /// </summary>
+        [Obsolete("ServiceKey not supported and ignored")]
         public String ServiceKey
         {
-            get { return _serviceKey; }
-            set { _serviceKey = value; }
+            get; set;
         }
 
         String _propertyName;
@@ -118,7 +117,7 @@ namespace MvvmBindingPack
             {
                 throw new ArgumentNullException("serviceProvider");
             }
-          
+
             if (_serviceType == null)
             {
                 // ReSharper disable NotResolvedInText

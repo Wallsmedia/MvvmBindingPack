@@ -1,4 +1,4 @@
-﻿// 
+// 
 //  MVVM-WPF Markup Dependency Injection Binding Extensions
 //  Copyright © 2013-2019 Alexander Paskhin /paskhin@hotmail.co.uk/ All rights reserved.
 // 
@@ -47,7 +47,7 @@ namespace MvvmBindingPack
 #if !WINDOWS_UWP
         [ConstructorArgument("serviceType")]
 #endif
-        public Object ServiceType
+        public object ServiceType
         {
             get { return _iocSource.ServiceType; }
             set { _iocSource.ServiceType = value; }
@@ -56,10 +56,10 @@ namespace MvvmBindingPack
         /// <summary>
         /// Key (string) of the requested object.
         /// </summary>
-        public String ServiceKey
+        [Obsolete("ServiceKey not supported and ignored")]
+        public string ServiceKey
         {
-            get { return _iocSource.ServiceKey; }
-            set { _iocSource.ServiceKey = value; }
+            get;set;
         }
 
         /// <summary>
