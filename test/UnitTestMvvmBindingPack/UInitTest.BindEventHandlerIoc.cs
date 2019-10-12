@@ -15,7 +15,6 @@
 using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-using Rhino.Mocks;
 using System.Windows.Markup;
 using MvvmBindingPack;
 using System.Windows;
@@ -79,13 +78,7 @@ namespace UnitTestMvvmBindingPack
         public void ProvideValueFromSourceByPropertyName()
         {
 
-            var stubServiceProvider = MockRepository.GenerateMock<IServiceProvider>();
-            var stubProvideValueTarget = MockRepository.GenerateMock<IProvideValueTarget>();
-
-            stubProvideValueTarget.Stub(x => x.TargetObject).Return(new object());
-
-            stubProvideValueTarget.Stub(x => x.TargetProperty).Return(GetType().GetProperty("fakeTargetHandler"));
-            stubServiceProvider.Stub(x => x.GetService(typeof(IProvideValueTarget))).Return(stubProvideValueTarget);
+            var stubServiceProvider = MockServiceProvider.Instance;
 
             var bindEvent = new BindEventHandlerIoc
             {
@@ -105,13 +98,7 @@ namespace UnitTestMvvmBindingPack
         public void ProvideValueFromSourceByMethodName()
         {
 
-            var stubServiceProvider = MockRepository.GenerateMock<IServiceProvider>();
-            var stubProvideValueTarget = MockRepository.GenerateMock<IProvideValueTarget>();
-
-            stubProvideValueTarget.Stub(x => x.TargetObject).Return(new object());
-
-            stubProvideValueTarget.Stub(x => x.TargetProperty).Return(GetType().GetProperty("fakeTargetHandler"));
-            stubServiceProvider.Stub(x => x.GetService(typeof(IProvideValueTarget))).Return(stubProvideValueTarget);
+            var stubServiceProvider = MockServiceProvider.Instance;
 
             var bindEvent = new BindEventHandlerIoc
             {
@@ -130,21 +117,15 @@ namespace UnitTestMvvmBindingPack
         [TestMethod]
         public void ProvideValueExceptions()
         {
-            var stubServiceProvider = MockRepository.GenerateMock<IServiceProvider>();
-            var stubProvideValueTarget = MockRepository.GenerateMock<IProvideValueTarget>();
-
-            stubProvideValueTarget.Stub(x => x.TargetObject).Return(new object());
-
-            stubProvideValueTarget.Stub(x => x.TargetProperty).Return(GetType().GetProperty("fakeTargetHandler"));
-            stubServiceProvider.Stub(x => x.GetService(typeof(IProvideValueTarget))).Return(stubProvideValueTarget);
+            var stubServiceProvider = MockServiceProvider.Instance;
 
             var bindEvent = new BindEventHandlerIoc { ServiceType = typeof(_TestBindEventHandlerIoc) };
 
             var provider = stubServiceProvider;
             // ReSharper disable ImplicitlyCapturedClosure
             UnitTestInternal.AssertThrows(typeof(ArgumentException), () => bindEvent.ProvideValue(provider),
-            // ReSharper restore ImplicitlyCapturedClosure
             "ProvideValueExceptions - expected exception - ArgumentException");
+            // ReSharper restore ImplicitlyCapturedClosure
             bindEvent.PropertyName = "ButtonClickPropDelegate";
             bindEvent.MethodName = "ButtonClick";
 
@@ -154,15 +135,12 @@ namespace UnitTestMvvmBindingPack
                 "ProvideValueExceptions - expected exception - ArgumentException");
 
             bindEvent.PropertyName = null;
-            stubServiceProvider = MockRepository.GenerateMock<IServiceProvider>();
-            stubProvideValueTarget = MockRepository.GenerateMock<IProvideValueTarget>();
-            stubProvideValueTarget.Stub(x => x.TargetObject).Return(new object());
-            stubProvideValueTarget.Stub(x => x.TargetProperty).Return(new object());
-            stubServiceProvider.Stub(x => x.GetService(typeof(IProvideValueTarget))).Return(stubProvideValueTarget);
+            bindEvent.MethodName = null;
+            stubServiceProvider = MockServiceProvider.Instance;
             // ReSharper disable ImplicitlyCapturedClosure
             UnitTestInternal.AssertThrows(typeof(ArgumentException), () => bindEvent.ProvideValue(stubServiceProvider),
-                // ReSharper restore ImplicitlyCapturedClosure
                 "ProvideValueExceptions - expected exception - ArgumentException");
+            // ReSharper restore ImplicitlyCapturedClosure
         }
 
 

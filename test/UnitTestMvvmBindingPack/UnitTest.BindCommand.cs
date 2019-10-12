@@ -15,14 +15,33 @@
 using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-using Rhino.Mocks;
 using System.Windows.Markup;
 using MvvmBindingPack;
 using System.Windows.Input;
 using System.Collections.Generic;
+using System.Windows;
 
 namespace UnitTestMvvmBindingPack
 {
+    public class MockServiceProvider : IServiceProvider, IProvideValueTarget
+    {
+
+        public static MockServiceProvider Instance => new MockServiceProvider();
+        public object TargetObject => new object();
+
+        public event RoutedEventHandler fakeTargetHandler;
+        public object TargetProperty => GetType().GetProperty("fakeTargetHandler");
+
+        public object GetService(Type serviceType)
+        {
+            if (serviceType == typeof(IProvideValueTarget))
+            {
+                return this;
+            }
+            return null;
+        }
+    }
+
     /// <summary>
     /// Summary description for BindCommand
     /// </summary>
@@ -53,11 +72,7 @@ namespace UnitTestMvvmBindingPack
         public void BindCommandMethodExCanPropertyAction()
         {
 
-            var stubServiceProvider = MockRepository.GenerateMock<IServiceProvider>();
-            var stubProvideValueTarget = MockRepository.GenerateMock<IProvideValueTarget>();
-            stubProvideValueTarget.Stub(x => x.TargetObject).Return(new object());
-            stubProvideValueTarget.Stub(x => x.TargetProperty).Return(null);
-            stubServiceProvider.Stub(x => x.GetService(typeof(IProvideValueTarget))).Return(stubProvideValueTarget);
+            var stubServiceProvider = MockServiceProvider.Instance;
 
             var bindCommand = new BindCommand();
             var viewModel = new _TestBindCommand();
@@ -91,11 +106,7 @@ namespace UnitTestMvvmBindingPack
         public void BindCommandPropertyExCanPropertyAction()
         {
 
-            var stubServiceProvider = MockRepository.GenerateMock<IServiceProvider>();
-            var stubProvideValueTarget = MockRepository.GenerateMock<IProvideValueTarget>();
-            stubProvideValueTarget.Stub(x => x.TargetObject).Return(new object());
-            stubProvideValueTarget.Stub(x => x.TargetProperty).Return(null);
-            stubServiceProvider.Stub(x => x.GetService(typeof(IProvideValueTarget))).Return(stubProvideValueTarget);
+            var stubServiceProvider = MockServiceProvider.Instance;
 
             var bindCommand = new BindCommand();
             var viewModel = new _TestBindCommand();
@@ -128,11 +139,7 @@ namespace UnitTestMvvmBindingPack
         public void BindCommandPropertyExCanEventToInvoke()
         {
 
-            var stubServiceProvider = MockRepository.GenerateMock<IServiceProvider>();
-            var stubProvideValueTarget = MockRepository.GenerateMock<IProvideValueTarget>();
-            stubProvideValueTarget.Stub(x => x.TargetObject).Return(new object());
-            stubProvideValueTarget.Stub(x => x.TargetProperty).Return(null);
-            stubServiceProvider.Stub(x => x.GetService(typeof(IProvideValueTarget))).Return(stubProvideValueTarget);
+            var stubServiceProvider = MockServiceProvider.Instance;
 
             var bindCommand = new BindCommand();
             var viewModel = new _TestBindCommand();
@@ -165,11 +172,7 @@ namespace UnitTestMvvmBindingPack
         public void BindCommandMethodExCanEventToInvoke()
         {
 
-            var stubServiceProvider = MockRepository.GenerateMock<IServiceProvider>();
-            var stubProvideValueTarget = MockRepository.GenerateMock<IProvideValueTarget>();
-            stubProvideValueTarget.Stub(x => x.TargetObject).Return(new object());
-            stubProvideValueTarget.Stub(x => x.TargetProperty).Return(null);
-            stubServiceProvider.Stub(x => x.GetService(typeof(IProvideValueTarget))).Return(stubProvideValueTarget);
+            var stubServiceProvider = MockServiceProvider.Instance;
 
             var bindCommand = new BindCommand();
             var viewModel = new _TestBindCommand();
@@ -201,11 +204,7 @@ namespace UnitTestMvvmBindingPack
         public void BindCommandMethodExCanExecuteBooleanProperty()
         {
 
-            var stubServiceProvider = MockRepository.GenerateMock<IServiceProvider>();
-            var stubProvideValueTarget = MockRepository.GenerateMock<IProvideValueTarget>();
-            stubProvideValueTarget.Stub(x => x.TargetObject).Return(new object());
-            stubProvideValueTarget.Stub(x => x.TargetProperty).Return(null);
-            stubServiceProvider.Stub(x => x.GetService(typeof(IProvideValueTarget))).Return(stubProvideValueTarget);
+            var stubServiceProvider = MockServiceProvider.Instance;
 
             var bindCommand = new BindCommand();
             var viewModel = new _TestBindCommand();
@@ -237,13 +236,7 @@ namespace UnitTestMvvmBindingPack
         public void ProvideValueFromSourceExceptions()
         {
 
-            var stubServiceProvider = MockRepository.GenerateMock<IServiceProvider>();
-            var stubProvideValueTarget = MockRepository.GenerateMock<IProvideValueTarget>();
-
-            stubProvideValueTarget.Stub(x => x.TargetObject).Return(new object());
-
-            stubProvideValueTarget.Stub(x => x.TargetProperty).Return(null);
-            stubServiceProvider.Stub(x => x.GetService(typeof(IProvideValueTarget))).Return(stubProvideValueTarget);
+            var stubServiceProvider = MockServiceProvider.Instance;
 
             var bindCommand = new BindCommand();
             var viewModel = new _TestBindCommand();
@@ -316,7 +309,7 @@ namespace UnitTestMvvmBindingPack
                 get { return CanExecuteMethod; }
             }
 
-            private bool _canExecuteBooleanPropertyName=true;
+            private bool _canExecuteBooleanPropertyName = true;
 
             public bool CanExecuteBooleanPropertyName
             {

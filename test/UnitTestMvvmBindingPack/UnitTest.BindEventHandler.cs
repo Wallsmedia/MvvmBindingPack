@@ -1,4 +1,4 @@
-﻿// 
+// 
 //  MVVM-WPF-NetCore Markup Binding Extensions
 //  Copyright © 2013-2014 Alexander Paskhin /paskhin@hotmail.co.uk/ All rights reserved.
 // 
@@ -14,8 +14,6 @@
 
 using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-using Rhino.Mocks;
 using System.Windows.Markup;
 using MvvmBindingPack;
 using System.Windows;
@@ -48,11 +46,7 @@ namespace UnitTestMvvmBindingPack
         public void BindEventHandlerByPropertyName()
         {
 
-            var stubServiceProvider = MockRepository.GenerateMock<IServiceProvider>();
-            var stubProvideValueTarget = MockRepository.GenerateMock<IProvideValueTarget>();
-            stubProvideValueTarget.Stub(x => x.TargetObject).Return(new object());
-            stubProvideValueTarget.Stub(x => x.TargetProperty).Return(GetType().GetProperty("fakeTargetHandler"));
-            stubServiceProvider.Stub(x => x.GetService(typeof(IProvideValueTarget))).Return(stubProvideValueTarget);
+            var stubServiceProvider = MockServiceProvider.Instance;
 
             var bindEvent = new BindEventHandler();
             var viewModel = new _TestBindEventHandler();
@@ -72,13 +66,7 @@ namespace UnitTestMvvmBindingPack
         public void BindEventHandlerByMethodName()
         {
 
-            var stubServiceProvider = MockRepository.GenerateMock<IServiceProvider>();
-            var stubProvideValueTarget = MockRepository.GenerateMock<IProvideValueTarget>();
-
-            stubProvideValueTarget.Stub(x => x.TargetObject).Return(new object());
-
-            stubProvideValueTarget.Stub(x => x.TargetProperty).Return(GetType().GetProperty("fakeTargetHandler"));
-            stubServiceProvider.Stub(x => x.GetService(typeof(IProvideValueTarget))).Return(stubProvideValueTarget);
+            var stubServiceProvider = MockServiceProvider.Instance;
 
             var bindEvent = new BindEventHandler();
             var viewModel = new _TestBindEventHandler();
@@ -96,13 +84,7 @@ namespace UnitTestMvvmBindingPack
         [TestMethod]
         public void ProvideValueExceptions()
         {
-            var stubServiceProvider = MockRepository.GenerateMock<IServiceProvider>();
-            var stubProvideValueTarget = MockRepository.GenerateMock<IProvideValueTarget>();
-
-            stubProvideValueTarget.Stub(x => x.TargetObject).Return(new object());
-
-            stubProvideValueTarget.Stub(x => x.TargetProperty).Return(GetType().GetProperty("fakeTargetHandler"));
-            stubServiceProvider.Stub(x => x.GetService(typeof(IProvideValueTarget))).Return(stubProvideValueTarget);
+            var stubServiceProvider = MockServiceProvider.Instance;
 
             var bindEvent = new BindEventHandler();
             var viewModel = new _TestBindEventHandler();
@@ -110,7 +92,7 @@ namespace UnitTestMvvmBindingPack
 
             // ReSharper disable AccessToModifiedClosure
             UnitTestInternal.AssertThrows(typeof(ArgumentException), () => bindEvent.ProvideValue(stubServiceProvider),
-                // ReSharper restore AccessToModifiedClosure
+            // ReSharper restore AccessToModifiedClosure
             "ProvideValueExceptions - expected exception - ArgumentException");
             bindEvent.PropertyName = "ButtonClickPropDelegate";
             bindEvent.MethodName = "ButtonClick";
@@ -121,11 +103,10 @@ namespace UnitTestMvvmBindingPack
                 "ProvideValueExceptions - expected exception - ArgumentException");
 
             bindEvent.PropertyName = null;
-            stubServiceProvider = MockRepository.GenerateMock<IServiceProvider>();
-            stubProvideValueTarget = MockRepository.GenerateMock<IProvideValueTarget>();
-            stubProvideValueTarget.Stub(x => x.TargetObject).Return(new object());
-            stubProvideValueTarget.Stub(x => x.TargetProperty).Return(new object());
-            stubServiceProvider.Stub(x => x.GetService(typeof(IProvideValueTarget))).Return(stubProvideValueTarget);
+            bindEvent.MethodName = null;
+
+            stubServiceProvider = MockServiceProvider.Instance;
+
             UnitTestInternal.AssertThrows(typeof(ArgumentException), () => bindEvent.ProvideValue(stubServiceProvider),
                 "ProvideValueExceptions - expected exception - ArgumentException");
         }
@@ -160,6 +141,6 @@ namespace UnitTestMvvmBindingPack
         }
     }
 
-   
+
 
 }

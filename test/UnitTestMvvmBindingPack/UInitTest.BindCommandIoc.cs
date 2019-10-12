@@ -15,7 +15,6 @@
 using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-using Rhino.Mocks;
 using System.Windows.Markup;
 using MvvmBindingPack;
 using System.Windows.Input;
@@ -85,11 +84,7 @@ namespace UnitTestMvvmBindingPack
         public void BindCommandIocByType()
         {
 
-            var stubServiceProvider = MockRepository.GenerateMock<IServiceProvider>();
-            var stubProvideValueTarget = MockRepository.GenerateMock<IProvideValueTarget>();
-            stubProvideValueTarget.Stub(x => x.TargetObject).Return(new object());
-            stubProvideValueTarget.Stub(x => x.TargetProperty).Return(null);
-            stubServiceProvider.Stub(x => x.GetService(typeof(IProvideValueTarget))).Return(stubProvideValueTarget);
+            var stubServiceProvider = MockServiceProvider.Instance;
             
             // just use one of the test cases for BindCommandBase
             var bindCommand = new BindCommandIoc
@@ -128,11 +123,7 @@ namespace UnitTestMvvmBindingPack
         public void BindCommandIocByTypeAndServiceKey()
         {
 
-            var stubServiceProvider = MockRepository.GenerateMock<IServiceProvider>();
-            var stubProvideValueTarget = MockRepository.GenerateMock<IProvideValueTarget>();
-            stubProvideValueTarget.Stub(x => x.TargetObject).Return(new object());
-            stubProvideValueTarget.Stub(x => x.TargetProperty).Return(null);
-            stubServiceProvider.Stub(x => x.GetService(typeof(IProvideValueTarget))).Return(stubProvideValueTarget);
+            var stubServiceProvider = MockServiceProvider.Instance;
 
             Type ss = typeof(_TestBindCommandIoc);
             // just use one of the test cases for BindCommandBase
@@ -173,11 +164,7 @@ namespace UnitTestMvvmBindingPack
         public void BindCommandIocExceptions()
         {
 
-            var stubServiceProvider = MockRepository.GenerateMock<IServiceProvider>();
-            var stubProvideValueTarget = MockRepository.GenerateMock<IProvideValueTarget>();
-            stubProvideValueTarget.Stub(x => x.TargetObject).Return(new object());
-            stubProvideValueTarget.Stub(x => x.TargetProperty).Return(null);
-            stubServiceProvider.Stub(x => x.GetService(typeof(IProvideValueTarget))).Return(stubProvideValueTarget);
+            var stubServiceProvider = MockServiceProvider.Instance;
 
             var bindCommand = new BindCommandIoc
                 {
