@@ -6,25 +6,49 @@ Full details package using details in MvvmBindingPack.pdf
 
 **.Net Core App  windows Desktop support**
 
-- NuGet.org package http://www.nuget.org/packages/MvvmBindingPack.NetCore/ 
-- NuGet.org package http://www.nuget.org/packages/MvvmBindingPack.NetCore.Debug/ 
+- NuGet.org package http://www.nuget.org/packages/MvvmBindingPack/ 
+- NuGet.org package http://www.nuget.org/packages/MvvmBindingPack.Debug/ 
 - Supports: **netcoreapp30**
 - Signed assembly;
 
 **Dependences:**
  - None
+
+(!) Breaking changes of IoC/DI container initialization. Example:
+``` C#
+private void Application_Startup(object sender, StartupEventArgs e)
+{
+
+    ServiceCollection services = new ServiceCollection();
+    services.AddSingleton<AutoBindingViewModel>();
+    services.AddSingleton<IocBindingViewModel>();
+    AutoWireVmDataContext.ServiceProvider = services.BuildServiceProvider();
+}
+```
   
 
 # Version: 2.5.0
 
 **.Net Core transition version**
-- NuGet.org package http://www.nuget.org/packages/MvvmBindingPack.NetCore/ 
-- NuGet.org package http://www.nuget.org/packages/MvvmBindingPack.NetCore.Debug/ 
+- NuGet.org package http://www.nuget.org/packages/MvvmBindingPack/ 
+- NuGet.org package http://www.nuget.org/packages/MvvmBindingPack.Debug/ 
 - Supports: **net462, net472, uap10.0**
 - Signed assembly;
 
 **Dependences:**
  - None
+
+(!) Breaking changes of IoC/DI container initialization. Example:
+``` C#
+private void Application_Startup(object sender, StartupEventArgs e)
+{
+
+    ServiceCollection services = new ServiceCollection();
+    services.AddSingleton<AutoBindingViewModel>();
+    services.AddSingleton<IocBindingViewModel>();
+    AutoWireVmDataContext.ServiceProvider = services.BuildServiceProvider();
+}
+```
 
 # Version: 2.0.1
 

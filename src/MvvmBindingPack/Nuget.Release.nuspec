@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
   <metadata>
-    <id>MvvmBindingPack.NetCore</id>
+    <id>MvvmBindingPack</id>
     <version>3.0.0</version>
     <authors>Alexander Paskhin (paskhin@hotmail.co.uk)</authors>
     <owners>Alexander Paskhin (paskhin@hotmail.co.uk)</owners>
@@ -21,7 +21,9 @@
     </summary>
     <releaseNotes>
       Release: netcoreapp3.0 Windows WPF Only; Signed Assembly;
-      Initialize MvvmBindingPack.AutoWireViewConrols.ServiceProvider static property with “Microsoft.Extensions.DependencyInjection” ServiceProvider.
+      Breaking changes(!):
+      Initialize DI/IoC:
+      MvvmBindingPack.AutoWireViewConrols.ServiceProvider static property with “Microsoft.Extensions.DependencyInjection” ServiceProvider.
     </releaseNotes>
     <copyright>Copyright 2013-2019 © Alexander Paskhin</copyright>
     <tags>Mvvm Xaml Wpf MvvmBinding Binding</tags>
