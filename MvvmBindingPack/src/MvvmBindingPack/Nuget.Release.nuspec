@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>MvvmBindingPack</id>
+    <version>2.5.0</version>
+    <authors>Alexander Paskhin (paskhin@hotmail.co.uk)</authors>
+    <owners>Alexander Paskhin (paskhin@hotmail.co.uk)</owners>
+    <license type="file">LICENSE.txt</license>
+    <projectUrl>https://github.com/Wallsmedia/MvvmBindingPack</projectUrl>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <description> WPF MVVM Binding Package.
+      Features: AutoWireVmDataContext, AutoWireViewConrols.
+      How to use: https://github.com/Wallsmedia/MvvmBindingPack/blob/master/MvvmBindingPack.2.5.pdf
+    </description>
+    <summary>
+      Revolutionary features:
+      AutoWireVmDataContext - setups "DataContext".
+      AutoWireViewConrols - wires and binds XAML elements to View Model.
+      See demo examples: https://github.com/Wallsmedia/MvvmBindingPack
+      See How to use: https://github.com/Wallsmedia/MvvmBindingPack/blob/master/MvvmBindingPack.2.5.pdf
+    </summary>
+    <releaseNotes>
+      Release: net462; net472, uap10.0 ;Signed Assembly;
+      Breaking changes(!):
+      Initialize DI/IoC:
+      MvvmBindingPack.AutoWireViewConrols.ServiceProvider static property with “Microsoft.Extensions.DependencyInjection” ServiceProvider.
+    </releaseNotes>
+    <copyright>Copyright 2013-2018 © Alexander Paskhin</copyright>
+    <tags>Mvvm Xaml Wpf Uwp MvvmBinding Binding</tags>
+  </metadata>
+  <files>
+    <file src="..\..\LICENSE.txt" target="" />
+    <file src="..\..\MvvmBindingPack.Bin\Release\uap10\Mvvm*.*" target="lib\uap10.0\" />
+    <file src="..\..\MvvmBindingPack.Bin\Release\net472\Mvvm*.*" target="lib\net472\" />
+    <file src="..\..\MvvmBindingPack.Bin\Release\net462\Mvvm*.*" target="lib\net462\" />
+    <file src="..\..\MvvmBindingPack.Bin\Release\net48\Mvvm*.*" target="lib\net48\" />
+  </files>
+</package>
