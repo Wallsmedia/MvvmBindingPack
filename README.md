@@ -14,7 +14,7 @@ Full details package using details in MvvmBindingPack.pdf
 **Dependences:**
  - None
 
-(!) Breaking changes of IoC/DI container initialization. Example:
+**(!) Breaking changes of IoC/DI container initialization. Example:**
 ``` C#
 private void Application_Startup(object sender, StartupEventArgs e)
 {
@@ -32,13 +32,13 @@ private void Application_Startup(object sender, StartupEventArgs e)
 **.Net Core transition version**
 - NuGet.org package http://www.nuget.org/packages/MvvmBindingPack/ 
 - NuGet.org package http://www.nuget.org/packages/MvvmBindingPack.Debug/ 
-- Supports: **net462, net472, uap10.0**
+- Supports: **net462, net472, net48, uap10.0**
 - Signed assembly;
 
 **Dependences:**
  - None
 
-(!) Breaking changes of IoC/DI container initialization. Example:
+**(!) Breaking changes of IoC/DI container initialization. Example:**
 ``` C#
 private void Application_Startup(object sender, StartupEventArgs e)
 {
