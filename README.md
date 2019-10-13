@@ -1,35 +1,49 @@
 ### Model - View - ViewModel binding package.
 
-Full details package using details in MvvmBindingPack.2.5.pdf
-**.Net Core transition support**
-Version: 2.5.0
-- NuGet.org package [http://www.nuget.org/packages/MvvmBindingPack.NetCore/] 
-- NuGet.org package [http://www.nuget.org/packages/MvvmBindingPack.NetCore.Debug/] 
-- Supports: **net462, net472, uap10.0**
+Full details package using details in MvvmBindingPack.pdf
+
+
+# Version: 2.5.0
+
+**.Net Core transition version**
+- NuGet.org package http://www.nuget.org/packages/MvvmBindingPack/ 
+- NuGet.org package http://www.nuget.org/packages/MvvmBindingPack.Debug/ 
+- Supports: **net462, net472, net48, uap10.0**
 - Signed assembly;
 
 **Dependences:**
  - None
 
+(!) Breaking changes of IoC/DI container initialization. Example:
+``` C#
+private void Application_Startup(object sender, StartupEventArgs e)
+{
 
+    ServiceCollection services = new ServiceCollection();
+    services.AddSingleton<AutoBindingViewModel>();
+    services.AddSingleton<IocBindingViewModel>();
+    AutoWireVmDataContext.ServiceProvider = services.BuildServiceProvider();
+}
+```
+
+# Version: 2.0.1
 
 **Microsoft.Practices.ServiceLocation Support**
-
-Version: 2.0.1
-- NuGet.org package [http://www.nuget.org/packages/MvvmBindingPack/] 
-- NuGet.org package [http://www.nuget.org/packages/MvvmBindingPack.Debug/] 
+- NuGet.org package http://www.nuget.org/packages/MvvmBindingPack/ 
+- NuGet.org package http://www.nuget.org/packages/MvvmBindingPack.Debug/ 
 - Supports: **net452, net462, net47, uap10.0**
 - Signed assembly;
 
 **Dependences:**
-
 CommonServiceLocator  (== 1.3.0) {namespace **Microsoft.Practices.ServiceLocation**}
+
+
+# Version: 2.0.1
 
 **Unity Container Support**
 
-Version: 2.0.1
-- NuGet.org package [http://www.nuget.org/packages/MvvmBindingPack.Unity/] 
-- NuGet.org package [http://www.nuget.org/packages/MvvmBindingPack.Unity.Debug/] 
+- NuGet.org package http://www.nuget.org/packages/MvvmBindingPack.Unity/ 
+- NuGet.org package http://www.nuget.org/packages/MvvmBindingPack.Unity.Debug/ 
 - Supports: **net452, net462, net47**
 - Signed assembly;
 
@@ -50,4 +64,3 @@ MvvmBindingPack is the robust MVVM framework platform for UX high-quality soluti
 MVVM pattern in UI development process looks like a principal of "Dependency Inversion" between  View and View Model.
 
  
-
