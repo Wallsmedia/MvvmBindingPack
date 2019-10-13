@@ -20,12 +20,12 @@
       See How to use: https://github.com/Wallsmedia/MvvmBindingPack/blob/master/MvvmBindingPack.2.5.pdf
     </summary>
     <releaseNotes>
-      Release: net462; net472, uap10.0 ;Signed Assembly;
+      Release: net462; net472,net48, uap10.0 ;Signed Assembly;
       Breaking changes(!):
       Initialize DI/IoC:
       MvvmBindingPack.AutoWireViewConrols.ServiceProvider static property with “Microsoft.Extensions.DependencyInjection” ServiceProvider.
     </releaseNotes>
-    <copyright>Copyright 2013-2018 © Alexander Paskhin</copyright>
+    <copyright>Copyright 2013-2019 © Alexander Paskhin</copyright>
     <tags>Mvvm Xaml Wpf Uwp MvvmBinding Binding</tags>
   </metadata>
   <files>
