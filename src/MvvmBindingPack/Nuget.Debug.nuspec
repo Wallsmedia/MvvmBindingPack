@@ -11,14 +11,14 @@
     <description>
       WPF MVVM Binding Package.
       Features: AutoWireVmDataContext, AutoWireViewConrols.
-      How to use: https://github.com/Wallsmedia/MvvmBindingPack/blob/master/MvvmBindingPack.pdf
+      How to use: https://github.com/Wallsmedia/MvvmBindingPack/wiki/MvvmBindingPack-v-3.0
     </description>
     <summary>
       Revolutionary features:
       AutoWireVmDataContext - setups "DataContext".
       AutoWireViewConrols - wires and binds XAML elements to View Model.
       See demo examples: https://github.com/Wallsmedia/MvvmBindingPack
-      See How to use: https://github.com/Wallsmedia/MvvmBindingPack/blob/master/MvvmBindingPack.pdf
+      See How to use: https://github.com/Wallsmedia/MvvmBindingPack/wiki/MvvmBindingPack-v-3.0
     </summary>
     <releaseNotes>
       Release: netcoreapp3.0 Windows WPF Only; Signed Assembly;

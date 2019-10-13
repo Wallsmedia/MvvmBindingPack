@@ -7,7 +7,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		.gitattributes = .gitattributes
 		.gitignore = .gitignore
-		doc\MvvmBindingPack.pdf = doc\MvvmBindingPack.pdf
 		NuGet.config = NuGet.config
 		README.md = README.md
 	EndProjectSection
@@ -19,6 +18,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "doc", "doc", "{51690BE9-A8FE-4A1C-B1CB-4A54132129F7}"
 	ProjectSection(SolutionItems) = preProject
 		doc\MvvmBindingPack.docx = doc\MvvmBindingPack.docx
+		MvvmBindingPack.md = MvvmBindingPack.md
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{F1638A70-28BF-4D81-A488-388CA6A3EFFD}"
@@ -27,7 +27,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnitTestMvvmBindingPack", "
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "sample", "sample", "{2C0E4631-AD70-4EA1-A493-6B545BF03EC0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfMvvmBindingPack.Demo", "sample\WpfMvvmBindingPack.Demo\WpfMvvmBindingPack.Demo.csproj", "{7C05BF49-B114-48F3-8D86-E54DB08F5004}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WpfMvvmBindingPack.Demo", "sample\WpfMvvmBindingPack.Demo\WpfMvvmBindingPack.Demo.csproj", "{7C05BF49-B114-48F3-8D86-E54DB08F5004}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
