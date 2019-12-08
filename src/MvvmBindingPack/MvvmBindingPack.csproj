@@ -9,10 +9,10 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <TargetFrameworks>netcoreapp3.0</TargetFrameworks>
-    <Version>3.0.0</Version>
-    <AssemblyVersion>3.0.0</AssemblyVersion>
-    <FileVersion>3.0.0</FileVersion>
+    <TargetFrameworks>netcoreapp3.1</TargetFrameworks>
+    <Version>3.1.0</Version>
+    <AssemblyVersion>3.1.0</AssemblyVersion>
+    <FileVersion>3.1.0</FileVersion>
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
@@ -36,7 +36,7 @@
       AutoWireVmDataContext - setups "DataContext".
       AutoWireViewConrols - wires and binds XAML elements to View Model.
       See demo examples: https://github.com/Wallsmedia/MvvmBindingPack
-      See How to use: https://github.com/Wallsmedia/MvvmBindingPack/blob/master/MvvmBindingPack.2.5.pdf
+      See How to use: https://github.com/Wallsmedia/MvvmBindingPack/blob/master/MvvmBindingPack.pdf
     </Description>
     <Authors>Alexander Paskhin (paskhin@hotmail.co.uk)</Authors>
     <PackageReleaseNotes>
