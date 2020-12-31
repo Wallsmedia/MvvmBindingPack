@@ -1,6 +1,6 @@
 ﻿// 
 //  Control Adorners and other extensions.
-//  Copyright © 2013-2019 Alexander Paskhin /paskhin@hotmail.co.uk/ All rights reserved.
+//  Copyright © 2013-2021 Alexander Paskhin /paskhin@hotmail.co.uk/ All rights reserved.
 // 
 
 using System;

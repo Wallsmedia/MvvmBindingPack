@@ -1,17 +1,20 @@
-<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
-
-  <Import Project="Sdk.props" Sdk="Microsoft.NET.Sdk.Web" />
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
-    <Version>3.1.0</Version>
-    <AssemblyVersion>3.1.0</AssemblyVersion>
-    <FileVersion>3.1.0</FileVersion>
+    <TargetFramework>net5.0-windows</TargetFramework>
+    <Version>5.0.0</Version>
+    <AssemblyVersion>5.0.0</AssemblyVersion>
+    <FileVersion>5.0.0</FileVersion>
     <UseWPF>true</UseWPF>
     <ApplicationIcon />
     <OutputType>WinExe</OutputType>
     <StartupObject />
   </PropertyGroup>
+
+  <ItemGroup>
+    <!--Include the DI references and other stuff-->
+    <FrameworkReference Include="Microsoft.AspNetCore.App" IsImplicitlyDefined="true" />
+  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\MvvmBindingPack\MvvmBindingPack.csproj" />
@@ -20,8 +23,5 @@
   <ItemGroup>
     <Folder Include="Properties\" />
   </ItemGroup>
-
-  <Import Project="Sdk.targets" Sdk="Microsoft.NET.Sdk.Web" />
-
 
 </Project>
