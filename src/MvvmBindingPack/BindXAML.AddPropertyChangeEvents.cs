@@ -119,6 +119,5 @@ namespace MvvmBindingPack
             }
         }
 
-       static event EventHandler _localTypeStub;
     }
 }

@@ -944,7 +944,6 @@ namespace MvvmBindingPack
         /// <param name="serviceType">Service type.</param>
         /// <param name="serviceKey">Service key.</param>
         /// <returns>The requested service instance or has an exception.</returns>
-        /// <exception cref="Microsoft.Practices.ServiceLocation.ActivationException"> If there is an error resolving the service instance.</exception>
         static public object ObtainIocValue(Type serviceType, String serviceKey = null)
         {
 

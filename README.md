@@ -13,23 +13,17 @@ cross platform .NET IDE**
 - NuGet.org package http://www.nuget.org/packages/MvvmBindingPack/ 
 - NuGet.org package http://www.nuget.org/packages/MvvmBindingPack.Debug/ 
 
-# Version: 3.1.0
+# Version: 5.0.0
+**.Net Core App  windows Desktop support**
+- Supports: **net5.0**
 
+# Version: 3.1.0
 **.Net Core App  windows Desktop support**
 - Supports: **netcoreapp3.1**
-- Signed assembly;
-**Dependences:**
- - None
-
 
 # Version: 3.0.0
-
 **.Net Core App  windows Desktop support**
 - Supports: **netcoreapp3.0**
-- Signed assembly;
-**Dependences:**
- - None
-  
 
 # Version: 2.5.0
 

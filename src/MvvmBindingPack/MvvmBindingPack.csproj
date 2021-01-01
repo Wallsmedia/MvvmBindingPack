@@ -31,6 +31,7 @@
     <PackageProjectUrl>https://github.com/Wallsmedia/MvvmBindingPack</PackageProjectUrl>
     <RepositoryUrl>https://github.com/Wallsmedia/MvvmBindingPack</RepositoryUrl>
     <PackageTags>Mvvm Xaml Wpf Uwp MvvmBinding Binding</PackageTags>
+    
     <Description>
       Revolutionary features:
       AutoWireVmDataContext - setups "DataContext".
@@ -39,10 +40,12 @@
       See How to use: https://github.com/Wallsmedia/MvvmBindingPack/blob/master/MvvmBindingPack.pdf
     </Description>
     <Authors>Alexander Paskhin (paskhin@hotmail.co.uk)</Authors>
+    
     <PackageReleaseNotes>
-      Release: netcoreapp3.0 Windows WPF Only; Signed Assembly;
+      Release: net5.0 Windows WPF Only; Signed Assembly;
       Used Initialization SetupServiceProvider()
     </PackageReleaseNotes>
+    
     <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
 
   </PropertyGroup>
