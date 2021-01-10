@@ -33,7 +33,9 @@ namespace WpfDemoApplication
 
             ServiceCollection services = new ServiceCollection();
             services.AddSingleton<AutoBindingViewModel>();
+            services.AddSingleton<AppendAutoBindingViewModel>();
             services.AddSingleton<IocBindingViewModel>();
+            services.AddSingleton<AppendIocBindingViewModel>();
             AutoWireVmDataContext.ServiceProvider = services.BuildServiceProvider();
 
         }

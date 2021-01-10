@@ -13,48 +13,13 @@ The package has the compatible functional features for **XAML**, **WPF**, **UWP 
 
 ## New in the latest release:
 
+### Version 5.0.0
+
+- Support only .Net 5.x.x
+
 ### Version 3.0.0
 
-- Move for support only .Net Core App 3.x.x
-
-### Version 2.5.0 - Breaking Changes
-
-- Adopted for using .Net Core light weight DI "Microsoft.Extensions.DependencyInjection" and removed dependency on ServiceLocation.
-
-**Example of initialization:**
-``` C#
-    ServiceCollection services = new ServiceCollection();
-    services.AddSingleton<AutoBindingViewModel>();
-    services.AddSingleton<IocBindingViewModel>();
-    AutoWireVmDataContext.ServiceProvider = services.BuildServiceProvider();
-```
-
-### Version 1.8.5
-
-- [**AppendViewModel**] - the mapping attribute that appends(extends) the binding list of the view model classes. It is supported with:
-  - [**BindEventHandler**]
-  - [**BindCommand**]
-
-### Version 1.8.2.3
-
-- Improved the way resolving IoC the View Model Type, Singleton with using with Unity.
-- The order of resolving via the **IoC,** hosted via adapter that implements "ServiceLocation" interface.
-
-### Version 1.8.1
-
-- [**AutoWireVmDataContext**] has been improved.
-- Added a feature that allowed to use interfaces as expected wiring types.
-- New property **IncludeInterfaces** - Include interfaces from the loaded assemblies in the list of candidate types. It allows to use via **ViewModelNameOverwrite** the interfaces that can be resolved via IoC container.
-- Improved the way resolving the View Model Type.
-- Order of resolving via the Resource locater:
-
-### Version 1.8.0.1
-
-- [**AppendViewModel**] - the new mapping attribute that appends(extends) the binding list candidates from an aggregated object. Value type, boxed value type and types started with "**System **" .. "** MicroSoft**" will be ignored. The aggregated object members are appended to a list. They have a low priority in the lookup. Recursive view model appending is not supported.
-- Added Windows 10 universal application support into the NuGet package.
-
-
-
+- Support only .Net Core App 3.x.x
 
 # MvvmBindingPack Binding Elements
 
@@ -82,7 +47,7 @@ The package has the compatible functional features for **XAML**, **WPF**, **UWP 
 
 # Setup DI Container 
 
-** Setup Unity DI container example for App.xaml.cs:**
+**Setup Unity DI container example for App.xaml.cs:**
 
 ``` c#
     publicpartialclassApp : Application
@@ -103,7 +68,7 @@ The package has the compatible functional features for **XAML**, **WPF**, **UWP 
     }
 ```
 
-** Setup DotNet Core DI container example for App.xaml.cs:**
+**Setup DotNet Core DI container example for App.xaml.cs:**
 ``` C#
 private void Application_Startup(object sender, StartupEventArgs e)
 {
@@ -113,6 +78,15 @@ private void Application_Startup(object sender, StartupEventArgs e)
     services.AddSingleton<IocBindingViewModel>();
     AutoWireVmDataContext.ServiceProvider = services.BuildServiceProvider();
 }
+```
+
+**Add DI reference in the csproj:**
+``` xml
+
+  <ItemGroup>
+    <!--Include the DI references and other stuff-->
+    <FrameworkReference Include="Microsoft.AspNetCore.App" IsImplicitlyDefined="true" />
+  </ItemGroup>
 ```
 
 
@@ -140,7 +114,7 @@ XAML MVVM extension enhancer, it automatically locates and sets(binds) the View 
 - **IncludeInterfaces** - If it is set to 'true', there will be included interfaces from the loaded assemblies into the list of type candidates. Default value is **true**. It allows to use the interfaces in ViewModelNameOverwrite and resolve them via **IoC** container.
 - **IocXName** - Default value is **false.** f it is set to 'true', the  IoC type will be attempted to be resolved with using type and **x:Name** and **x:Name** was defined.
 
-Attached property **BindXAML****. ****AutoWiredViewModel** will be set to the reference to the **View** Model**.
+Attached property **BindXAML**. ****AutoWiredViewModel** will be set to the reference to the **View** Model**.
 
 ## View to View Model mapping rules.
 

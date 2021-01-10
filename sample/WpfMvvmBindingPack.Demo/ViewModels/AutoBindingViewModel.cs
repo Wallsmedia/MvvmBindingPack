@@ -26,10 +26,15 @@ namespace WpfMvvmBindingPackDemo.ViewModels
         [ViewXNameAlias("TextOfTitle", "Content")]
         private const string _textOfTitle = "AutoBindingViewModel-Title binding Example from const field";
 
+
         [AppendViewModel]
-        AppendAutoBindingViewModel Apnd { get; } = new AppendAutoBindingViewModel();
+        AppendAutoBindingViewModel AppendAutoBindingViewModel { get; }
 
 
+        public AutoBindingViewModel(AppendAutoBindingViewModel appendAutoBindingViewModel)
+        {
+            AppendAutoBindingViewModel = appendAutoBindingViewModel;
+        }
 
         bool _state = true;
 
