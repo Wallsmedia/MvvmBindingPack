@@ -17,10 +17,6 @@ The package has the compatible functional features for **XAML**, **WPF**, **UWP 
 
 - Support only .Net 5.x.x
 
-### Version 3.0.0
-
-- Support only .Net Core App 3.x.x
-
 # MvvmBindingPack Binding Elements
 
 - [**AutoWireVmDataContext**] - XAML MVVM extension enhancer, it automatically locates and sets the Dependency property (default is " **DataContext**") to a **View Model** reference.
@@ -80,7 +76,7 @@ private void Application_Startup(object sender, StartupEventArgs e)
 }
 ```
 
-**Add DI reference in the csproj:**
+**Add DotNet Core DI reference in the WPF csproj:**
 ``` xml
 
   <ItemGroup>
@@ -92,29 +88,102 @@ private void Application_Startup(object sender, StartupEventArgs e)
 
 # **AutoWireVmDataContext**
 
-XAML MVVM extension enhancer, it automatically locates and sets(binds) the View dependency property (default is " **DataContext**") to a **View** Model** reference.
+XAML MVVM extension enhancer, it automatically locates and sets(binds) the 
+View dependency property (default is " **DataContext**") to a **View  Model** reference.
+
+**Example:**
+``` xml
+
+   <mvvm:BindXAML.ProcessMvvmExtensions>
+        <mvvm:AutoWireVmDataContext />
+        <mvvm:AutoWireViewConrols />
+    </mvvm:BindXAML.ProcessMvvmExtensions>
+
+```
 
 **Properties:**
-- **ViewModelNamespaceOverwrite** - Overwrites the x:Classnamespace; it will be used for exact defining of the view model expected type namespace. Original, the x:Class namespace will be ignored.
-- **ViewModelNameOverwrite** - Overwrites the x:Classname; it will be used for exact type name defining  of view model expected type name candidates. Original, the x:Class name will be ignored.
-- **TargetPropertyName** - The target dependency property name. Default value is "DataContext". It will be set to a resolved reference to a **View** Model**.
-- **UseTheFirstOne** - If it is set to 'true' (default), it limits the types of x:Class and  **x:Name**  to the first found control in the logical tree.
-- **ResolveIocContainer** - If it is set to 'true', the IoC container will be used to resolve a **View** Model** type or instance. It has the first priority. Default value is true.
-- **ResolveResources** - If it is set to 'true', the static Resources will be used to resolve a **View** Model** instance. It has the second priority.  Default value is true.
-- **ResolveCreateInstance** - If it is set to 'true', the static CLR Activator will be used to create a **View** Model instance. It has the third priority.  Default value is true.
-- **UseMaxNameSubMatch** -   Defines the additional sub matching ("start with") rule when a  View Model expected name  compared to a View Model candidate name. If it is set to 'true', the View Model expected name is considered as a match to a name if starts with 'View Model expected name'. 
-  - **Example**: The **View Model** expected name "FrameCapturePrice" will match to the **View** Model** candidate name "FrameCapturePrice\_Var1".
-- **ViewsNamespaceSuffixSection** -  Defines the namespace section suffix (default " **Views**"). It will be replaced (if it is exist) on the "ViewModelsNamespaceSuffixSection" property value. It is ignored when the "ViewModelNamespaceOverwrite" is set.
-  - **Example**:  the namespace 'Trade.GUI.Application.Views' will be transfered into  'Trade.GUI.Application.ViewModels'; the namespace 'Trade.GUI.Application' will be transferred into  'Trade.GUI.Application.ViewModels'.
-- **ViewModelsNamespaceSuffixSection** - Defines the namespace section suffix  (default " **ViewModels**"). It will be used as a replacement. 
-  - **Example**: the namespace 'Trade.GUI.Application.Views' will be transferred into  'Trade.GUI.Application.ViewModels'; the namespace 'Trade.GUI.Application' will be transferred into  'Trade.GUI.Application.ViewModels'. It is ignored when the "ViewModelNamespaceOverwrite" is set.
+- **ViewModelNamespaceOverwrite** - Overwrites the **x:Classnamespace**; it will be used for exact defining of the view model expected type namespace. Original, the **x:Class** namespace will be ignored.
+
+- **ViewModelNameOverwrite** - Overwrites the **x:Classname**; it will be used for exact type name defining  of view model expected type name candidates. Original, the **x:Class** name will be ignored.
+
+- **TargetPropertyName** - The target dependency property name. Default value is **"DataContext"**.
+   It will be set to a resolved reference to a **View** Model**.
+
+- **UseTheFirstOne** - If it is set to **'true' (default)**, it limits the types of **x:Class** 
+  and  **x:Name**  to the first found control in the logical tree.
+
+- **ResolveIocContainer** - If it is set to **'true'**, the IoC container will be used to resolve a **View** Model** type or instance. It has the first priority. **Default value is true**.
+
+- **ResolveResources** - If it is set to **'true'**, the static Resources will be used to resolve a **View** Model** instance. It has the second priority.  **Default value is true**.
+
+- **ResolveCreateInstance** - If it is set to **'true'**, the static CLR Activator will be used to create a **View** Model instance. It has the third priority.  **Default value is true**.
+
+- **UseMaxNameSubMatch** -   Defines the additional sub matching ("start with") rule when a  View Model
+   expected name  compared to a View Model candidate name. If it is set to **'true'**, the **View Model candidate** name is considered as a match to a name if starts with '**View Model expected name**'. 
+  
+  **Example**:
+
+``` xml
+
+  <mvvm:BindXAML.ProcessMvvmExtensions>
+    <mvvm:AutoWireVmDataContext  UseMaxNameSubMatch="True"/>
+    <mvvm:AutoWireViewConrols />
+  </mvvm:BindXAML.ProcessMvvmExtensions>
+
+```
+  
+  The **View Model expected** name **"FrameCapturePrice"** will match 
+  to the **View Model candidate** name **"FrameCapturePrice\_Var1"**.
+
+- **ViewsNamespaceSuffixSection** -  Defines the namespace section suffix (default " **Views**"). 
+  It will be replaced (if it is exist) on the **ViewModelsNamespaceSuffixSection** property value. 
+  It is ignored when the **ViewModelNamespaceOverwrite** is set.
+
+- **ViewModelsNamespaceSuffixSection** - Defines the namespace section suffix  (default " **ViewModels**"). 
+  It will be used as a replacement for **ViewsNamespaceSuffixSection**. 
+  It is ignored when the **ViewModelNamespaceOverwrite** is set.
+
+ 
+  **Example**: 
+  
+  the namespace **'Trade.GUI.Application.Views'** ===>  **'Trade.GUI.Application.ViewModels'**;  
+  the namespace **'Trade.GUI.Application'** ===>  **'Trade.GUI.Application.ViewModels'**.
+
+  **Example**: 
+``` xml
+
+  <mvvm:BindXAML.ProcessMvvmExtensions>
+    <mvvm:AutoWireVmDataContext ViewsNamespaceSuffixSection="Pages"
+                                ViewModelsNamespaceSuffixSection="PageModels" />
+    <mvvm:AutoWireViewConrols />
+  </mvvm:BindXAML.ProcessMvvmExtensions>
+
+```
+
+**Example**: 
+```     
+    the namespace **'Trade.GUI.Application.Pages'** ===>  **'Trade.GUI.Application.PageModels'**;  
+    the namespace **'Trade.GUI.Application'**       ===>  **'Trade.GUI.Application.PageModels'**.
+```
+
 - **OldViewNamePart** -  Defines the part of the class type name (default " **View**"). If it is exist, it will be replaced on the value of the property "NewViewModelNamePart". It is ignored when the "ViewModelNameOverwrite" is set. 
-  - **Example**: the name "MainPageView" will be transferred into  "MainPageViewModel; the name "MainPageViewFrame\_1" will be transferred into  "MainPageViewModelFrame\_1"; the name "MainPage" will be the same "MainPage".
+
 - **NewViewModelNamePart** - Defines the part of the class type name (default " **ViewModel**").It is ignored when the "ViewModelNameOverwrite" is set.
+
+  
+  **Example**:
+```  
+  the name "MainPageView"        ===>  "MainPageViewModel;
+  the name "MainPageViewFrame_1" ===>  "MainPageViewModelFrame_1";
+  the name "MainPage"            ===>  "MainPage".
+```
 - **IncludeInterfaces** - If it is set to 'true', there will be included interfaces from the loaded assemblies into the list of type candidates. Default value is **true**. It allows to use the interfaces in ViewModelNameOverwrite and resolve them via **IoC** container.
-- **IocXName** - Default value is **false.** f it is set to 'true', the  IoC type will be attempted to be resolved with using type and **x:Name** and **x:Name** was defined.
+
+- **IocXName** - Default value is **false.** f it is set to 'true', 
+  the  IoC type will be attempted to be resolved with using type of **x:Name** value.
 
 Attached property **BindXAML**. ****AutoWiredViewModel** will be set to the reference to the **View** Model**.
+
 
 ## View to View Model mapping rules.
 
@@ -346,6 +415,16 @@ namespace WpfDemoAutoWire.ViewModels
 # **AutoWireViewConrols**
 
 XAML MVVM extension enhancer, it automatically locates and binds/wires the View controls  to View Model class members.
+
+**Example:**
+``` xml
+
+   <mvvm:BindXAML.ProcessMvvmExtensions>
+        <mvvm:AutoWireVmDataContext />
+        <mvvm:AutoWireViewConrols />
+    </mvvm:BindXAML.ProcessMvvmExtensions>
+
+```
 
 **Properties:**
 
