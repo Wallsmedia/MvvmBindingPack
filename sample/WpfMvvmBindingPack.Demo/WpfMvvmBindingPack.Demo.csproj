@@ -11,8 +11,7 @@
     <StartupObject />
   </PropertyGroup>
 
-  <ItemGroup>
-    <!--Include the DI references and other stuff-->
+  <ItemGroup Condition="'$(DisableImplicitFrameworkReferences)' != 'true' And '$(TargetFrameworkIdentifier)' == '.NETCoreApp' And '$(_TargetFrameworkVersionWithoutV)' >= '3.0'">
     <FrameworkReference Include="Microsoft.AspNetCore.App" IsImplicitlyDefined="true" />
   </ItemGroup>
 
