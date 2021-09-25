@@ -26,9 +26,9 @@ namespace WpfMvvmBindingPackDemo.ViewModels
         public string TextOfTitle { get; } = "IocBindingViewModel-Title binding Example";
 
         [AppendViewModel]
-        AppendIocBindingViewModel AppendIocBindingViewModel { get; }
+        AppendAutoBindingViewModel AppendIocBindingViewModel { get; }
 
-        public IocBindingViewModel(AppendIocBindingViewModel appendIocBindingViewModel)
+        public IocBindingViewModel(AppendAutoBindingViewModel appendIocBindingViewModel)
         {
             AppendIocBindingViewModel = appendIocBindingViewModel;
         }
