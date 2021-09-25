@@ -10,7 +10,13 @@
              d:DesignHeight="540" d:DesignWidth="720">
     <Grid>
         <StackPanel>
-            <Label  x:Name="TextOfTitle" Content="{Binding TextOfTitle}"/>
+            <Label Content="{Binding TextOfTitle}"/>
+            <TextBlock>
+               <Underline> Bind to ViewModel using: </Underline>
+                   <LineBreak/>
+                   <LineBreak/>
+                DataContext="{mvvm:IocBinding ServiceType=IocBindingViewModel}"<LineBreak/>
+            </TextBlock>
             <DockPanel>
                 <Grid>
                     <Grid.RowDefinitions>
@@ -45,6 +51,6 @@
                 </Grid>
             </DockPanel>
         </StackPanel>
-        
+
     </Grid>
 </UserControl>

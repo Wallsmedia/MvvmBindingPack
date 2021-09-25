@@ -70,38 +70,6 @@ private void Application_Startup(object sender, StartupEventArgs e)
     AutoWireVmDataContext.ServiceProvider = services.BuildServiceProvider();
 }
 ```
-
-# Version: 2.0.1
-
-**Microsoft.Practices.ServiceLocation Support**
-- NuGet.org package http://www.nuget.org/packages/MvvmBindingPack/ 
-- NuGet.org package http://www.nuget.org/packages/MvvmBindingPack.Debug/ 
-- Supports: **net452, net462, net47, uap10.0**
-- Signed assembly;
-
-**Dependences:**
-CommonServiceLocator  (== 1.3.0) {namespace **Microsoft.Practices.ServiceLocation**}
-
-
-# Version: 2.0.1
-
-**Unity Container Support**
-
-- NuGet.org package http://www.nuget.org/packages/MvvmBindingPack.Unity/ 
-- NuGet.org package http://www.nuget.org/packages/MvvmBindingPack.Unity.Debug/ 
-- Supports: **net452, net462, net47**
-- Signed assembly;
-
-**Dependences:**
- CommonServiceLocator (>= 2.0.2) {namespace **CommonServiceLocator**}
- 
-**Recommended Unity Nuget Dependences:**
-https://www.nuget.org/packages/Unity.Container    (>= 5.8.6)
-https://www.nuget.org/packages/Unity.ServiceLocation (>= 2.1.1)
-
-
-The decision to develop this binding package had been made in response of minimizing a the cost of  the quality UI development along with using Agile development style. It is a big advantage to have a solution where you are able to refactor a dozen of Views and View Models, in a couple hours, by a customer request.
-
  
 #### Welcome to MvvmBindingPack
 
