@@ -1,6 +1,6 @@
 ﻿// 
 //  MVVM-WPF-NetCore Markup Binding Extensions.
-//  Copyright © 2013-2014 Alexander Paskhin /paskhin@hotmail.co.uk/ All rights reserved.
+//  Copyright © 2013-2021 Alexander Paskhin /paskhin@hotmail.co.uk/ All rights reserved.
 // 
 //
 // Licensed under the Apache License, Version 2.0 (the "License"); you

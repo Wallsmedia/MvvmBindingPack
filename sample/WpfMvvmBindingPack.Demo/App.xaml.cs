@@ -1,6 +1,6 @@
 ﻿// 
 //  MVVM-WPF-NetCore Markup, Binding and other Extensions.
-//  Copyright © 2013-2017 Alexander Paskhin /paskhin@hotmail.co.uk/ All rights reserved.
+//  Copyright © 2013-2021 Alexander Paskhin /paskhin@hotmail.co.uk/ All rights reserved.
 // 
 //
 // Licensed under the Apache License, Version 2.0 (the "License"); you
@@ -35,7 +35,7 @@ namespace WpfDemoApplication
             services.AddSingleton<AutoBindingViewModel>();
             services.AddSingleton<AppendAutoBindingViewModel>();
             services.AddSingleton<IocBindingViewModel>();
-            services.AddSingleton<AppendIocBindingViewModel>();
+            services.AddSingleton<AppendCommonViewModel>();
             AutoWireVmDataContext.ServiceProvider = services.BuildServiceProvider();
 
         }
