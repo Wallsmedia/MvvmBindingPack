@@ -36,7 +36,7 @@ namespace MvvmBindingPack
     /// <summary>
     /// The class supports an initialization/injection pattern. It's based on attached dependency property behaviors.
     /// XAML attached property, fake collection, is used for processing extensions: BindEventHandler, BindEventHandlerIoc, BindEventHandlerResource.
-   ///  It binds a dependency property change event handler to the event handler in the View Model.
+    ///  It binds a dependency property change event handler to the event handler in the View Model.
     /// </summary>
     public static partial class BindXAML
     {
@@ -85,7 +85,7 @@ namespace MvvmBindingPack
                 return;
             }
 
-            BindEventHandlerBase bindItem = item as BindEventHandlerBase;
+            BindEventHandler bindItem = item as BindEventHandler;
             if (bindItem == null)
             {
                 throw new ArgumentException("AddPropertyChangeEvents accepts only BindEventHandlers Type instances ");
@@ -108,15 +108,15 @@ namespace MvvmBindingPack
                 throw new ArgumentException("AddPropertyChangeEvents cannot obtain proper Descriptor of TargetPropertyName = " + bindItem.TargetPropertyName);
             }
 
-            var evInfo = BindHelper.GetEventInfo(typeof(BindXAML), "_localTypeStub");
+            var methodInfo = BindHelper.GetMethodInfo(bindItem.Source.GetType(), bindItem.MethodName);
 
-            ProvideValueTarget provideValueTarget = new ProvideValueTarget(dependencyObject, evInfo);
-            ServiceProvider serviceProvider = new ServiceProvider(provideValueTarget);
-            var result = bindItem.ProvideValue(serviceProvider);
+            Type desiredDelegateType = typeof(EventHandler);
+
+            var result = methodInfo.CreateDelegate(desiredDelegateType, bindItem.Source);
 
             if (result != null)
             {
-                //dependencyPropertyDescriptor.AddValueChanged(dependencyObject, (EventHandler)result);
+                dependencyPropertyDescriptor.AddValueChanged(dependencyObject, (EventHandler)result);
             }
         }
 
