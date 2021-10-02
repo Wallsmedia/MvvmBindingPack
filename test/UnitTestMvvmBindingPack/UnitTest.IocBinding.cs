@@ -12,7 +12,7 @@
 // implied. See the License for the specific language governing permissions
 // and limitations under the License.
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using Microsoft.Extensions.DependencyInjection;
 using MvvmBindingPack;
 
@@ -21,7 +21,6 @@ namespace UnitTestMvvmBindingPack
     /// <summary>
     /// Unit test for IocBinding class 
     /// </summary>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1001:TypesThatOwnDisposableFieldsShouldBeDisposable"), TestClass]
     public class UnitTestIocBinding
     {
 
@@ -32,32 +31,25 @@ namespace UnitTestMvvmBindingPack
             AutoWireVmDataContext.ServiceProvider = services.BuildServiceProvider();
         }
 
-        /// <summary>
-        ///Gets or sets the test context which provides
-        ///information about and functionality for the current test run.
-        ///</summary>
-        public TestContext TestContext { get; set; }
 
-
-
-        [TestMethod]
+        [Fact]
         public void TestMethodIocBindingConstructing1()
         {
             var iocBinding = new IocBinding();
-            Assert.AreEqual(iocBinding.ServiceKey, null, "IocBinding - expected value null for ServiceKey");
-            Assert.AreEqual(iocBinding.ServiceType, null, "IocBinding - expected value null for ServiceType");
+            Assert.Equal(iocBinding.ServiceKey, null);
+            Assert.Equal(iocBinding.ServiceType, null);
         }
 
-        [TestMethod]
+        [Fact]
         public void TestMethodIocBindingConstructing2()
         {
             var iocBinding = new IocBinding(typeof(TestTypeIocClass));
-            Assert.AreEqual(iocBinding.ServiceKey, null, "IocBinding - expected value null for ServiceKey");
-            Assert.AreEqual(iocBinding.ServiceType, typeof(TestTypeIocClass), "IocBinding - expected value TestTypeIocClass for ServiceType");
+            Assert.Equal(iocBinding.ServiceKey, null);
+            Assert.Equal(iocBinding.ServiceType, typeof(TestTypeIocClass));
         }
 
 
-        [TestMethod]
+        [Fact]
         public void TestMethodIocBindingException()
         {
             var iocBinding = new IocBinding();

@@ -113,9 +113,10 @@ namespace MvvmBindingPack
             ProvideValueTarget provideValueTarget = new ProvideValueTarget(dependencyObject, evInfo);
             ServiceProvider serviceProvider = new ServiceProvider(provideValueTarget);
             var result = bindItem.ProvideValue(serviceProvider);
+
             if (result != null)
             {
-                dependencyPropertyDescriptor.AddValueChanged(dependencyObject, (EventHandler)result);
+                //dependencyPropertyDescriptor.AddValueChanged(dependencyObject, (EventHandler)result);
             }
         }
 

@@ -12,7 +12,7 @@
 // and limitations under the License.
 
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace UnitTest
 {
@@ -23,7 +23,7 @@ namespace UnitTest
             Exception exp = RunAction(action);
             if ((exp == null) || (exp.GetType() != expectedException))
             {
-                Assert.Fail(message);
+                Assert.False(true,message);
             }
         }
 

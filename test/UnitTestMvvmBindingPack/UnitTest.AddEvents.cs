@@ -1,14 +1,13 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Xunit;
 using System.Windows;
 using MvvmBindingPack;
 
 
 namespace UnitTestMvvmBindingPack
 {
-    [TestClass]
     public class UnitTestAddEvents
     {
-        [TestMethod]
+        [Fact]
         public void AddEvents()
         {
             UIElement dependencyObject = new UIElement();
@@ -23,7 +22,7 @@ namespace UnitTestMvvmBindingPack
             RoutedEventArgs newEventArgs = new RoutedEventArgs(UIElement.GotFocusEvent);
             dependencyObject.RaiseEvent(newEventArgs);
 
-            Assert.IsTrue(viewModel.EventCalled, "Dependency property lister  event handler was not set");
+            Assert.True(viewModel.EventCalled);
         }
 
         class _TestBindEventHandler

@@ -12,7 +12,7 @@
 // implied. See the License for the specific language governing permissions
 // and limitations under the License.
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using MvvmBindingPack;
 using System.Windows.Input;
 using Microsoft.Extensions.DependencyInjection;
@@ -22,7 +22,6 @@ namespace UnitTestMvvmBindingPack
     /// <summary>
     /// Summary description for BindCommandIoc
     /// </summary>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1001:TypesThatOwnDisposableFieldsShouldBeDisposable"), TestClass]
     public class UnitTestBindCommandIoc
     {
 
@@ -37,37 +36,14 @@ namespace UnitTestMvvmBindingPack
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
         ///</summary>
-        public TestContext TestContext { get; set; }
-
-        #region Additional test attributes
-        //
-        // You can use the following additional attributes as you write your tests:
-        //
-        // Use ClassInitialize to run code before running the first test in the class
-        // [ClassInitialize()]
-        // public static void MyClassInitialize(TestContext testContext) { }
-        //
-        // Use ClassCleanup to run code after all tests in a class have run
-        // [ClassCleanup()]
-        // public static void MyClassCleanup() { }
-        //
-        // Use TestInitialize to run code before running each test 
-        // [TestInitialize()]
-        // public void MyTestInitialize() { }
-        //
-        // Use TestCleanup to run code after each test has run
-        // [TestCleanup()]
-        // public void MyTestCleanup() { }
-        //
-        #endregion
 
 
-        [TestMethod]
+        [Fact]
         public void BindEventHandlerConstructor()
         {
             Type serviceType = typeof(String);
             var bindCommand = new BindCommandIoc(serviceType);
-            Assert.AreEqual(serviceType, bindCommand.ServiceType, "BindCommandIoc parameterized constructor fail");
+            Assert.Equal(serviceType, bindCommand.ServiceType);
         }
 
         int _count;
@@ -76,46 +52,46 @@ namespace UnitTestMvvmBindingPack
             _count++;
         }
 
-        [TestMethod]
+        [Fact]
         public void BindCommandIocByType()
         {
 
             var stubServiceProvider = MockServiceProvider.Instance;
-            
+
             // just use one of the test cases for BindCommandBase
             var bindCommand = new BindCommandIoc
-                {
-                    ServiceType = typeof(_TestBindCommandIoc),
-                    ExecuteMethodName = "ExecuteMethod",
-                    CanExecuteMethodName = "CanExecuteMethod",
-                    EventToInvokeCanExecuteChanged = "EventHandlerNotifyCanExecuteChanged"
-                };
+            {
+                ServiceType = typeof(_TestBindCommandIoc),
+                ExecuteMethodName = "ExecuteMethod",
+                CanExecuteMethodName = "CanExecuteMethod",
+                EventToInvokeCanExecuteChanged = "EventHandlerNotifyCanExecuteChanged"
+            };
 
             var bindResolve = bindCommand.ProvideValue(stubServiceProvider);
             var fakeTargetICommand = (ICommand)bindResolve;
             _TestBindCommandIoc _viewModel = _testList[_testList.Count - 1];
 
             if (fakeTargetICommand != null) fakeTargetICommand.Execute(null);
-            Assert.AreEqual(_viewModel.ExecuteCalled, true, "Execute - bind was not resolved");
+            Assert.Equal(_viewModel.ExecuteCalled, true);
 
             if (fakeTargetICommand != null) fakeTargetICommand.CanExecute(null);
-            Assert.AreEqual(_viewModel.CanExecuteCalled, true, "CanExecute - bind was not resolved");
+            Assert.Equal(_viewModel.CanExecuteCalled, true);
 
             if (fakeTargetICommand != null) fakeTargetICommand.CanExecuteChanged += EventHandlerCanExecuteChanged;
             _count = 0;
             // Execute notification
             _viewModel.ExecuteEventNotifyCanExecuteChanged();
-            Assert.AreEqual(_count, 1, "CanExecuteChanged - bind was not resolved");
+            Assert.Equal(_count, 1);
 
             // Execute notification
             if (_viewModel.DelegateNotifyCanExecuteChanged != null)
             {
                 _viewModel.DelegateNotifyCanExecuteChanged();
-                Assert.AreEqual(_count, 2, "CanExecuteChanged - bind was not resolved");
+                Assert.Equal(_count, 2);
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void BindCommandIocByTypeAndServiceKey()
         {
 
@@ -137,37 +113,37 @@ namespace UnitTestMvvmBindingPack
             _TestBindCommandIoc _viewModel = _testList[_testList.Count - 1];
 
             if (fakeTargetICommand != null) fakeTargetICommand.Execute(null);
-            Assert.AreEqual(_viewModel.ExecuteCalled, true, "Execute - bind was not resolved");
+            Assert.Equal(_viewModel.ExecuteCalled, true);
 
             if (fakeTargetICommand != null) fakeTargetICommand.CanExecute(null);
-            Assert.AreEqual(_viewModel.CanExecuteCalled, true, "CanExecute - bind was not resolved");
+            Assert.Equal(_viewModel.CanExecuteCalled, true);
 
             if (fakeTargetICommand != null) fakeTargetICommand.CanExecuteChanged += EventHandlerCanExecuteChanged;
             _count = 0;
             // Execute notification
             _viewModel.ExecuteEventNotifyCanExecuteChanged();
-            Assert.AreEqual(_count, 1, "CanExecuteChanged - bind was not resolved");
+            Assert.Equal(_count, 1);
 
             // Execute notification
             if (_viewModel.DelegateNotifyCanExecuteChanged != null)
             {
                 _viewModel.DelegateNotifyCanExecuteChanged();
-                Assert.AreEqual(_count, 2, "CanExecuteChanged - bind was not resolved");
+                Assert.Equal(_count, 2);
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void BindCommandIocExceptions()
         {
 
             var stubServiceProvider = MockServiceProvider.Instance;
 
             var bindCommand = new BindCommandIoc
-                {
-                    ExecuteMethodName = "_ExecuteMethod",
-                    CanExecuteMethodName = "CanExecuteMethod",
-                    EventToInvokeCanExecuteChanged = "EventHandlerNotifyCanExecuteChanged",
-                };
+            {
+                ExecuteMethodName = "_ExecuteMethod",
+                CanExecuteMethodName = "CanExecuteMethod",
+                EventToInvokeCanExecuteChanged = "EventHandlerNotifyCanExecuteChanged",
+            };
 
             UnitTestInternal.AssertThrows(typeof(ArgumentNullException), () => bindCommand.ProvideValue(stubServiceProvider),
                 "ProvideValueExceptions - expected exception - ArgumentNullException");

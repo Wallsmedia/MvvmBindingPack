@@ -1,4 +1,4 @@
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using System.Windows;
 using MvvmBindingPack;
 using System.Windows.Controls;
@@ -12,11 +12,10 @@ namespace UnitTestMvvmBindingPack
     /// <summary>
     /// Test cases where the View Model defines what to resolve in the View
     /// </summary>
-    [TestClass]
     public class UnitTestsAutoWireViewConrolsTheViewModelFirst
     {
 
-        [TestMethod]
+        [Fact]
         public void AutoWireControlsTestButtonEvents()
         {
             ExecuteInStaMode.Invoke(() =>
@@ -32,23 +31,23 @@ namespace UnitTestMvvmBindingPack
                 // check wiring results of wiring - EVENTS
                 //
                 dependencyObject.RaiseEvent(new RoutedEventArgs(UIElement.GotFocusEvent));
-                Assert.IsTrue(viewmodel.TestButtonGotFocusCalled, "TestButton_GotFocus in View  was not wired");
+                Assert.True(viewmodel.TestButtonGotFocusCalled, "TestButton_GotFocus in View  was not wired");
 
                 dependencyObject.RaiseEvent(new RoutedEventArgs(UIElement.LostFocusEvent));
-                Assert.IsTrue(viewmodel.TestButtonLostFocusCalled, "TestButton_GotFocus  in View was not wired");
+                Assert.True(viewmodel.TestButtonLostFocusCalled, "TestButton_GotFocus  in View was not wired");
 
-                Assert.IsNotNull(viewmodel._ButtonXName_TestButton, "TestButton control was not wired to View Model from View");
+                Assert.NotNull(viewmodel._ButtonXName_TestButton);
 
-                Assert.IsNotNull(viewmodel._Button_GotFocus, "TestButton GotFocus event was not wired to View Model from View");
-                Assert.IsTrue(viewmodel._Button_GotFocus.IsEvent, "TestButton GotFocus event was not wired to View Model from View");
+                Assert.NotNull(viewmodel._Button_GotFocus);
+                Assert.True(viewmodel._Button_GotFocus.IsEvent);
 
-                Assert.IsNotNull(viewmodel._Button_LostFocus, "TestButton GotFocus event was not wired to View Model from View");
-                Assert.IsTrue(viewmodel._Button_LostFocus.IsEvent, "TestButton GotFocus event was not wired to View Model from View");
+                Assert.NotNull(viewmodel._Button_LostFocus);
+                Assert.True(viewmodel._Button_LostFocus.IsEvent, "TestButton GotFocus event was not wired to View Model from View");
 
             });
         }
 
-        [TestMethod]
+        [Fact]
         public void AutoWireControlsTestButtonEventsTag()
         {
             ExecuteInStaMode.Invoke(() =>
@@ -64,23 +63,23 @@ namespace UnitTestMvvmBindingPack
                 // check wiring results of wiring - EVENTS
                 //
                 dependencyObject.RaiseEvent(new RoutedEventArgs(UIElement.GotFocusEvent));
-                Assert.IsTrue(viewmodel.TestButtonGotFocusCalled, "TestButton_GotFocus in View  was not wired");
+                Assert.True(viewmodel.TestButtonGotFocusCalled, "TestButton_GotFocus in View  was not wired");
 
                 dependencyObject.RaiseEvent(new RoutedEventArgs(UIElement.LostFocusEvent));
-                Assert.IsTrue(viewmodel.TestButtonLostFocusCalled, "TestButton_GotFocus  in View was not wired");
+                Assert.True(viewmodel.TestButtonLostFocusCalled, "TestButton_GotFocus  in View was not wired");
 
-                Assert.IsNotNull(viewmodel._ButtonXName_TestButton, "TestButton control was not wired to View Model from View");
+                Assert.NotNull(viewmodel._ButtonXName_TestButton);
 
-                Assert.IsNotNull(viewmodel._Button_GotFocus, "TestButton GotFocus event was not wired to View Model from View");
-                Assert.IsTrue(viewmodel._Button_GotFocus.IsEvent, "TestButton GotFocus event was not wired to View Model from View");
+                Assert.NotNull(viewmodel._Button_GotFocus);
+                Assert.True(viewmodel._Button_GotFocus.IsEvent);
 
-                Assert.IsNotNull(viewmodel._Button_LostFocus, "TestButton GotFocus event was not wired to View Model from View");
-                Assert.IsTrue(viewmodel._Button_LostFocus.IsEvent, "TestButton GotFocus event was not wired to View Model from View");
+                Assert.NotNull(viewmodel._Button_LostFocus);
+                Assert.True(viewmodel._Button_LostFocus.IsEvent, "TestButton GotFocus event was not wired to View Model from View");
             });
 
         }
 
-        [TestMethod]
+        [Fact]
         public void AutoWireControlsTestButtonEventsSource()
         {
             ExecuteInStaMode.Invoke(() =>
@@ -95,23 +94,23 @@ namespace UnitTestMvvmBindingPack
                 // check wiring results of wiring - EVENTS
                 //
                 dependencyObject.RaiseEvent(new RoutedEventArgs(UIElement.GotFocusEvent));
-                Assert.IsTrue(viewmodel.TestButtonGotFocusCalled, "TestButton_GotFocus in View  was not wired");
+                Assert.True(viewmodel.TestButtonGotFocusCalled, "TestButton_GotFocus in View  was not wired");
 
                 dependencyObject.RaiseEvent(new RoutedEventArgs(UIElement.LostFocusEvent));
-                Assert.IsTrue(viewmodel.TestButtonLostFocusCalled, "TestButton_GotFocus  in View was not wired");
+                Assert.True(viewmodel.TestButtonLostFocusCalled, "TestButton_GotFocus  in View was not wired");
 
-                Assert.IsNotNull(viewmodel._ButtonXName_TestButton, "TestButton control was not wired to View Model from View");
+                Assert.NotNull(viewmodel._ButtonXName_TestButton);
 
-                Assert.IsNotNull(viewmodel._Button_GotFocus, "TestButton GotFocus event was not wired to View Model from View");
-                Assert.IsTrue(viewmodel._Button_GotFocus.IsEvent, "TestButton GotFocus event was not wired to View Model from View");
+                Assert.NotNull(viewmodel._Button_GotFocus);
+                Assert.True(viewmodel._Button_GotFocus.IsEvent, "TestButton GotFocus event was not wired to View Model from View");
 
-                Assert.IsNotNull(viewmodel._Button_LostFocus, "TestButton GotFocus event was not wired to View Model from View");
-                Assert.IsTrue(viewmodel._Button_LostFocus.IsEvent, "TestButton GotFocus event was not wired to View Model from View");
+                Assert.NotNull(viewmodel._Button_LostFocus);
+                Assert.True(viewmodel._Button_LostFocus.IsEvent, "TestButton GotFocus event was not wired to View Model from View");
             });
 
         }
 
-        [TestMethod]
+        [Fact]
         public void AutoWireControlsTestButtonProperties()
         {
             ExecuteInStaMode.Invoke(() =>
@@ -125,33 +124,33 @@ namespace UnitTestMvvmBindingPack
                 //
                 // check wiring results of wiring - PROPERTIES
                 //
-                Assert.AreEqual("Content", dependencyObject.Content, "TestButton.Content was not wired to View Model from View");
+                Assert.Equal("Content", dependencyObject.Content);
 
-                Assert.AreEqual("Tag", dependencyObject.Tag, "TestButton.Tag was not wired to View Model from View");
+                Assert.Equal("Tag", dependencyObject.Tag);
 
                 dependencyObject.Tag = "TagTag";
-                Assert.AreEqual("TagTag", viewmodel._propertyDymanicContent, "TestButton.Tag was not wired to View Model from View");
+                Assert.Equal("TagTag", viewmodel._propertyDymanicContent);
 
                 viewmodel.PropertyDymanicContent = "TagTagTag";
-                Assert.AreEqual("TagTagTag", dependencyObject.Tag, "TestButton.Tag was not wired to View Model from View");
+                Assert.Equal("TagTagTag", dependencyObject.Tag);
 
-                Assert.AreEqual(123, Grid.GetRow(dependencyObject), "TestButton (Grid.Row) was not wired to View Model from View");
+                Assert.Equal(123, Grid.GetRow(dependencyObject));
 
-                Assert.IsNotNull(viewmodel._Button_Content, "TestButton Content property was not wired to View Model from View");
-                Assert.IsTrue(viewmodel._Button_Content.IsProperty, "TestButton Content property was not wired to View Model from View");
-                Assert.AreEqual("Content", viewmodel._Button_Content.GetPropertyValue(), "TestButton Content property was not wired to View Model from View");
+                Assert.NotNull(viewmodel._Button_Content);
+                Assert.True(viewmodel._Button_Content.IsProperty, "TestButton Content property was not wired to View Model from View");
+                Assert.Equal("Content", viewmodel._Button_Content.GetPropertyValue());
 
-                Assert.IsNotNull(viewmodel._Button_Tag, "TestButton Tag property was not wired to View Model from View");
-                Assert.IsTrue(viewmodel._Button_Tag.IsProperty, "TestButton Tag property was not wired to View Model from View");
-                Assert.AreEqual("TagTagTag", viewmodel._Button_Tag.GetPropertyValue(), "TestButton Tag property was not wired to View Model from View");
+                Assert.NotNull(viewmodel._Button_Tag);
+                Assert.True(viewmodel._Button_Tag.IsProperty, "TestButton Tag property was not wired to View Model from View");
+                Assert.Equal("TagTagTag", viewmodel._Button_Tag.GetPropertyValue());
 
-                Assert.IsNotNull(viewmodel._Button_GridRow, "TestButton (Grid.Row) property was not wired to View Model from View");
-                Assert.IsTrue(viewmodel._Button_GridRow.IsProperty, "TestButton (Grid.Row) property was not wired to View Model from View");
-                Assert.AreEqual(123, viewmodel._Button_GridRow.GetPropertyValue(), "TestButton (Grid.Row) property was not wired to View Model from View");
+                Assert.NotNull(viewmodel._Button_GridRow);
+                Assert.True(viewmodel._Button_GridRow.IsProperty, "TestButton (Grid.Row) property was not wired to View Model from View");
+                Assert.Equal(123, viewmodel._Button_GridRow.GetPropertyValue());
             });
         }
 
-        [TestMethod]
+        [Fact]
         public void AutoWireControlsTestButtonICommand1()
         {
             ExecuteInStaMode.Invoke(() =>
@@ -165,19 +164,19 @@ namespace UnitTestMvvmBindingPack
                 //
                 // check wiring results of wiring - ICommand interface
                 //
-                Assert.IsFalse(dependencyObject.IsEnabled, "TestButton ICommand.CanExecute was not wired to View Model from View");
+                Assert.False(dependencyObject.IsEnabled, "TestButton ICommand.CanExecute was not wired to View Model from View");
 
                 viewmodel.ButtonCanExecute = true;
-                Assert.IsTrue(dependencyObject.IsEnabled, "TestButton ICommand.CanExecute was not wired to View Model from View");
+                Assert.True(dependencyObject.IsEnabled, "TestButton ICommand.CanExecute was not wired to View Model from View");
 
                 var iCmd = dependencyObject.Command;
                 iCmd.Execute(null);
 
-                Assert.IsTrue(viewmodel.ButtonExecuteCalled, "TestButton ICommand.Execute was not wired to View Model from View");
+                Assert.True(viewmodel.ButtonExecuteCalled, "TestButton ICommand.Execute was not wired to View Model from View");
             });
         }
 
-        [TestMethod]
+        [Fact]
         public void AutoWireControlsTestButtonICommand2()
         {
             ExecuteInStaMode.Invoke(() =>
@@ -195,11 +194,11 @@ namespace UnitTestMvvmBindingPack
                 viewmodel.ButtonCanExecute = true;
                 var iCmd = dependencyObject.Command;
                 iCmd.Execute(null);
-                Assert.IsTrue(viewmodel.ButtonExecuteCalled, "TestButton ICommand.Execute was not wired to View Model from View");
+                Assert.True(viewmodel.ButtonExecuteCalled, "TestButton ICommand.Execute was not wired to View Model from View");
             });
         }
 
-        [TestMethod]
+        [Fact]
         public void AutoWireControlsTestButtonICommand3()
         {
             ExecuteInStaMode.Invoke(() =>
@@ -213,15 +212,15 @@ namespace UnitTestMvvmBindingPack
                 //
                 // check wiring results of wiring - ICommand interface
                 //
-                Assert.IsFalse(dependencyObject.IsEnabled, "TestButton ICommand.CanExecute was not wired to View Model from View");
+                Assert.False(dependencyObject.IsEnabled, "TestButton ICommand.CanExecute was not wired to View Model from View");
 
                 viewmodel.ButtonCanExecute = true;
-                Assert.IsTrue(dependencyObject.IsEnabled, "TestButton ICommand.CanExecute was not wired to View Model from View");
+                Assert.True(dependencyObject.IsEnabled, "TestButton ICommand.CanExecute was not wired to View Model from View");
 
                 var iCmd = dependencyObject.Command;
                 iCmd.Execute(null);
 
-                Assert.IsTrue(viewmodel.ButtonExecuteCalled, "TestButton ICommand.Execute was not wired to View Model from View");
+                Assert.True(viewmodel.ButtonExecuteCalled, "TestButton ICommand.Execute was not wired to View Model from View");
             });
         }
     }

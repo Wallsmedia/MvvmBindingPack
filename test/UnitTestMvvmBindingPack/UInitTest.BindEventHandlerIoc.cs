@@ -12,7 +12,7 @@
 // implied. See the License for the specific language governing permissions
 // and limitations under the License.
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using MvvmBindingPack;
 using System.Windows;
 using Microsoft.Extensions.DependencyInjection;
@@ -21,7 +21,6 @@ namespace UnitTestMvvmBindingPack
     /// <summary>
     /// Summary description for BindEventHandlerIoc
     /// </summary>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1001:TypesThatOwnDisposableFieldsShouldBeDisposable"), TestClass]
     public class UnitTestBindEventHandlerIoc
     {
         _TestBindEventHandlerIoc _viewModel;
@@ -33,11 +32,6 @@ namespace UnitTestMvvmBindingPack
             _viewModel = AutoWireVmDataContext.ServiceProvider.GetService<_TestBindEventHandlerIoc>();
         }
 
-        /// <summary>
-        ///Gets or sets the test context which provides
-        ///information about and functionality for the current test run.
-        ///</summary>
-        public TestContext TestContext { get; set; }
 
         #region Additional test attributes
         //
@@ -63,15 +57,15 @@ namespace UnitTestMvvmBindingPack
 
         public event RoutedEventHandler FakeTargetHandler;
 
-        [TestMethod]
+        [Fact]
         public void BindEventHandlerConstructor()
         {
             Type serviceType = typeof(String);
             var bindEvent = new BindEventHandlerIoc(serviceType);
-            Assert.AreEqual(serviceType, bindEvent.ServiceType, "BindEventHandlerIoc parameterized constructor fail");
+            Assert.Equal(serviceType, bindEvent.ServiceType);
         }
 
-        [TestMethod]
+        [Fact]
         public void ProvideValueFromSourceByPropertyName()
         {
 
@@ -86,12 +80,12 @@ namespace UnitTestMvvmBindingPack
             var bindResolve = bindEvent.ProvideValue(stubServiceProvider);
             FakeTargetHandler += (RoutedEventHandler)bindResolve;
             FakeTargetHandler(null, null);
-            Assert.AreEqual(_viewModel.Count, int.MaxValue, "ProvideValueFromSourceByPropertyName - bind was not resolved");
+            Assert.Equal(_viewModel.Count, int.MaxValue);
             FakeTargetHandler -= (RoutedEventHandler)bindResolve;
 
         }
 
-        [TestMethod]
+        [Fact]
         public void ProvideValueFromSourceByMethodName()
         {
 
@@ -106,12 +100,12 @@ namespace UnitTestMvvmBindingPack
             var bindResolve = bindEvent.ProvideValue(stubServiceProvider);
             FakeTargetHandler += (RoutedEventHandler)bindResolve;
             FakeTargetHandler(null, null);
-            Assert.AreEqual(_viewModel.Count, int.MaxValue, "ProvideValueFromSourceByMethodName - bind was not resolved");
+            Assert.Equal(_viewModel.Count, int.MaxValue);
             FakeTargetHandler -= (RoutedEventHandler)bindResolve;
         }
 
 
-        [TestMethod]
+        [Fact]
         public void ProvideValueExceptions()
         {
             var stubServiceProvider = MockServiceProvider.Instance;

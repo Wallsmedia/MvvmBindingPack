@@ -1,4 +1,4 @@
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using System.Windows;
 using MvvmBindingPack;
 
@@ -10,10 +10,9 @@ namespace UnitTestMvvmBindingPack
     class AutoWireAliasDataContext : Window { }
     class AliasDataContext : Window { }
 
-    [TestClass]
     public class UnitTestsAutoWireVmDataContext
     {
-        [TestMethod]
+        [Fact]
         public void AutoWireDataContextNoXName()
         {
             ExecuteInStaMode.Invoke(() =>
@@ -22,19 +21,19 @@ namespace UnitTestMvvmBindingPack
 
                 AutoWireDataContextView dependencyObject = new AutoWireDataContextView();
                 object dataContext = dependencyObject.DataContext;
-                Assert.IsNull(dataContext);
+                Assert.Null(dataContext);
 
                 AutoWireVmDataContext wireProvider = new AutoWireVmDataContext();
                 wireProvider.Execute(dependencyObject);
                 dataContext = dependencyObject.DataContext;
-                Assert.IsNotNull(dataContext);
+                Assert.NotNull(dataContext);
 
                 object awVM = BindXAML.GetAutoWiredViewModel(dependencyObject);
-                Assert.IsTrue(object.ReferenceEquals(awVM, dataContext));
+                Assert.True(object.ReferenceEquals(awVM, dataContext));
             });
         }
 
-        [TestMethod]
+        [Fact]
         public void AutoWireDataContextNoXNameTag()
         {
             ExecuteInStaMode.Invoke(() =>
@@ -44,19 +43,19 @@ namespace UnitTestMvvmBindingPack
 
                 AutoWireDataContextView dependencyObject = new AutoWireDataContextView();
                 object viewModel = dependencyObject.Tag;
-                Assert.IsNull(viewModel);
+                Assert.Null(viewModel);
 
                 AutoWireVmDataContext wireProvider = new AutoWireVmDataContext() { TargetPropertyName = "Tag" };
                 wireProvider.Execute(dependencyObject);
                 viewModel = dependencyObject.Tag;
-                Assert.IsNotNull(viewModel);
+                Assert.NotNull(viewModel);
 
                 object awVM = BindXAML.GetAutoWiredViewModel(dependencyObject);
-                Assert.IsTrue(object.ReferenceEquals(awVM, viewModel));
+                Assert.True(object.ReferenceEquals(awVM, viewModel));
             });
         }
 
-        [TestMethod]
+        [Fact]
         public void AutoWireDataContextNoXNameNeg()
         {
             ExecuteInStaMode.Invoke(() =>
@@ -67,16 +66,16 @@ namespace UnitTestMvvmBindingPack
 
                 AutoWireDataContext dependencyObject = new AutoWireDataContext();
                 object dataContext = dependencyObject.DataContext;
-                Assert.IsNull(dataContext);
+                Assert.Null(dataContext);
 
                 AutoWireVmDataContext wireProvider = new AutoWireVmDataContext();
                 wireProvider.Execute(dependencyObject);
                 dataContext = dependencyObject.DataContext;
-                Assert.IsNull(dataContext);
+                Assert.Null(dataContext);
             });
         }
 
-        [TestMethod]
+        [Fact]
         public void AutoWireDataContextNoXNameSubMatch()
         {
 
@@ -87,19 +86,19 @@ namespace UnitTestMvvmBindingPack
 
                 AutoWireDataContext dependencyObject = new AutoWireDataContext();
                 object dataContext = dependencyObject.DataContext;
-                Assert.IsNull(dataContext);
+                Assert.Null(dataContext);
 
                 AutoWireVmDataContext wireProvider = new AutoWireVmDataContext() { UseMaxNameSubMatch = true };
                 wireProvider.Execute(dependencyObject);
                 dataContext = dependencyObject.DataContext;
-                Assert.IsNotNull(dataContext);
+                Assert.NotNull(dataContext);
 
                 object awVM = BindXAML.GetAutoWiredViewModel(dependencyObject);
-                Assert.IsTrue(object.ReferenceEquals(awVM, dataContext));
+                Assert.True(object.ReferenceEquals(awVM, dataContext));
             });
         }
 
-        [TestMethod]
+        [Fact]
         public void AutoWireDataContextXNamePriority1()
         {
             ExecuteInStaMode.Invoke(() =>
@@ -111,19 +110,19 @@ namespace UnitTestMvvmBindingPack
                 AutoWireDataContext dependencyObject = new AutoWireDataContext();
                 dependencyObject.Name = "AutoWireDataContextViewModel";
                 object dataContext = dependencyObject.DataContext;
-                Assert.IsNull(dataContext);
+                Assert.Null(dataContext);
 
                 AutoWireVmDataContext wireProvider = new AutoWireVmDataContext();
                 wireProvider.Execute(dependencyObject);
                 dataContext = dependencyObject.DataContext;
-                Assert.IsNotNull(dataContext);
+                Assert.NotNull(dataContext);
 
                 object awVM = BindXAML.GetAutoWiredViewModel(dependencyObject);
-                Assert.IsTrue(object.ReferenceEquals(awVM, dataContext));
+                Assert.True(object.ReferenceEquals(awVM, dataContext));
             });
         }
 
-        [TestMethod]
+        [Fact]
         public void AutoWireDataContextXNamePriority2()
         {
             ExecuteInStaMode.Invoke(() =>
@@ -135,19 +134,19 @@ namespace UnitTestMvvmBindingPack
                 AutoWireDataContext dependencyObject = new AutoWireDataContext();
                 dependencyObject.Name = "AutoWireDataContextView";
                 object dataContext = dependencyObject.DataContext;
-                Assert.IsNull(dataContext);
+                Assert.Null(dataContext);
 
                 AutoWireVmDataContext wireProvider = new AutoWireVmDataContext();
                 wireProvider.Execute(dependencyObject);
                 dataContext = dependencyObject.DataContext;
-                Assert.IsNotNull(dataContext);
+                Assert.NotNull(dataContext);
 
                 object awVM = BindXAML.GetAutoWiredViewModel(dependencyObject);
-                Assert.IsTrue(object.ReferenceEquals(awVM, dataContext));
+                Assert.True(object.ReferenceEquals(awVM, dataContext));
             });
         }
 
-        [TestMethod]
+        [Fact]
         public void AutoWireDataContextNoNameAlias1()
         {
             ExecuteInStaMode.Invoke(() =>
@@ -158,16 +157,16 @@ namespace UnitTestMvvmBindingPack
 
                 AutoWireAliasDataContext dependencyObject = new AutoWireAliasDataContext();
                 object dataContext = dependencyObject.DataContext;
-                Assert.IsNull(dataContext);
+                Assert.Null(dataContext);
 
                 AutoWireVmDataContext wireProvider = new AutoWireVmDataContext();
                 wireProvider.Execute(dependencyObject);
                 dataContext = dependencyObject.DataContext;
-                Assert.IsNotNull(dataContext);
+                Assert.NotNull(dataContext);
             });
         }
 
-        [TestMethod]
+        [Fact]
         public void AutoWireDataContextXNameAlias2()
         {
             ExecuteInStaMode.Invoke(() =>
@@ -180,16 +179,16 @@ namespace UnitTestMvvmBindingPack
                 AliasDataContext dependencyObject = new AliasDataContext();
                 dependencyObject.Name = "AutoWireAliasDataContext";
                 object dataContext = dependencyObject.DataContext;
-                Assert.IsNull(dataContext);
+                Assert.Null(dataContext);
 
                 AutoWireVmDataContext wireProvider = new AutoWireVmDataContext();
                 wireProvider.Execute(dependencyObject);
                 dataContext = dependencyObject.DataContext;
-                Assert.IsNotNull(dataContext);
+                Assert.NotNull(dataContext);
             });
         }
 
-        [TestMethod]
+        [Fact]
         public void OwrAutoWireDataContextNoXName()
         {
             ExecuteInStaMode.Invoke(() =>
@@ -199,16 +198,16 @@ namespace UnitTestMvvmBindingPack
 
                 AutoWireDataContextView dependencyObject = new AutoWireDataContextView();
                 object dataContext = dependencyObject.DataContext;
-                Assert.IsNull(dataContext);
+                Assert.Null(dataContext);
 
                 AutoWireVmDataContext wireProvider = new AutoWireVmDataContext() { ViewModelNamespaceOverwrite = "Abracadabra.Where.It.Placed" };
                 wireProvider.Execute(dependencyObject);
                 dataContext = dependencyObject.DataContext;
-                Assert.IsNotNull(dataContext);
+                Assert.NotNull(dataContext);
             });
         }
 
-        [TestMethod]
+        [Fact]
         public void OwrAutoWireDataContextNoXNameNeg()
         {
             ExecuteInStaMode.Invoke(() =>
@@ -219,16 +218,16 @@ namespace UnitTestMvvmBindingPack
 
                 AutoWireDataContext dependencyObject = new AutoWireDataContext();
                 object dataContext = dependencyObject.DataContext;
-                Assert.IsNull(dataContext);
+                Assert.Null(dataContext);
 
                 AutoWireVmDataContext wireProvider = new AutoWireVmDataContext() { ViewModelNamespaceOverwrite = "Abracadabra.Where.It.Placed" };
                 wireProvider.Execute(dependencyObject);
                 dataContext = dependencyObject.DataContext;
-                Assert.IsNull(dataContext);
+                Assert.Null(dataContext);
             });
         }
 
-        [TestMethod]
+        [Fact]
         public void OwrAutoWireDataContextNoXNameSubMatch()
         {
             ExecuteInStaMode.Invoke(() =>
@@ -239,17 +238,17 @@ namespace UnitTestMvvmBindingPack
 
                 AutoWireDataContext dependencyObject = new AutoWireDataContext();
                 object dataContext = dependencyObject.DataContext;
-                Assert.IsNull(dataContext);
+                Assert.Null(dataContext);
 
                 AutoWireVmDataContext wireProvider = new AutoWireVmDataContext() { UseMaxNameSubMatch = true, ViewModelNamespaceOverwrite = "Abracadabra.Where.It.Placed" };
                 wireProvider.Execute(dependencyObject);
                 dataContext = dependencyObject.DataContext;
-                Assert.IsNotNull(dataContext);
+                Assert.NotNull(dataContext);
             });
         }
 
 
-        [TestMethod]
+        [Fact]
         public void OwrAutoWireDataContextXNamePriority1()
         {
             ExecuteInStaMode.Invoke(() =>
@@ -261,16 +260,16 @@ namespace UnitTestMvvmBindingPack
                 AutoWireDataContext dependencyObject = new AutoWireDataContext();
                 dependencyObject.Name = "AutoWireDataContextViewModel";
                 object dataContext = dependencyObject.DataContext;
-                Assert.IsNull(dataContext);
+                Assert.Null(dataContext);
 
                 AutoWireVmDataContext wireProvider = new AutoWireVmDataContext();
                 wireProvider.Execute(dependencyObject);
                 dataContext = dependencyObject.DataContext;
-                Assert.IsNotNull(dataContext);
+                Assert.NotNull(dataContext);
             });
         }
 
-        [TestMethod]
+        [Fact]
         public void OwrAutoWireDataContextXNamePriority2()
         {
             ExecuteInStaMode.Invoke(() =>
@@ -281,16 +280,16 @@ namespace UnitTestMvvmBindingPack
                 AutoWireDataContext dependencyObject = new AutoWireDataContext();
                            dependencyObject.Name = "AutoWireDataContextView";
                            object dataContext = dependencyObject.DataContext;
-                           Assert.IsNull(dataContext);
+                           Assert.Null(dataContext);
 
                            AutoWireVmDataContext wireProvider = new AutoWireVmDataContext() { ViewModelNamespaceOverwrite = "Abracadabra.Where.It.Placed" };
                            wireProvider.Execute(dependencyObject);
                            dataContext = dependencyObject.DataContext;
-                           Assert.IsNotNull(dataContext);
+                           Assert.NotNull(dataContext);
                        });
         }
 
-        [TestMethod]
+        [Fact]
         public void OwrAutoWireDataContextNoNameAlias1()
         {
             ExecuteInStaMode.Invoke(() =>
@@ -301,16 +300,16 @@ namespace UnitTestMvvmBindingPack
 
                 AutoWireAliasDataContext dependencyObject = new AutoWireAliasDataContext();
                 object dataContext = dependencyObject.DataContext;
-                Assert.IsNull(dataContext);
+                Assert.Null(dataContext);
 
                 AutoWireVmDataContext wireProvider = new AutoWireVmDataContext() { ViewModelNamespaceOverwrite = "Abracadabra.Where.It.Placed" };
                 wireProvider.Execute(dependencyObject);
                 dataContext = dependencyObject.DataContext;
-                Assert.IsNotNull(dataContext);
+                Assert.NotNull(dataContext);
             });
         }
 
-        [TestMethod]
+        [Fact]
         public void OwrAutoWireDataContextXNameAlias2()
         {
             ExecuteInStaMode.Invoke(() =>
@@ -323,16 +322,16 @@ namespace UnitTestMvvmBindingPack
                 AliasDataContext dependencyObject = new AliasDataContext();
                 dependencyObject.Name = "AutoWireAliasDataContext";
                 object dataContext = dependencyObject.DataContext;
-                Assert.IsNull(dataContext);
+                Assert.Null(dataContext);
 
                 AutoWireVmDataContext wireProvider = new AutoWireVmDataContext() { ViewModelNamespaceOverwrite = "Abracadabra.Where.It.Placed" };
                 wireProvider.Execute(dependencyObject);
                 dataContext = dependencyObject.DataContext;
-                Assert.IsNotNull(dataContext);
+                Assert.NotNull(dataContext);
             });
         }
 
-        [TestMethod]
+        [Fact]
         public void OwrAutoWireDataContextXNameAlias3()
         {
             ExecuteInStaMode.Invoke(() =>
@@ -349,16 +348,16 @@ namespace UnitTestMvvmBindingPack
                 AliasDataContext dependencyObject = new AliasDataContext();
                 dependencyObject.Name = "_AutoWire_Alias__DataContext";
                 object dataContext = dependencyObject.DataContext;
-                Assert.IsNull(dataContext);
+                Assert.Null(dataContext);
 
                 AutoWireVmDataContext wireProvider = new AutoWireVmDataContext() { ViewModelNamespaceOverwrite = "Abracadabra.Where.It.Placed" };
                 wireProvider.Execute(dependencyObject);
                 dataContext = dependencyObject.DataContext;
-                Assert.IsNotNull(dataContext);
+                Assert.NotNull(dataContext);
             });
         }
 
-        [TestMethod]
+        [Fact]
         public void OwrAutoWireDataContextXNameAlias4()
         {
             ExecuteInStaMode.Invoke(() =>
@@ -375,12 +374,12 @@ namespace UnitTestMvvmBindingPack
                 AliasDataContext dependencyObject = new AliasDataContext();
                 dependencyObject.Name = "AutoWireAliasDataContextVer123";
                 object dataContext = dependencyObject.DataContext;
-                Assert.IsNull(dataContext);
+                Assert.Null(dataContext);
 
                 AutoWireVmDataContext wireProvider = new AutoWireVmDataContext() { ViewModelNamespaceOverwrite = "Abracadabra.Where.It.Placed" };
                 wireProvider.Execute(dependencyObject);
                 dataContext = dependencyObject.DataContext;
-                Assert.IsNotNull(dataContext);
+                Assert.NotNull(dataContext);
             });
         }
     }

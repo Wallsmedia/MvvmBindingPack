@@ -12,7 +12,7 @@
 // implied. See the License for the specific language governing permissions
 // and limitations under the License.
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using MvvmBindingPack;
 using System.Reflection;
 
@@ -21,7 +21,6 @@ namespace UnitTestMvvmBindingPack
     /// <summary>
     ///  Unit tests for CommandHandlerProxy class 
     /// </summary>
-    [TestClass]
     public class UnitTestCommandHandlerProxy
     {
         /// <summary>
@@ -32,27 +31,13 @@ namespace UnitTestMvvmBindingPack
         public UnitTestCommandHandlerProxy()
         {
             _testStubs = new CommandEventStubs();
-        }
-
-        /// <summary>
-        ///Gets or sets the test context which provides
-        ///information about and functionality for the current test run.
-        ///</summary>
-        public TestContext TestContext { get; set; }
-
-        /// <summary>
-        /// TestInitialize to run code before running each test 
-        /// </summary>
-        [TestInitialize]
-        public void TestInitialize()
-        {
             _testStubs.ResetTestFlags();
             StaticCommandEventStubs.ResetTestFlags();
             _canExecuteCnagedCalledStatic = false;
             _canExecuteCnagedCalled = false;
         }
 
-        [TestMethod]
+        [Fact]
         public void CommandHandlerProxyConstructorExceptionTests()
         {
             EventInfo outerEvent = _testStubs.GetType().GetEvent("IssueNotifyExecuteButtonChanged");
@@ -85,7 +70,7 @@ namespace UnitTestMvvmBindingPack
 
         }
 
-        [TestMethod]
+        [Fact]
         public void StaticCommandHandlerProxyConstructorExceptionTests()
         {
             EventInfo outerEvent = typeof(StaticCommandEventStubs).GetEvent("IssueNotifyExecuteButtonChanged");
@@ -130,44 +115,44 @@ namespace UnitTestMvvmBindingPack
             // ReSharper restore ObjectCreationAsStatement
         }
 
-        [TestMethod]
+        [Fact]
         public void CommandHandlerProxyExecuteTest()
         {
             var chp = new CommandHandlerProxy(_testStubs.ExecuteButton_Click_External);
             chp.Execute(null);
-            Assert.AreEqual(_testStubs.ExecuteButtonClickExternalCalled, true, "Target delegate for ICommand:Execute() was called");
+            Assert.Equal(_testStubs.ExecuteButtonClickExternalCalled, true);
         }
 
-        [TestMethod]
+        [Fact]
         public void StaticCommandHandlerProxyExecuteTest()
         {
             var chp = new CommandHandlerProxy(StaticCommandEventStubs.ExecuteButton_Click_External);
             chp.Execute(null);
-            Assert.AreEqual(StaticCommandEventStubs.ExecuteButtonClickExternalCalled, true, "Target delegate for ICommand:Execute() was called for static");
+            Assert.Equal(StaticCommandEventStubs.ExecuteButtonClickExternalCalled, true);
         }
 
 
-        [TestMethod]
+        [Fact]
         public void CommandHandlerProxyCanExecuteTest()
         {
             var chp = new CommandHandlerProxy(_testStubs.ExecuteButton_Click_External, _testStubs.CanExecuteButton_Click_External);
             chp.Execute(null);
             bool result = chp.CanExecute(null);
-            Assert.AreEqual(_testStubs.ExecuteButtonClickExternalCalled, true, "Target delegate for ICommand:CanExecute() was not called");
-            Assert.AreEqual(_testStubs.CanExecuteButtonClickExternalFlag, true, "Target delegate for ICommand:CanExecute() was not called");
-            Assert.AreEqual(result, true, "Target delegate for ICommand:CanExecute() retrun wrong flag");
+            Assert.Equal(_testStubs.ExecuteButtonClickExternalCalled, true);
+            Assert.Equal(_testStubs.CanExecuteButtonClickExternalFlag, true);
+            Assert.Equal(result, true);
 
         }
 
-        [TestMethod]
+        [Fact]
         public void StaticCommandHandlerProxyCanExecuteTest()
         {
             var chp = new CommandHandlerProxy(StaticCommandEventStubs.ExecuteButton_Click_External, StaticCommandEventStubs.CanExecuteButton_Click_External);
             chp.Execute(null);
             bool result = chp.CanExecute(null);
-            Assert.AreEqual(StaticCommandEventStubs.ExecuteButtonClickExternalCalled, true, "Target delegate for ICommand:CanExecute() was not called for static");
-            Assert.AreEqual(StaticCommandEventStubs.CanExecuteButtonClickExternalFlag, true, "Target delegate for ICommand:CanExecute() was not called for static");
-            Assert.AreEqual(result, true, "Target delegate for ICommand:CanExecute() retrun wrong flag");
+            Assert.Equal(StaticCommandEventStubs.ExecuteButtonClickExternalCalled, true);
+            Assert.Equal(StaticCommandEventStubs.CanExecuteButtonClickExternalFlag, true);
+            Assert.Equal(result, true);
         }
 
         bool _canExecuteCnagedCalled;
@@ -176,23 +161,23 @@ namespace UnitTestMvvmBindingPack
             _canExecuteCnagedCalled = true;
         }
 
-        [TestMethod]
+        [Fact]
         public void CommandHandlerProxyNotifyCanExecuteChangedTest()
         {
             EventInfo outerEvent = _testStubs.GetType().GetEvent("IssueNotifyExecuteButtonChanged");
             var chp = new CommandHandlerProxy(_testStubs.ExecuteButton_Click_External, _testStubs.CanExecuteButton_Click_External, outerEvent, _testStubs);
-            Assert.AreEqual(_testStubs.IsNullIssueNotifyExecuteButtonChanged, true, "Event should not be set");
+            Assert.Equal(_testStubs.IsNullIssueNotifyExecuteButtonChanged, true);
             chp.CanExecuteChanged += CanExecuteChangedTest;
-            Assert.AreEqual(_testStubs.IsNullIssueNotifyExecuteButtonChanged, false, "Event should be set");
+            Assert.Equal(_testStubs.IsNullIssueNotifyExecuteButtonChanged, false);
             chp.Execute(null);
             bool result = chp.CanExecute(null);
             _testStubs.InvokeNotifyChanged();
             chp.CanExecuteChanged -= CanExecuteChangedTest;
-            Assert.AreEqual(_testStubs.IsNullIssueNotifyExecuteButtonChanged, true, "Event should not be set");
-            Assert.AreEqual(_testStubs.ExecuteButtonClickExternalCalled, true, "Target delegate for ICommand:Execute() was not called");
-            Assert.AreEqual(_testStubs.CanExecuteButtonClickExternalFlag, true, "Target delegate for ICommand:Execute() was not called");
-            Assert.AreEqual(result, true, "Target delegate for ICommand:CanExecute() return wrong flag");
-            Assert.AreEqual(_canExecuteCnagedCalled, true, "ICommand:CanExecuteChanged event was not risen");
+            Assert.Equal(_testStubs.IsNullIssueNotifyExecuteButtonChanged, true);
+            Assert.Equal(_testStubs.ExecuteButtonClickExternalCalled, true);
+            Assert.Equal(_testStubs.CanExecuteButtonClickExternalFlag, true);
+            Assert.Equal(result, true);
+            Assert.Equal(_canExecuteCnagedCalled, true);
 
         }
 
@@ -201,7 +186,7 @@ namespace UnitTestMvvmBindingPack
         {
             _canExecuteCnagedCalledStatic = true;
         }
-        [TestMethod]
+        [Fact]
         public void StaticCommandHandlerProxyNotifyCanExecuteChangedTest()
         {
             EventInfo outerEvent = typeof(StaticCommandEventStubs).GetEvent("IssueNotifyExecuteButtonChanged");
@@ -210,13 +195,13 @@ namespace UnitTestMvvmBindingPack
             chp.Execute(null);
             bool result = chp.CanExecute(null);
             StaticCommandEventStubs.InvokeNotifyChanged();
-            Assert.AreEqual(StaticCommandEventStubs.ExecuteButtonClickExternalCalled, true, "Target delegate for ICommand:Execute() was not called for static");
-            Assert.AreEqual(StaticCommandEventStubs.CanExecuteButtonClickExternalFlag, true, "Target delegate for ICommand:Execute() was not called for static");
-            Assert.AreEqual(result, true, "Target delegate for ICommand:CanExecute() return wrong flag");
-            Assert.AreEqual(_canExecuteCnagedCalledStatic, true, "ICommand:CanExecuteChanged event was not risen");
+            Assert.Equal(StaticCommandEventStubs.ExecuteButtonClickExternalCalled, true);
+            Assert.Equal(StaticCommandEventStubs.CanExecuteButtonClickExternalFlag, true);
+            Assert.Equal(result, true);
+            Assert.Equal(_canExecuteCnagedCalledStatic, true);
         }
 
-        [TestMethod]
+        [Fact]
         public void CommandHandlerProxyNotifyCanExecuteChangedTestDelegate()
         {
             Action invokeNotify = null;
@@ -225,13 +210,13 @@ namespace UnitTestMvvmBindingPack
             chp.Execute(null);
             bool result = chp.CanExecute(null);
             invokeNotify();
-            Assert.AreEqual(_testStubs.ExecuteButtonClickExternalCalled, true, "Target delegate for ICommand:Execute() was not called");
-            Assert.AreEqual(_testStubs.CanExecuteButtonClickExternalFlag, true, "Target delegate for ICommand:Execute() was not called");
-            Assert.AreEqual(result, true, "Target delegate for ICommand:CanExecute() return wrong flag");
-            Assert.AreEqual(_canExecuteCnagedCalled, true, "ICommand:CanExecuteChanged event was not risen");
+            Assert.Equal(_testStubs.ExecuteButtonClickExternalCalled, true);
+            Assert.Equal(_testStubs.CanExecuteButtonClickExternalFlag, true);
+            Assert.Equal(result, true);
+            Assert.Equal(_canExecuteCnagedCalled, true);
         }
 
-        [TestMethod]
+        [Fact]
         public void StaticCommandHandlerProxyNotifyCanExecuteChangedTestDelegate()
         {
             Action invokeNotify = null;
@@ -240,13 +225,13 @@ namespace UnitTestMvvmBindingPack
             chp.Execute(null);
             bool result = chp.CanExecute(null);
             invokeNotify();
-            Assert.AreEqual(StaticCommandEventStubs.ExecuteButtonClickExternalCalled, true, "Target delegate for ICommand:Execute() was not called for static");
-            Assert.AreEqual(StaticCommandEventStubs.CanExecuteButtonClickExternalFlag, true, "Target delegate for ICommand:Execute() was not called for static");
-            Assert.AreEqual(result, true, "Target delegate for ICommand:CanExecute() return wrong flag");
-            Assert.AreEqual(_canExecuteCnagedCalledStatic, true, "ICommand:CanExecuteChanged event was not risen");
+            Assert.Equal(StaticCommandEventStubs.ExecuteButtonClickExternalCalled, true);
+            Assert.Equal(StaticCommandEventStubs.CanExecuteButtonClickExternalFlag, true);
+            Assert.Equal(result, true);
+            Assert.Equal(_canExecuteCnagedCalledStatic, true);
         }
 
-        [TestMethod]
+        [Fact]
         public void CommandHandlerProxyCanExecuteChangedBoolProperty()
         {
             PropertyInfo boolPropertyInfo = _testStubs.GetPropertyInfo("CanExecuteFlag");
@@ -254,15 +239,15 @@ namespace UnitTestMvvmBindingPack
             chp.CanExecuteChanged += CanExecuteChangedTest;
             bool result = chp.CanExecute(null);
             
-            Assert.AreEqual(result, false, "Target delegate for ICommand:CanExecute() return wrong flag");
+            Assert.Equal(result, false);
             _testStubs.CanExecuteFlag = true;
 
             chp.Execute(null);
             result = chp.CanExecute(null);
-            Assert.AreEqual(_testStubs.ExecuteButtonClickExternalCalled, true, "Target delegate for ICommand:Execute() was not called");
-            Assert.AreEqual(_testStubs.CanExecuteButtonClickExternalFlag, true, "Target delegate for ICommand:Execute() was not called");
-            Assert.AreEqual(result, true, "Target delegate for ICommand:CanExecute() return wrong flag");
-            Assert.AreEqual(_canExecuteCnagedCalled, true, "ICommand:CanExecuteChanged event was not risen");
+            Assert.Equal(_testStubs.ExecuteButtonClickExternalCalled, true);
+            Assert.Equal(_testStubs.CanExecuteButtonClickExternalFlag, true);
+            Assert.Equal(result, true);
+            Assert.Equal(_canExecuteCnagedCalled, true);
         }
 
     }

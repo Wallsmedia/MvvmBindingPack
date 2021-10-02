@@ -12,7 +12,7 @@
 // implied. See the License for the specific language governing permissions
 // and limitations under the License.
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 using System.Windows.Markup;
 using MvvmBindingPack;
@@ -43,21 +43,16 @@ namespace UnitTestMvvmBindingPack
     /// <summary>
     /// Summary description for BindCommand
     /// </summary>
-    [TestClass]
     public class UnitTestBindCommand
     {
-        /// <summary>
-        ///Gets or sets the test context which provides
-        ///information about and functionality for the current test run.
-        ///</summary>
-        public TestContext TestContext { get; set; }
 
-        [TestMethod]
+
+        [Fact]
         public void BindEventHandlerConstructor()
         {
             const string source = "Source";
             var bindCommand = new BindCommand(source);
-            Assert.AreEqual(source, bindCommand.Source, "BindCommand parameterized constructor fail");
+            Assert.Equal(source, bindCommand.Source);
         }
 
         int _count;
@@ -66,7 +61,7 @@ namespace UnitTestMvvmBindingPack
             _count++;
         }
 
-        [TestMethod]
+        [Fact]
         public void BindCommandMethodExCanPropertyAction()
         {
 
@@ -84,10 +79,10 @@ namespace UnitTestMvvmBindingPack
             var fakeTargetICommand = (ICommand)bindResolve;
 
             if (fakeTargetICommand != null) fakeTargetICommand.Execute(null);
-            Assert.AreEqual(viewModel.ExecuteCalled, true, "Execute - bind was not resolved");
+            Assert.Equal(viewModel.ExecuteCalled, true);
 
             if (fakeTargetICommand != null) fakeTargetICommand.CanExecute(null);
-            Assert.AreEqual(viewModel.CanExecuteCalled, true, "CanExecute - bind was not resolved");
+            Assert.Equal(viewModel.CanExecuteCalled, true);
 
             if (fakeTargetICommand != null) fakeTargetICommand.CanExecuteChanged += EventHandlerCanExecuteChanged;
 
@@ -95,12 +90,12 @@ namespace UnitTestMvvmBindingPack
 
             // Execute notification
             viewModel.PropertyActionCanExecuteChanged();
-            Assert.AreEqual(_count, 1, "CanExecuteChanged - bind was not resolved");
+            Assert.Equal(_count, 1);
 
         }
 
 
-        [TestMethod]
+        [Fact]
         public void BindCommandPropertyExCanPropertyAction()
         {
 
@@ -118,10 +113,10 @@ namespace UnitTestMvvmBindingPack
             var fakeTargetICommand = (ICommand)bindResolve;
 
             if (fakeTargetICommand != null) fakeTargetICommand.Execute(null);
-            Assert.AreEqual(viewModel.ExecuteCalled, true, "Execute - bind was not resolved");
+            Assert.Equal(viewModel.ExecuteCalled, true);
 
             if (fakeTargetICommand != null) fakeTargetICommand.CanExecute(null);
-            Assert.AreEqual(viewModel.CanExecuteCalled, true, "CanExecute - bind was not resolved");
+            Assert.Equal(viewModel.CanExecuteCalled, true);
 
             if (fakeTargetICommand != null) fakeTargetICommand.CanExecuteChanged += EventHandlerCanExecuteChanged;
 
@@ -129,11 +124,11 @@ namespace UnitTestMvvmBindingPack
 
             // Execute notification
             viewModel.PropertyActionCanExecuteChanged();
-            Assert.AreEqual(_count, 1, "CanExecuteChanged - bind was not resolved");
+            Assert.Equal(_count, 1);
 
         }
 
-        [TestMethod]
+        [Fact]
         public void BindCommandPropertyExCanEventToInvoke()
         {
 
@@ -151,10 +146,10 @@ namespace UnitTestMvvmBindingPack
             var fakeTargetICommand = (ICommand)bindResolve;
 
             if (fakeTargetICommand != null) fakeTargetICommand.Execute(null);
-            Assert.AreEqual(viewModel.ExecuteCalled, true, "Execute - bind was not resolved");
+            Assert.Equal(viewModel.ExecuteCalled, true);
 
             if (fakeTargetICommand != null) fakeTargetICommand.CanExecute(null);
-            Assert.AreEqual(viewModel.CanExecuteCalled, true, "CanExecute - bind was not resolved");
+            Assert.Equal(viewModel.CanExecuteCalled, true);
 
             if (fakeTargetICommand != null) fakeTargetICommand.CanExecuteChanged += EventHandlerCanExecuteChanged;
 
@@ -162,11 +157,11 @@ namespace UnitTestMvvmBindingPack
 
             // Execute notification
             viewModel.ExecuteEventNotifyCanExecuteChanged();
-            Assert.AreEqual(_count, 1, "CanExecuteChanged - bind was not resolved");
+            Assert.Equal(_count, 1);
 
         }
 
-        [TestMethod]
+        [Fact]
         public void BindCommandMethodExCanEventToInvoke()
         {
 
@@ -183,10 +178,10 @@ namespace UnitTestMvvmBindingPack
             var fakeTargetICommand = (ICommand)bindResolve;
 
             if (fakeTargetICommand != null) fakeTargetICommand.Execute(null);
-            Assert.AreEqual(viewModel.ExecuteCalled, true, "Execute - bind was not resolved");
+            Assert.Equal(viewModel.ExecuteCalled, true);
 
             if (fakeTargetICommand != null) fakeTargetICommand.CanExecute(null);
-            Assert.AreEqual(viewModel.CanExecuteCalled, true, "CanExecute - bind was not resolved");
+            Assert.Equal(viewModel.CanExecuteCalled, true);
 
             if (fakeTargetICommand != null) fakeTargetICommand.CanExecuteChanged += EventHandlerCanExecuteChanged;
 
@@ -194,11 +189,11 @@ namespace UnitTestMvvmBindingPack
 
             // Execute notification
             viewModel.ExecuteEventNotifyCanExecuteChanged();
-            Assert.AreEqual(_count, 1, "CanExecuteChanged - bind was not resolved");
+            Assert.Equal(_count, 1);
 
         }
 
-        [TestMethod]
+        [Fact]
         public void BindCommandMethodExCanExecuteBooleanProperty()
         {
 
@@ -214,23 +209,23 @@ namespace UnitTestMvvmBindingPack
             var fakeTargetICommand = (ICommand)bindResolve;
 
             if (fakeTargetICommand != null) fakeTargetICommand.Execute(null);
-            Assert.AreEqual(viewModel.ExecuteCalled, true, "Execute - bind was not resolved");
+            Assert.Equal(viewModel.ExecuteCalled, true);
 
             if (fakeTargetICommand != null) fakeTargetICommand.CanExecute(null);
-            Assert.AreEqual(viewModel.CanExecuteBooleanPropertyName, true, "CanExecute - bind was not resolved");
+            Assert.Equal(viewModel.CanExecuteBooleanPropertyName, true);
 
             if (fakeTargetICommand != null) fakeTargetICommand.CanExecuteChanged += EventHandlerCanExecuteChanged;
 
             _count = 0;
             // Execute notification
             viewModel.CanExecuteBooleanPropertyName = false;
-            Assert.AreEqual(_count, 1, "CanExecuteChanged - bind was not resolved");
+            Assert.Equal(_count, 1);
 
         }
 
 
 
-        [TestMethod]
+        [Fact]
         public void ProvideValueFromSourceExceptions()
         {
 

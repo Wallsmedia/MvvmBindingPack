@@ -12,7 +12,7 @@
 // implied. See the License for the specific language governing permissions
 // and limitations under the License.
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using MvvmBindingPack;
 using System.Windows;
 
@@ -21,26 +21,20 @@ namespace UnitTestMvvmBindingPack
     /// <summary>
     /// Summary description for BindEventHandler
     /// </summary>
-    [TestClass]
     public class UnitTestBindEventHandler
     {
-        /// <summary>
-        ///Gets or sets the test context which provides
-        ///information about and functionality for the current test run.
-        ///</summary>
-        public TestContext TestContext { get; set; }
 
         public event RoutedEventHandler FakeTargetHandler;
 
-        [TestMethod]
+        [Fact]
         public void BindEventHandlerConstructor()
         {
             const string source = "Source";
             var bindEvent = new BindEventHandler(source);
-            Assert.AreEqual(source, bindEvent.Source, "BindEventHandler parameterized constructor fail");
+            Assert.Equal(source, bindEvent.Source);
         }
 
-        [TestMethod]
+        [Fact]
         public void BindEventHandlerByPropertyName()
         {
 
@@ -54,13 +48,13 @@ namespace UnitTestMvvmBindingPack
             var bindResolve = bindEvent.ProvideValue(stubServiceProvider);
             FakeTargetHandler += (RoutedEventHandler)bindResolve;
             FakeTargetHandler(null, null);
-            Assert.AreEqual(viewModel.Count, int.MaxValue, "BindEventHandlerByPropertyName - bind was not resolved");
+            Assert.Equal(viewModel.Count, int.MaxValue);
             FakeTargetHandler -= (RoutedEventHandler)bindResolve;
 
         }
 
 
-        [TestMethod]
+        [Fact]
         public void BindEventHandlerByMethodName()
         {
 
@@ -74,12 +68,12 @@ namespace UnitTestMvvmBindingPack
             var bindResolve = bindEvent.ProvideValue(stubServiceProvider);
             FakeTargetHandler += (RoutedEventHandler)bindResolve;
             FakeTargetHandler(null, null);
-            Assert.AreEqual(viewModel.Count, int.MaxValue, "BindEventHandlerByMethodName - bind was not resolved");
+            Assert.Equal(viewModel.Count, int.MaxValue);
             FakeTargetHandler -= (RoutedEventHandler)bindResolve;
         }
 
 
-        [TestMethod]
+        [Fact]
         public void ProvideValueExceptions()
         {
             var stubServiceProvider = MockServiceProvider.Instance;

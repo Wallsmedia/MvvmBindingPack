@@ -12,7 +12,7 @@
 // implied. See the License for the specific language governing permissions
 // and limitations under the License.
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace UnitTestMvvmBindingPack
 {
@@ -42,13 +42,13 @@ namespace UnitTestMvvmBindingPack
             catch (Exception ex)
             {
                 // ReSharper disable RedundantStringFormatCall
-                Assert.Fail(string.Format("Expected {0} threw {1}.\r\n\r\nStack trace:\r\n{2}", typeof(TExpectedException).Name, ex.GetType().Name, ex.StackTrace));
+                Assert.False(true, string.Format("Expected {0} threw {1}.\r\n\r\nStack trace:\r\n{2}", typeof(TExpectedException).Name, ex.GetType().Name, ex.StackTrace));
                 // ReSharper restore RedundantStringFormatCall
             }
 
             if (exceptionFaild)
                 // ReSharper disable RedundantStringFormatCall
-                Assert.Fail(string.Format("Expected {0}.", typeof(TExpectedException).Name));
+                Assert.False(true, string.Format("Expected {0}.", typeof(TExpectedException).Name));
             // ReSharper restore RedundantStringFormatCall
         }
 
@@ -76,11 +76,12 @@ namespace UnitTestMvvmBindingPack
             }
             catch
             {
-                Assert.Fail(message);
+                Assert.False(true,message);
             }
 
             if (exceptionFaild)
-                Assert.Fail(message);
+                Assert.False(true, message);
+
         }
 
 
@@ -104,11 +105,12 @@ namespace UnitTestMvvmBindingPack
             }
             catch (Exception ex)
             {
-                Assert.AreEqual(expected, ex.GetType());
+                Assert.Equal(expected, ex.GetType());
             }
 
             if (exceptionFaild)
-                Assert.Fail(message);
+                Assert.False(true, message);
+
         }
 
     }

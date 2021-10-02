@@ -12,7 +12,7 @@
 // implied. See the License for the specific language governing permissions
 // and limitations under the License.
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using MvvmBindingPack;
 using System.Reflection;
 
@@ -21,7 +21,6 @@ namespace UnitTestMvvmBindingPack
     /// <summary>
     ///  Unit tests for CommandHandlerProxy class 
     /// </summary>
-    [TestClass]
     public class UnitTestBindPackExt
     {
         /// <summary>
@@ -34,42 +33,28 @@ namespace UnitTestMvvmBindingPack
             _testStubs = new CommandEventStubs();
         }
 
-        /// <summary>
-        ///Gets or sets the test context which provides
-        ///information about and functionality for the current test run.
-        ///</summary>
-        public TestContext TestContext { get; set; }
-
-        /// <summary>
-        /// TestInitialize to run code before running each test 
-        /// </summary>
-        [TestInitialize]
-        public void TestInitialize()
-        {
-        }
-
-        [TestMethod]
+        [Fact]
         public void GetMethodInfoTests()
         {
             var info = _testStubs.GetType().GetMethod("Button_Click_External");
             MethodInfo testInfo = _testStubs.GetMethodInfo("Button_Click_External");
-            Assert.AreEqual(info, testInfo, "GetMethodInfo - Test failed to get a proper info.");
+            Assert.Equal(info, testInfo);
         }
 
-        [TestMethod]
+        [Fact]
         public void GetPropertyInfoTests()
         {
             var info = _testStubs.GetType().GetProperty("CanExecuteFlag");
             PropertyInfo testInfo = _testStubs.GetPropertyInfo("CanExecuteFlag");
-            Assert.AreEqual(info, testInfo, "GetPropertyInfo - Test failed to get a proper info.");
+            Assert.Equal(info, testInfo);
         }
 
-        [TestMethod]
+        [Fact]
         public void GetEventInfoTests()
         {
             var info = _testStubs.GetType().GetEvent("IssueNotifyExecuteButtonChanged");
             EventInfo testInfo = _testStubs.GetEventInfo("IssueNotifyExecuteButtonChanged");
-            Assert.AreEqual(info, testInfo, "GetEventInfo - Test failed to get a proper info.");
+            Assert.Equal(info, testInfo);
         }
 
     }
