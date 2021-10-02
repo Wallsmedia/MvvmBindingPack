@@ -15,7 +15,7 @@ cross platform .NET IDE**
 
 # Version: 6.0.0
 **.Net Core App  windows Desktop support**
-- Supports: **net5.0**
+- Supports: **net6.0**
 
 # Version: 5.0.0
 **.Net Core App  windows Desktop support**
