@@ -12,11 +12,9 @@
 // implied. See the License for the specific language governing permissions
 // and limitations under the License.
 
-using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MvvmBindingPack;
 using System.Reflection;
-using System.Windows;
 
 namespace UnitTestMvvmBindingPack
 {

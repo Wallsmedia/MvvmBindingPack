@@ -41,3 +41,4 @@ node_modules
 *.exe
 *.nupkg
 MvvmBindingPack.Bin/
+/.idea/

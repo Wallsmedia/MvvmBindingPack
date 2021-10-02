@@ -12,7 +12,6 @@
 // and limitations under the License.
 
 
-using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace UnitTest

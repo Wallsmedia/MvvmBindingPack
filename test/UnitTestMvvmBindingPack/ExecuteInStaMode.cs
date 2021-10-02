@@ -1,5 +1,4 @@
-﻿using System.Threading;
-
+﻿
 namespace UnitTestMvvmBindingPack
 {
     public static class ExecuteInStaMode
