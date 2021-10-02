@@ -15,7 +15,7 @@ The package has the compatible functional features for **XAML**, **WPF**, **UWP 
 
 ### Version 6.0.0
 
-- Support only .Net 5.x.x
+- Support only .Net 6.x.x
 
 ### Version 5.0.0
 
