@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
   <metadata>
     <id>MvvmBindingPack</id>
-    <version>5.0.0</version>
+    <version>6.0.0</version>
     <authors>Alexander Paskhin (paskhin@hotmail.co.uk)</authors>
     <owners>Alexander Paskhin (paskhin@hotmail.co.uk)</owners>
     <license type="file">LICENSE.txt</license>
@@ -21,7 +21,7 @@
       See How to use: https://github.com/Wallsmedia/MvvmBindingPack/wiki/MvvmBindingPack-v-3.0
     </summary>
     <releaseNotes>
-      Release: net5.0 Windows WPF Only; Signed Assembly;
+      Release: net6.0 Windows WPF Only; Signed Assembly;
       Breaking changes(!):
       Initialize DI/IoC:
       MvvmBindingPack.AutoWireViewConrols.ServiceProvider static property with “Microsoft.Extensions.DependencyInjection” ServiceProvider.
@@ -30,10 +30,10 @@
     <tags>Mvvm Xaml Wpf MvvmBinding Binding</tags>
     
     <dependencies>
-      <group targetFramework="net5.0-windows7.0" />
+      <group targetFramework="net6.0-windows7.0" />
     </dependencies>
     <frameworkReferences>
-      <group targetFramework="net5.0-windows7.0">
+      <group targetFramework="net6.0-windows7.0">
         <frameworkReference name="Microsoft.WindowsDesktop.App.WPF" />
       </group>
     </frameworkReferences>
@@ -41,7 +41,7 @@
   </metadata>
   <files>
     <file src="..\..\LICENSE.txt" target="" />
-    <file src="..\..\MvvmBindingPack.Bin\Release\net5.0-windows\Mvvm*.dll" target="lib\net5.0-windows7.0\" />
-    <file src="..\..\MvvmBindingPack.Bin\Release\net5.0-windows\Mvvm*.xml" target="lib\net5.0-windows7.0\" />
+    <file src="..\..\MvvmBindingPack.Bin\Release\net6.0-windows\Mvvm*.dll" target="lib\net6.0-windows7.0\" />
+    <file src="..\..\MvvmBindingPack.Bin\Release\net6.0-windows\Mvvm*.xml" target="lib\net6.0-windows7.0\" />
   </files>
 </package>

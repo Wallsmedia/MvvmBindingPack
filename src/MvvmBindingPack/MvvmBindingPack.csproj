@@ -42,19 +42,12 @@
     <Authors>Alexander Paskhin (paskhin@hotmail.co.uk)</Authors>
     
     <PackageReleaseNotes>
-      Release: net5.0 Windows WPF Only; Signed Assembly;
+      Release: net6.0 Windows WPF Only; Signed Assembly;
       Used Initialization SetupServiceProvider()
     </PackageReleaseNotes>
     
     <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
 
   </PropertyGroup>
-
-  <ItemGroup>
-    <None Include="..\..\..\LICENSE.txt">
-      <Pack>True</Pack>
-      <PackagePath></PackagePath>
-    </None>
-  </ItemGroup>
 
 </Project>
