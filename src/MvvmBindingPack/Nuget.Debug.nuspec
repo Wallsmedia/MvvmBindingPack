@@ -22,8 +22,6 @@
     </summary>
     <releaseNotes>
       Release: net6.0 Windows WPF Only; Signed Assembly;
-      Breaking changes(!):
-      Initialize DI/IoC:
       MvvmBindingPack.AutoWireViewConrols.ServiceProvider static property with “Microsoft.Extensions.DependencyInjection” ServiceProvider.
     </releaseNotes>
     <copyright>Copyright 2013-2021 © Alexander Paskhin</copyright>

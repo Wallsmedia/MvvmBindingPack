@@ -14,7 +14,7 @@ cross platform .NET IDE**
 - NuGet.org package http://www.nuget.org/packages/MvvmBindingPack.Debug/ 
 
 # Version: 6.0.0
-**.Net Core App  windows Desktop support**
+**.Net Core App windows Desktop support**
 - Supports: **net6.0**
 
 # Version: 5.0.0
@@ -25,12 +25,6 @@ cross platform .NET IDE**
 **.Net Core App  windows Desktop support**
 - Supports: **netcoreapp3.1**
 
-# Version: 3.0.0
-**.Net Core App  windows Desktop support**
-- Supports: **netcoreapp3.0**
-
-# Version: 2.5.0
-
 **.Net Core transition version**
 - NuGet.org package http://www.nuget.org/packages/MvvmBindingPack/ 
 - NuGet.org package http://www.nuget.org/packages/MvvmBindingPack.Debug/ 
@@ -40,28 +34,6 @@ cross platform .NET IDE**
 **Dependences:**
  - None
 
-## **(!) Breaking changes of IoC/DI container initialization.**
-
-##  Setup Unity DI container example for App.xaml.cs
-
-``` c#
-    publicpartialclassApp : Application
-    {
-
-        privateUnityContainer _unityContainer;
-        privateUnityServiceLocator _servicelocator;
-        public App()
-        {
-            _unityContainer = newUnityContainer();
-            _servicelocator = newUnityServiceLocator(_unityContainer);
-            AutoWireVmDataContext.ServiceProvider = _servicelocator;
-            var vmMw = newViewModelNew();
-            // instance that will be resolved when it's used ServiceType
-            _unityContainer.RegisterInstance(typeof(ViewModelNew),
-            vmMw,newContainerControlledLifetimeManager());
-        }
-    }
-```
 
 ## Setup DotNet Core DI container example for App.xaml.cs
 ``` C#
