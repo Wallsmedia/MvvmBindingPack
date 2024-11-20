@@ -1,18 +1,18 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup Condition="'$(Configuration)' == 'Release'">
-    <NuspecFile>Nuget.Release.nuspec</NuspecFile>
+    <PackageId>$(AssemblyName)</PackageId>   
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
-    <NuspecFile>Nuget.Debug.nuspec</NuspecFile>
+   <PackageId>$(AssemblyName).Debug</PackageId>   
   </PropertyGroup>
 
   <PropertyGroup>
-    <TargetFramework>net6.0-windows</TargetFramework>
-    <Version>6.0.0</Version>
-    <AssemblyVersion>6.0.0</AssemblyVersion>
-    <FileVersion>6.0.0</FileVersion>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Version>8.0.0</Version>
+    <AssemblyVersion>8.0.0</AssemblyVersion>
+    <FileVersion>8.0.0</FileVersion>
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
@@ -21,13 +21,13 @@
     <RootNamespace>MvvmBindingPack</RootNamespace>
     <OutputPath>..\..\MvvmBindingPack.Bin\$(Configuration)\</OutputPath>
     <PackageOutputPath>..\..\MvvmBindingPack.Bin\$(Configuration)\</PackageOutputPath>
-    <DocumentationFile>..\..\MvvmBindingPack.Bin\$(Configuration)\$(AssemblyName).xml</DocumentationFile>
+    <DocumentationFile>$(AssemblyName).xml</DocumentationFile>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\..\build\Key.snk</AssemblyOriginatorKeyFile>
-    <Copyright>Copyright © 2013-2021 Alexander Paskhin /paskhin@hotmail.co.uk/ All rights reserved</Copyright>
+    <Copyright>Copyright © 2013-$([System.DateTime]::Now.ToString('yyyy')) Alexander Paskhin /paskhin@hotmail.co.uk/ All rights reserved</Copyright>
     <Company>Wallsmedia LTD</Company>
-    <PackageLicenseUrl></PackageLicenseUrl>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageProjectUrl>https://github.com/Wallsmedia/MvvmBindingPack</PackageProjectUrl>
     <RepositoryUrl>https://github.com/Wallsmedia/MvvmBindingPack</RepositoryUrl>
     <PackageTags>Mvvm Xaml Wpf Uwp MvvmBinding Binding</PackageTags>
@@ -42,12 +42,22 @@
     <Authors>Alexander Paskhin (paskhin@hotmail.co.uk)</Authors>
     
     <PackageReleaseNotes>
-      Release: net6.0 Windows WPF Only; Signed Assembly;
+      Release: net8.0 Windows WPF Only; Signed Assembly;
       Used Initialization SetupServiceProvider()
     </PackageReleaseNotes>
     
     <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
-
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\LICENSE.txt">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Include="..\..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
 
 </Project>

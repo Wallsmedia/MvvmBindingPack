@@ -1,10 +1,10 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net6.0-windows</TargetFramework>
-    <Version>6.0.0</Version>
-    <AssemblyVersion>6.0.0</AssemblyVersion>
-    <FileVersion>6.0.0</FileVersion>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Version>8.0.0</Version>
+    <AssemblyVersion>8.0.0</AssemblyVersion>
+    <FileVersion>8.0.0</FileVersion>
     <UseWPF>true</UseWPF>
     <ApplicationIcon />
     <OutputType>WinExe</OutputType>

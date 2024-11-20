@@ -1,0 +1,2479 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>MvvmBindingPack</name>
+    </assembly>
+    <members>
+        <member name="T:MvvmBindingPack.AutoWireViewConrols">
+             <summary>
+             XAML WPF and Win Store Application -  MVVM Behavior Extension Enhancer.
+             <para>The Behavior Extension Enhancer logic is based on using of the x:Name directive. x:Name directive uniquely identifies XAML-defined elements in a XAML namescope. </para>
+             <para> AutoWireViewConrols wires and binds x:Named XAML-defined elements or View XAML UI elements to View Model properties, methods and fields. </para>
+             <para>The View (XAML) element targets are dependency properties or routing events. They are subject of binding to properties,fields and methods in a View Model class.</para>
+             <para>__</para>
+             
+             View Control General Wiring - Binding rules:
+             <para>__</para>
+             
+             <para> - The x:Named View (XAML) element can be bind one to many distinguish properties, fields or methods, in a View Model.</para>
+             <para> - The View Model properties has a priority to bind over the methods. </para>
+             <para> - The fist found match will be bind fist. The order of the declaration may be applicable in ambiguous cases.</para>
+             <para> - It is used always the full name match, a part sub match is used as an option, see the 'UseMaxNameSubMatch' property.</para>
+             <para> - One to One: The View Model property or event can be bind only once for one x:Named View XAML-defined element.</para> 
+             <para> - View element targets will be bind to View Model element targets.</para> 
+             <para> - The desired target names should be defined in the View Model.</para>
+             <para> - The View Model name without targets will be ignored.</para>
+             <para>__</para>
+             
+             <para> View Model ==> View name matching rules:</para>
+             <para> The name is split into parts by capital letter or '_'. </para>
+             <para>   The character '_' is not included into parts.</para>
+             <para>  - The View x:Name="_Example_Name_"   -> The x:Name is ignored as it starts with "_".</para>
+             <para>__</para>
+             
+             <para>  - The View name "Example_Name_"  will considered as matching parts {"Example","Name"}</para>
+             <para>  - The View name "ExampleName"  will considered as matching parts {"Example","Name"}</para>
+             <para>  - The View name "exampleName_Ver1"  will considered as matching parts {"example","Name","Ver1"}</para>
+             <para>  - The attached property or event name should be set in format "TypeOwner.Name" example "Grid.Row", "Mouse.MouseMove" ...</para>
+             <para>__</para>
+              
+             <para> Examples of wiring the View Model method to the View event:</para>
+             <para> Wiring goal: the View element with x:Name="Example_Name_"  and event "Click" will be wired/set to a method handler in the View Model. </para>
+             <para> The View Model wiring definition variants:</para>
+             <para>__</para>
+             
+             <para> *1*  Without any attributes</para>
+             <para>     void  Example_Name_Click(...){}  or;</para>
+             <para>     void  ExampleName_Click(...){} </para>   
+             <para>__</para>
+                   
+             <para> *2*  With  attribute [ViewTarget(...)]</para>
+             <para>     [ViewTarget("Click")]</para>
+             <para>     void  Example_Name(...){}  or;   </para>
+             <para>__</para>
+                 
+             <para>     [ViewTarget("Click")]</para>
+             <para>     void  ExampleName_BadTag(...){}    </para>
+             <para>__</para>
+             
+             <para> *3*  With attribute [ViewXNameAlias(...)]</para>
+             <para>     [ViewXNameAlias("ExampleName","Click")]</para>
+             <para>     void  AbracadbraName(...){}  or;</para>
+             <para>__</para>
+             
+             <para>     [ViewXNameAlias("Example_Name","Click")</para>
+             <para>     void  _AbracadbraName(...){} /* the name starting with "_" will be ignored, but the attribute don't */ or;  </para>
+             <para>__</para>
+             
+             <para>     [ViewXNameAlias("Example_Name_","Click")]</para>
+             <para>     void  Abracadbra_Name(...){}    </para>
+             <para>__</para>
+             
+             <para> Examples of wiring the View Model method to the View property:</para>
+             <para> Wiring goal: the View element with x:Name="Example_Name_"  and property "Content" will be {Binding ...}  to a method handler in the View Model. </para>
+             <para> The View Model wiring definition variants:</para>
+             <para>__</para>
+             
+             <para> *1*  Without any attributes</para>
+             <para>     string  Example_Name_Content {get;set;}  or;</para>
+             <para>__</para>
+                 
+             <para>     string  ExampleName_Content {get;set;}</para>
+             <para>__</para>
+             
+             <para> *2*  With  attribute [ViewTarget(...)]</para>
+             <para>     [ViewTarget("Content")]</para>
+             <para>     string  Example_Name {get;set;}  or;   </para>
+             <para>__</para>
+                 
+              <para>    [ViewTarget("Content")]</para>
+              <para>    string  ExampleName_BadTag {get;set;}   </para>
+             <para>__</para>
+             
+             <para> *3*  With attribute [ViewXNameAlias(...)]</para>
+             <para>     [ViewXNameAlias("ExampleName","Content")]</para>
+             <para>     string  AbracadbraName{get;set;}    or;</para>
+             <para>__</para>
+             
+             <para>     [ViewXNameAlias("Example_Name","Content")]</para>
+             <para>     string  _AbracadbraName{get;set;}   /* the name starting with "_" will be ignored, but the attribute don't */ or;  </para>
+             <para>__</para>
+             
+             <para>     [ViewXNameAlias("Example_Name_","Content")]</para>
+             <para>     string  Abracadbra_Name{get;set;}    </para>
+             <para>__</para>
+             
+             <para> Examples of wiring the View Model method to the View "Command" property:</para>
+             <para> Wiring goal: the View element with x:Name="Example_Name_"  and property "Command" will be wire/set to a property in the View Model. </para>
+             <para> The View Model wiring definition variants:</para>
+             <para>__</para>
+            
+             <para> *1*  Without any attributes</para>
+             <para>     ICommand  Example_Name_Command {get;set;}  or;</para>
+             <para>__</para>
+                 
+             <para>     string  ExampleName_Command {get;set;}</para>
+             <para>__</para>
+             
+             <para> *2*  With  attribute [ViewTarget(...)]</para>
+             <para>     [ViewTarget("Command")]</para>
+             <para>     ICommand  Example_Name {get;set;}  or;   </para>
+             <para>__</para>
+                 
+             <para>     [ViewTarget("Command")]</para>
+             <para>     ICommand  ExampleName_BadTag {get;set;}   </para>
+             <para>__</para>
+             
+             <para> *3*  With attribute [ViewXNameAlias(...)]</para>
+             <para>     [ViewXNameAlias("ExampleName","Command")]</para>
+             <para>     ICommand  AbracadbraName{get;set;}    or;</para>
+             <para>__</para>
+             
+             <para>     [ViewXNameAlias("Example_Name","Command")]</para>
+             <para>     ICommand  _AbracadbraName{get;set;}   /* the name starting with "_" will be ignored, but the attribute don't */ or;  </para>
+             <para>__</para>
+             
+              <para>    [ViewXNameAlias("Example_Name_","Command")]</para>
+              <para>    ICommand  Abracadbra_Name{get;set;}</para>    
+             <para>__</para>
+             
+             <para> *4* Separate "Execute" and "CanExecute" wiring</para>
+             <para>     [ViewXNameAlias("Example_Name", "Command.Execute")]</para>
+             <para>     void NameVM2MExecute(object obj){...}</para>
+             <para>__</para>
+             
+             <para>     [ViewXNameAlias("Example_Name", "Command.CanExecute")]</para>
+             <para>     bool Method_NameVM2MCanExecute(object obj){....} or;</para>
+             <para>__</para>
+             
+              <para>    [ViewXNameAlias("Example_Name", "Command.CanExecute")]</para>
+              <para>    bool Prop_NameVM2MCanExecute{get;set;}</para>
+             <para>__</para>
+             
+             <para> Examples of wiring(just copy) the View Model fields to the View property:</para>
+             <para> Wiring goal: the View element with x:Name="Example_Name_"  and property "Width" will be wired/set/copied to a property in the View Model. </para>
+             <para> The View Model wiring definition variants:</para>
+             <para>__</para>
+             
+             <para> *1*  With attribute [ViewXNameAlias(...)]</para>
+             <para>     [ViewXNameAlias("ExampleName","Width")]</para>
+             <para>      string _textAndMsgLabelTxtC = "Content was copied from the field"; /*The field name will always be ignored.*/</para>
+             <para>__</para>
+             
+             <para> View ==> View Model name mapping/linking rules. Sometimes, very often there is a vital case to have a link from </para>
+             <para> View Model to a View element or property or event.</para>
+             <para>__</para>
+             
+             <para> Examples of wiring/referencing  the View  fields to the View Model:</para>
+             <para>__</para>
+             
+             <para> *1*  Get a reference/link to the element type Label with x:Name="LabelXNameVM2M" </para>
+             <para>     [ViewXNameSourceObjectMapping("LabelXNameVM2M")]</para>
+             <para>     private object _LabelXNameVM2M; // can be used the 'Label' type  instead of the 'Object' type.</para>
+             <para>__</para>
+             
+             <para> *2*  Get a reference/link to the property "Content" of the element type Label with x:Name="LabelXNameVM2M"  </para>
+             <para>     [ViewXNameSourceTargetMapping("LabelXNameVM2M", "Content")]</para>
+             <para>     private ViewXNameSourceTarget _LabelXNameVM2MContent;</para>
+             <para>__</para>
+                 
+             </summary>
+        </member>
+        <member name="T:MvvmBindingPack.AutoWireViewConrols.ResolvedViewTargetName">
+            <summary>
+            Class container.
+            Holds the resolved View XAML-defined element target metadata.
+            It may be a property or event metadata of the x:Named View XAML-defined element target.
+            </summary>
+        </member>
+        <member name="T:MvvmBindingPack.AutoWireViewConrols.TargetLinkParameters">
+            <summary>
+            Class container.
+            Holds the resolved View XAML-defined element target metadata.
+            It may be a property or event metadata of the x:Named View XAML-defined element target.
+            </summary>
+        </member>
+        <member name="F:MvvmBindingPack.AutoWireViewConrols.TargetLinkParameters.HandledEventsToo">
+            <summary>
+            If it is true to register the handler such that it is invoked even when the routed event is marked handled in its event data;
+            false to register the handler with the default condition that it will not be invoked if the routed event is already marked handled.
+            </summary>
+        </member>
+        <member name="F:MvvmBindingPack.AutoWireViewConrols.TargetLinkParameters.ValidatesOnDataErrors">
+            <summary>
+            The DataErrorValidationRule is a built-in validation rule that checks for errors that are raised by the IDataErrorInfo
+            implementation of the source object. If an error is raised, the binding engine creates a ValidationError with the error 
+            and adds it to the Validation.Errors collection of the bound element. The lack of an error clears this validation feedback,
+            unless another rule raises a validation issue.
+            </summary>
+        </member>
+        <member name="F:MvvmBindingPack.AutoWireViewConrols.TargetLinkParameters.ValidatesOnNotifyDataErrors">
+            <summary>
+            When ValidatesOnNotifyDataErrors is true, the binding checks for and reports errors that are raised by a data source that implements INotifyDataErrorInfo.
+            </summary>
+        </member>
+        <member name="F:MvvmBindingPack.AutoWireViewConrols.TargetLinkParameters.ValidatesOnExceptions">
+            <summary>
+            The ExceptionValidationRule is a built-in validation rule that checks for exceptions that are thrown during the update
+            of the source property. If an exception is thrown, the binding engine creates a ValidationError with the exception and
+            adds it to the Validation.Errors collection of the bound element. The lack of an error clears this validation feedback, 
+            unless another rule raises a validation issue.
+            </summary>
+        </member>
+        <member name="F:MvvmBindingPack.AutoWireViewConrols.TargetLinkParameters.BindingMode">
+            <summary>
+             Describes the direction of the data flow in a binding.
+            </summary>
+        </member>
+        <member name="T:MvvmBindingPack.AutoWireViewConrols.ViewXNameCandidate">
+            <summary>
+            Internal class container.
+            Holds the 'x:Name' or View XAML-defined element with XAML-defined element target names. 
+            </summary>
+        </member>
+        <member name="T:MvvmBindingPack.AutoWireViewConrols.ViewModelMemberCandidate">
+            <summary>
+            Internal class container.
+            Holds the View Model property or method name and includes XAML-defined element target names.
+            </summary>
+        </member>
+        <member name="T:MvvmBindingPack.AutoWireViewConrols.SelectedBindingPair">
+            <summary>
+            Internal class container.
+            Holds the matching pair of binding candidates.
+            </summary>
+        </member>
+        <member name="F:MvvmBindingPack.AutoWireViewConrols.CommandConst">
+            <summary>
+            Constant definitions.
+            </summary>
+        </member>
+        <member name="P:MvvmBindingPack.AutoWireViewConrols.KnownExcludeMethodPrefixes">
+            <summary>
+            The default string collection contains the prefixes of the internal, auxiliary class methods that should be ignored when 
+            they are reflected from the View Model class type.
+            </summary>
+        </member>
+        <member name="P:MvvmBindingPack.AutoWireViewConrols.SourcePropertyName">
+            <summary>
+            Source dependency property name. The property value will be used as a reference to the View Model object.
+            Default dependency property name is "DataContext".
+            </summary>
+        </member>
+        <member name="P:MvvmBindingPack.AutoWireViewConrols.Source">
+            <summary>
+             Gets or sets the object to use as the wiring source i.e. View Model instance. It has priority over 'SourcePropertyName'.
+            It is a "back-door" feature which allows to setup the source object. If it is not set on, by default,
+            the markup extension will use the defined DataContext property value or redefined by 'SourcePropertyName'.
+            There may be used {IocBinding ...} or other "agnostic" mark up extension(not {Binding ...}) which provides by the independent way a source object.
+            </summary>
+        </member>
+        <member name="P:MvvmBindingPack.AutoWireViewConrols.UseMaxNameSubMatch">
+            <summary>
+            Defines the additional sub matching rule when a view name candidate (x:Name without targets) compared to a view model candidate name.
+            If it is true, the view model candidate name is considered as a match to a view name if it starts with the 'view name'.
+            Example: view name "WindowAutoBindViewModel" match to view modelName "WindowAutoBindViewModelSubMath".
+            </summary>
+        </member>
+        <member name="P:MvvmBindingPack.AutoWireViewConrols.IncludeVisualTreeNames">
+            <summary>
+            Include visual tree x:Named elements onto wiring.
+            Default value is false.
+            </summary>
+        </member>
+        <member name="M:MvvmBindingPack.AutoWireViewConrols.Execute(System.Windows.DependencyObject)">
+            <summary>
+            Executes wiring or binding of XAML-defined elements to a View Model.
+            It wires or binds all x:Named elements of the XAML node tree to a View Model class.
+            It starts with current XAML node, defined by a 'dependencyObject' parameter, and goes down through descenders (children). 
+            It's called when this class has been processed by "BindXAML.ProcessMvvmExtensions" 'fake' attached property collection. 
+            </summary>
+            <param name="dependencyObject">Parent, root the Dependency object.</param>
+        </member>
+        <member name="M:MvvmBindingPack.AutoWireViewConrols.FrameworkElementLoaded(System.Object,System.Windows.RoutedEventArgs)">
+            <summary>
+            Executes wiring or binding logic after the FrameworkElement object has loaded.
+            </summary>
+            <param name="sender">The FrameworkElement element.</param>
+            <param name="routedEventArgs">The state information and event data associated with a routed event.</param>
+        </member>
+        <member name="M:MvvmBindingPack.AutoWireViewConrols.FrameworkElementSourcePropertyChanged(System.Object,System.EventArgs)">
+            <summary>
+            Processes the wiring or binding logic after the SourcePropertyName(default "DataContext") property has changed. 
+            </summary>
+            <param name="sender">The FrameworkElement element.</param>
+            <param name="eventArgs">The state information and event data associated with a routed event.</param>
+        </member>
+        <member name="M:MvvmBindingPack.AutoWireViewConrols.ProcessViewAutoBinding(System.Windows.FrameworkElement,System.Object)">
+            <summary>
+            Wires or binds all x:Named XAML-defined elements, starting with a node defined by 
+            a 'frameworkElement' parameter, to a View Model defined by a 'viewModelObject' parameter. 
+            
+            </summary>
+            <param name="frameworkElement">The FrameworkElement object.</param>
+            <param name="viewModelObject">The View Model object.</param>
+        </member>
+        <member name="M:MvvmBindingPack.AutoWireViewConrols.ResolveLinksBasedOnViewAndViewModelTargets(System.Collections.Generic.List{MvvmBindingPack.AutoWireViewConrols.SelectedBindingPair},System.Collections.Generic.List{MvvmBindingPack.AutoWireViewConrols.SelectedBindingPair},MvvmBindingPack.AutoWireViewConrols.ViewXNameCandidate)">
+            <summary>
+            Resolves all possible links of x:Named XAML-defined View elements to a View Model.
+            x:Name has defined targets(i.e. dependency properties on routing events).
+            x:Name defines targets. It forms a list which is requested to bind.
+            A View Model properties or methods should have defined targets (View XAML dependency properties on routing events).
+            Example: x:Name="ActionButton_Content_IsEnable_Click" where Content, IsEnable and Click are targets.
+            Binds or wires proper candidate pairs.
+            </summary>
+            <param name="bindingMethodCand">The list collection of method candidates.</param>
+            <param name="bindingPropertyCand">The list collection of the property candidates.</param>
+            <param name="xNameEntity">The xName candidate.</param>
+        </member>
+        <member name="M:MvvmBindingPack.AutoWireViewConrols.BindFields(MvvmBindingPack.AutoWireViewConrols.ResolvedViewTargetName,MvvmBindingPack.AutoWireViewConrols.SelectedBindingPair)">
+            <summary>
+            Wires or binds a resolved target (property or event of a XAML-defined UI element) to a View Model located field.
+            </summary>
+            <param name="resolvedTarget">The resolved property or event of the framework element.</param>
+            <param name="locatedCandidate">The bind pair that contains a x:Name and a View Model property or event.</param>
+        </member>
+        <member name="M:MvvmBindingPack.AutoWireViewConrols.BindOthers(MvvmBindingPack.AutoWireViewConrols.ResolvedViewTargetName,MvvmBindingPack.AutoWireViewConrols.SelectedBindingPair)">
+            <summary>
+            Wires or binds a resolved target (property or event of a XAML-defined UI element) to a View Model located candidate (property or method).
+            </summary>
+            <param name="resolvedTarget">The resolved property or event of the framework element.</param>
+            <param name="locatedCandidate">The bind pair that contains a x:Name and a View Model property or event.</param>
+        </member>
+        <member name="M:MvvmBindingPack.AutoWireViewConrols.BindCommand(MvvmBindingPack.AutoWireViewConrols.ResolvedViewTargetName,MvvmBindingPack.AutoWireViewConrols.SelectedBindingPair,MvvmBindingPack.AutoWireViewConrols.SelectedBindingPair,MvvmBindingPack.AutoWireViewConrols.SelectedBindingPair)">
+            <summary>
+            Wires or binds the "Command" property of the x:Name XAML-defined element to the View Model.
+            </summary>
+            <param name="resolvedTarget">The resolved "Command" property of the framework element.</param>
+            <param name="command">The bind pair of a View Model property defined of the ICommand interface.</param>
+            <param name="commandExecuted">The bind pair of a View Model method defined of the ICommand.Execute interface method.</param>
+            <param name="commandCanExecuted">The bind pair of a View Model method or property defined of the ICommand.CanExecute interface method.</param>
+        </member>
+        <member name="M:MvvmBindingPack.AutoWireViewConrols.FillExactTargetInfo(System.String,MvvmBindingPack.AutoWireViewConrols.ViewXNameCandidate,MvvmBindingPack.AutoWireViewConrols.ResolvedViewTargetName)">
+            <summary>
+            Resolves a XAML-defined element with possible metadata for a target name.
+            It includes CLR and XAML-defined (WPF) property system metadata.
+            </summary>
+            <param name="target">The target name of the property or event of the XAML-defined element.</param>
+            <param name="xNameEntity">The view XAML-defined element.</param>
+            <param name="result">The result class reference which will be filled with results.</param>
+        </member>
+        <member name="M:MvvmBindingPack.AutoWireViewConrols.ExcludeCandidate(System.Collections.Generic.List{MvvmBindingPack.AutoWireViewConrols.SelectedBindingPair},MvvmBindingPack.AutoWireViewConrols.SelectedBindingPair)">
+            <summary>
+            Filters the list of binding pairs by removing the candidate pair from it.
+            </summary>
+            <param name="listOfCand">The list of candidates.</param>
+            <param name="candidate">The candidate to clean up.</param>
+        </member>
+        <member name="M:MvvmBindingPack.AutoWireViewConrols.GetXNamesCandidates(System.Windows.DependencyObject)">
+            <summary>
+            Gets a collection of all descended x:Named XAML-defined elements.
+            </summary>
+            <param name="obj">The Dependency object node.</param>
+            <returns>The list of detected x:Name of XAML-defined elements.</returns>
+        </member>
+        <member name="M:MvvmBindingPack.AutoWireViewConrols.GetMethodCandidates(System.Collections.Generic.List{System.Tuple{System.Type,System.Object}},System.Object)">
+            <summary>
+            Gets all possible method candidates from a View Model object.
+            </summary>
+            <param name="locatedViewModels">The located view model list.</param>
+            <param name="obj">The Dependency object node.</param>
+            <returns>The list of detected candidates.</returns>
+        </member>
+        <member name="M:MvvmBindingPack.AutoWireViewConrols.GetPropertyCandidates(System.Collections.Generic.List{System.Tuple{System.Type,System.Object}},System.Object)">
+            <summary>
+            Gets all possible property candidates from a View Model object.
+            </summary>
+            <param name="locatedViewModels">The located view model list.</param>
+            <param name="obj">The Dependency object node.</param>
+            <returns>The list of detected candidates.</returns>
+        </member>
+        <member name="M:MvvmBindingPack.AutoWireViewConrols.GetFieldCandidates(System.Collections.Generic.List{System.Tuple{System.Type,System.Object}},System.Object)">
+            <summary>
+            Gets all the fields attributed candidates from a View Model object.
+            </summary>
+            <param name="locatedViewModels">The located view model list.</param>
+            <param name="obj">The Dependency object node.</param>
+            <returns>The list of detected candidates.</returns>
+        </member>
+        <member name="T:MvvmBindingPack.AutoWireVmDataContext">
+             <summary>
+              XAML MVVM extension enhancer, it automatically locates and sets(binds) the View dependency 
+              property(default is "DataContext") to a View Model reference.
+             
+              Attached property BindXAML.AutoWiredViewModel will be set to the reference to the View Model.
+              View to View Model mapping rules.
+            
+              AutoWireVmDataContext setups a View dependency property with a reference to a View Model class instance. 
+              By default it is "DataContext". The name of the target dependency property can be changed via property
+              "TargetPropertyName". The AutoWireVmDataContext logic of wiring to a View Model is based on using 
+              from the x:Name and x:Class XAML directives:
+              x:Name directive uniquely identifies XAML-defined elements in a XAML namescope.
+              x:Class directive configures XAML markup compilation to join partial classes between markup and code-behind 
+              and it has the type namespace.The namespace will be used to construct expected types.
+            
+              The View(XAML) logical tree elements will be scanned, in root direction, in order to detect non-“System.”, 
+              non-“Microsoft.” ,other non - WPF class types. For each “DependencyObject” based class will be obtained 
+              the “Name” property value.In the result, it will be formed the list of types (namespace + name) (x:Class) 
+              and names(x:Name if it was set).  For each element in the list will be applied transformation rules in order
+              to construct the View Model expected types.There will be formed the new list of View Model expected types.
+              The candidate list of types for matching will be obtained from loaded assemblies.
+            
+             General rules for forming View Model expected type names:
+            
+             If the View type namespace suffix section contains a "Views"(default see prop.ViewsNameSpaceSuffixSection),
+              this section will be replaced on "ViewModels"(default see prop.ViewModelsNameSpaceSuffixSection). It forms
+              a “expected namespace”.
+             Example:
+               Trade.SuperUI.Views => Trade.SuperUI.ViewModels ,but(!)
+               Trade.SuperUI.Views.Views => Trade.SuperUI.Views.ViewModels
+               Trade.SuperUI.RViews => Trade.SuperUI.RViews
+            
+              If the View type namespace suffix section doesn't contains a "Views" suffix section and  the namespace 
+              has only one or two sections, in this case the suffix section "ViewModels"
+              (default see prop.ViewModelsNameSpaceSuffixSection) will be added. It forms a “expected namespace”.
+             Example:
+               Trade.TicketPanel => Trade.TicketPanel.ViewModel ,or(!)
+               Trade => Trade.ViewModel
+            
+              If a type name(i.e.x:Class name) or x:Name contains "View" substring(default see prop."OldViewNamePart"), 
+              it will be replaced all occurrence on "ViewModel" substring(default see prop. "NewViewModelNamePart").
+              They form a pair  of  "expected type names”.
+             Example:
+               TicketViewPanel => TicketViewModelPanel ,but(!)
+               TradeViewTicketViewPanel => TradeViewModelTicketViewModelPanel
+            
+              The “expected fully qualified type names”  will be formed from the parts "expected namespace” and “expected 
+              type names” from x:Class name and x:Name.
+              Formed from x:Name the "expected fully qualified type name" will have a priority over the x:Class formed 
+              type name.
+              The list of candidate types and interfaces (see IncludeInterfaces) will be obtained from all loaded 
+              assemblies by filtering with "expected  namespace". Each candidate type name will be examined 
+              on best matching to “expected name”.
+              Each possible candidate name will be split into a cased parts and matched against "desired name candidate“ 
+              parts.
+              The first candidate type with the full parts match will be selected.
+              If you set “UseMaxNameSubMatch” flag true, the first candidate with a sub-match type name will selected.
+            
+              Obtain instance of the View Model type.
+            
+              Type will be resolved in the sequence: IoC container, Resources and Activator.CreateInstance(). 
+              For controlling see properties “ResolveIocContainer”,” ResolveResources” and “ResolveCreateInstance”. 
+              In success the resolved type will set as value to "DataContext" dependency property(set by default 
+              "TargetPropertyName") and attached property BindXAML.AutoWiredViewModel.
+            
+              Order of resolving via the IoC hosted via adapter that implements ServiceLocation or the generic 
+              Service Locator interface:
+              GetInstance(locatedItem_WiringType, XName); or
+              GetInstance(locatedItem_WiringType, locatedItem_WiringType.Name); or
+              GetInstance(locatedItem_WiringType).
+              
+              Order of resolving via the Resource Locator:
+              LocateResource(XName); or
+              LocateResource(locatedItem_WiringType.Name); or
+              LocateResource(locatedItem_WiringTType.FullName); or
+              LocateResource(locatedItem_WiringType).
+             </summary>
+        </member>
+        <member name="P:MvvmBindingPack.AutoWireVmDataContext.ServiceProvider">
+            <summary>
+            Sets the service provider that resolves the dependency injection via <see cref="T:System.IServiceProvider"/>.
+            </summary>
+        </member>
+        <member name="T:MvvmBindingPack.AutoWireVmDataContext.WiringCandidatePair">
+            <summary>
+            Class container is used for holding the candidate x:Class, x:Name and type.
+            </summary>
+        </member>
+        <member name="P:MvvmBindingPack.AutoWireVmDataContext.WiringCandidatePair.XClass">
+            <summary>
+            The Source subject for the wiring.
+            </summary>
+        </member>
+        <member name="P:MvvmBindingPack.AutoWireVmDataContext.WiringCandidatePair.DesiredXCLassName">
+            <summary>
+            The Desired target wiring name; it is formed from the x:Class name;
+            </summary>
+        </member>
+        <member name="P:MvvmBindingPack.AutoWireVmDataContext.WiringCandidatePair.DesiredXName">
+            <summary>
+            The Desired target wiring name; it is formed from the x:Name name;
+            </summary>
+        </member>
+        <member name="P:MvvmBindingPack.AutoWireVmDataContext.WiringCandidatePair.WiringType">
+            <summary>
+            The located wiring target
+            </summary>
+        </member>
+        <member name="P:MvvmBindingPack.AutoWireVmDataContext.WiringCandidatePair.DesiredXClassNameMatchToWiringNameRank">
+            <summary>
+            Matching results between desired and wiring names.
+            </summary>
+        </member>
+        <member name="P:MvvmBindingPack.AutoWireVmDataContext.ViewModelNamespaceOverwrite">
+            <summary>
+            Overwrites the  x:Class namespace; it will be used for exact defining of the view model expected type
+            namespace. Original, the x:Class namespace will be ignored.
+            </summary>
+        </member>
+        <member name="P:MvvmBindingPack.AutoWireVmDataContext.ViewModelNameOverwrite">
+            <summary>
+            Overwrites the  x:Class name; it will be used for exact type name defining  of view model expected type
+            name candidates. Original, the x:Class name will be ignored.
+            </summary>
+        </member>
+        <member name="P:MvvmBindingPack.AutoWireVmDataContext.TargetPropertyName">
+            <summary>
+            The target dependency property name. It will be set to a resolved reference to a View Model.
+            </summary>
+        </member>
+        <member name="P:MvvmBindingPack.AutoWireVmDataContext.UseTheFirstOne">
+            <summary>
+            If it is set to 'true' (default), it limits the types of x:Class and x:Name  
+            to the first found control in the logical tree.
+            </summary>
+        </member>
+        <member name="P:MvvmBindingPack.AutoWireVmDataContext.ResolveIocContainer">
+            <summary>
+            If it is set to 'true', the IoC container will be used to resolve 
+            a View Model type or instance. It has the first priority. Default value is true.
+            </summary>
+        </member>
+        <member name="P:MvvmBindingPack.AutoWireVmDataContext.ResolveResources">
+            <summary>
+            If it is set to 'true', the static Resources will be used to resolve 
+            a View Model instance. It has the second priority.  Default value is true.       
+            </summary>
+        </member>
+        <member name="P:MvvmBindingPack.AutoWireVmDataContext.ResolveCreateInstance">
+            <summary>
+            If it is set to 'true', the static CLR Activator will be used to create 
+            a View Model instance. It has the third priority.  Default value is true.   
+            </summary>
+        </member>
+        <member name="P:MvvmBindingPack.AutoWireVmDataContext.UseMaxNameSubMatch">
+            <summary>
+             Defines the additional sub matching ("start with") rule when a  View Model expected name 
+             compared to a View Model candidate name. If it is set to 'true', the View Model expected name
+             is considered as a match to a name if starts with 'View Model expected name'. 
+            </summary>
+            <example>
+            The View Model expected name "FrameCapturePrice" will match to the View Model 
+            candidate name "FrameCapturePrice_Var1".
+            </example>
+        </member>
+        <member name="P:MvvmBindingPack.AutoWireVmDataContext.ViewsNamespaceSuffixSection">
+            <summary>
+            Defines the namespace section suffix (default "Views"). It will be replaced (if it is exist)
+             on the "ViewModelsNamespaceSuffixSection" property value. 
+            </summary>
+            <remarks>Ignored when the "ViewModelNamespaceOverwrite" is set.</remarks>
+            <example>
+            The namespace 'Trade.GUI.Application.Views' will be transfered into  'Trade.GUI.Application.ViewModels'
+            The namespace 'Trade.GUI.Application' will be transfered into  'Trade.GUI.Application.ViewModels'.
+            </example>
+        </member>
+        <member name="P:MvvmBindingPack.AutoWireVmDataContext.ViewModelsNamespaceSuffixSection">
+            <summary>
+             Defines the namespace section suffix  (default "ViewModels"). It will be used as a replacement.
+            </summary>
+            <example>
+            The namespace 'Trade.GUI.Application.Views' will be transfered into  'Trade.GUI.Application.ViewModels'
+            The namespace 'Trade.GUI.Application' will be transfered into  'Trade.GUI.Application.ViewModels'
+            </example>
+            <remarks>Ignored when the "ViewModelNamespaceOverwrite" is set.</remarks>
+        </member>
+        <member name="P:MvvmBindingPack.AutoWireVmDataContext.OldViewNamePart">
+             <summary>
+            Defines the part of the class type name (default "View"). If it is exist, it will be replaced on the value 
+             of the property "NewViewModelNamePart". It is ignored when the "ViewModelNameOverwrite" is set.
+             </summary>
+             <example>
+             The name "MainPageView" will be transfered into  "MainPageViewModel".
+             The name "MainPageViewFrame_1" will be transfered into  "MainPageViewModelFrame_1".
+             The name "MainPage" will be the same "MainPage".
+             </example>
+        </member>
+        <member name="P:MvvmBindingPack.AutoWireVmDataContext.NewViewModelNamePart">
+            <summary>
+            Defines the part of the class type name (default "ViewModel").It is ignored when the "ViewModelNameOverwrite" is set. 
+            </summary>
+        </member>
+        <member name="P:MvvmBindingPack.AutoWireVmDataContext.IncludeInterfaces">
+            <summary>
+            If it is set to 'true', there will be included interfaces from the loaded assemblies into the list of type candidates.
+            Default value is true. It allows to use the interfaces in ViewModelNameOverwrite  and resolve them via IoC container.
+            </summary>
+        </member>
+        <member name="P:MvvmBindingPack.AutoWireVmDataContext.IocXName">
+            <summary>
+             Ioc resolver flag.f it is set to 'true', the  IoC type will be attempted to be resolved with using type and x:Name (if it was set!!!).
+             Default value is false.
+            </summary>
+        </member>
+        <member name="M:MvvmBindingPack.AutoWireVmDataContext.Execute(System.Windows.DependencyObject)">
+            <summary>
+            Setups the Dependency property (default is "DataContext", see "TargetPropertyName") to a View Model reference.
+            It starts with current XAML node, defined by a 'dependencyObject' parameter, and goes up through ancestors (parents). 
+            It's directly called  when this class has been processed by "BindXAML.ProcessMvvmExtensions" 'fake' attached property collection. 
+            Attached property 'BindXAML.AutoWiredViewModel' will be with value of the wired model.
+            </summary>
+            <param name="dependencyObject">The Dependency object.</param>
+        </member>
+        <member name="M:MvvmBindingPack.AutoWireVmDataContext.FrameworkElementLoaded(System.Object,System.Windows.RoutedEventArgs)">
+            <summary>
+            Executes auto wiring or binding logic after the FrameworkElement object has loaded. 
+            </summary>
+            <param name="sender">The FrameworkElement element.</param>
+            <param name="routedEventArgs">The state information and event data associated with a routed event.</param>
+        </member>
+        <member name="T:MvvmBindingPack.BindCommand">
+            <summary>
+            WPF and WinRt XAML mark-up extension.
+            Binds Command property to <see cref="T:System.Windows.Input.ICommand"/> interface via a proxy class to a class member of a source object.
+            </summary>
+        </member>
+        <member name="P:MvvmBindingPack.BindCommand.Source">
+            <summary>
+            It is a "back-door" feature which allows to setup the source object. If it is not set on, by default,
+            the markup extension will use the defined DataContext property value.
+            It is referring to the source object which has the method or property used by the markup extension. 
+            There may be used {IocBinding ...} or other "agnostic" mark up extension(not {Binding ...}) which provides by the independent way a source object.
+            </summary>
+        </member>
+        <member name="M:MvvmBindingPack.BindCommand.#ctor">
+            <summary>
+            Default constructor.
+            </summary>
+        </member>
+        <member name="M:MvvmBindingPack.BindCommand.#ctor(System.Object)">
+            <summary>
+            Constructs the class with a requested source.
+            </summary>
+            <param name="source">The source object.</param>
+        </member>
+        <member name="M:MvvmBindingPack.BindCommand.ObtainSourceObject(System.IServiceProvider)">
+            <summary>
+            Get a source object for binding. 
+            If it is not set on, by default the method will search the first defined DataContext property value.
+            </summary>
+            <param name="serviceProvider">Object that can provide services for the markup extension.</param>
+            <returns>Reference to a source object.</returns>
+        </member>
+        <member name="T:MvvmBindingPack.BindCommandBase">
+            <summary>
+            WPF and WinRt XAML mark-up extension.
+            The abstract <see cref="T:System.Windows.Input.ICommand"/> binding class of WPF XAML mark-up extension.
+            Base class for implementing of binding to <see cref="T:System.Windows.Input.ICommand"/> interface via CommandHandlerProxy or WeakCommandHandlerProxy class.
+            </summary>
+        </member>
+        <member name="P:MvvmBindingPack.BindCommandBase.TargetObject">
+            <summary>
+            Used for late binding to dependency property
+            </summary>
+        </member>
+        <member name="P:MvvmBindingPack.BindCommandBase.TargetProperty">
+            <summary>
+            Used for late binding to dependency property
+            </summary>
+        </member>
+        <member name="P:MvvmBindingPack.BindCommandBase.ResolvedCommand">
+            <summary>
+            THe ICommand interface proxy class hat was provided as a resulted.
+            </summary>
+        </member>
+        <member name="M:MvvmBindingPack.BindCommandBase.ObtainSourceObject(System.IServiceProvider)">
+            <summary>
+            Get a source object for binding.
+            </summary>
+            <param name="serviceProvider">Object that can provide services for the markup extension.</param>
+            <returns></returns>
+        </member>
+        <member name="P:MvvmBindingPack.BindCommandBase.WeakBinding">
+            <summary>
+            If set on true, it will be used weak references when binding.
+            This mode will provide weak referenced 'event CanExecuteChanged' for <see cref="T:System.Windows.Input.ICommand"/> interface.
+            </summary>
+        </member>
+        <member name="P:MvvmBindingPack.BindCommandBase.DeepScanAllTrees">
+            <summary>
+             If it is set to “true”, all DataContext properties in the logical tree will be scanned until the math to a property
+             or method name (PropertyName, MethodName). Smart feature allows to ignore the current DataContext property value and
+             traverse to other parent DataContext value.If set on true, it will cause to scan for the DataContext property objects
+             over the trees and get the first one that contains the binding property or method. It used in case when there is need 
+             to ignore the binding ItemsSource DataContext for the ItemsControl item, just bind a Button to a View Model for 
+             the item of the ListView or so on.
+            </summary>
+        </member>
+        <member name="P:MvvmBindingPack.BindCommandBase.ExecuteMethodName">
+            <summary>
+            The method name of a source instance that performs as <see cref="M:System.Windows.Input.ICommand.Execute(System.Object)"/> method.
+            It's mutually exclusive versus 'ExecutePropertyName'.
+            </summary>
+        </member>
+        <member name="P:MvvmBindingPack.BindCommandBase.ExecutePropertyName">
+            <summary>
+            The property name of a source instance that has a type of <see cref="T:System.Action"/> delegate
+            that performs as <see cref="M:System.Windows.Input.ICommand.Execute(System.Object)"/> method.
+            It's mutually exclusive versus 'ExecuteMethodName'.
+            </summary>
+        </member>
+        <member name="P:MvvmBindingPack.BindCommandBase.CanExecuteBooleanPropertyName">
+            <summary>
+            The property name of a source instance that refers to Boolean property that would be return 
+            by <see cref="M:System.Windows.Input.ICommand.CanExecute(System.Object)"/> method. INotifyPropertyChanged interface will be subscribed
+            to trigger event "event EventHandler <see cref="E:System.Windows.Input.ICommand.CanExecuteChanged"/>".
+            It's mutually exclusive versus CanExecuteMethodName, CanExecutePropertyName,
+            EventToInvokeCanExecuteChanged and PropertyActionCanExecuteChanged.
+            </summary>
+        </member>
+        <member name="P:MvvmBindingPack.BindCommandBase.CanExecuteMethodName">
+            <summary>
+            The method name of a source instance that performs as <see cref="M:System.Windows.Input.ICommand.CanExecute(System.Object)"/> method.
+            It's mutually exclusive versus 'CanExecutePropertyName'.
+            </summary>
+        </member>
+        <member name="P:MvvmBindingPack.BindCommandBase.CanExecutePropertyName">
+            <summary>
+            The property name of a source instance that has a type of System.Func &lt; object, bool &gt; delegate
+            that performs as <see cref="M:System.Windows.Input.ICommand.CanExecute(System.Object)"/> method.
+            It's mutually exclusive versus 'CanExecuteMethodName'.
+            </summary>
+        </member>
+        <member name="P:MvvmBindingPack.BindCommandBase.EventToInvokeCanExecuteChanged">
+            <summary>
+            Name of an event class member to which will be added a delegate for rising an event in the proxy class, "event EventHandler <see cref="E:System.Windows.Input.ICommand.CanExecuteChanged"/>".
+            Notification delegate of types <see cref="T:System.Action"/> or <see cref="T:System.EventHandler"/> will be added or removed synchronously when the event handler will be add or removed in 
+            "event EventHandler <see cref="E:System.Windows.Input.ICommand.CanExecuteChanged"/>".
+            It's mutually exclusive versus 'PropertyActionCanExecuteChanged'.
+            </summary>
+        </member>
+        <member name="P:MvvmBindingPack.BindCommandBase.PropertyActionCanExecuteChanged">
+            <summary>
+            Name of a property that will accept a delegate of <see cref="T:System.Action"/> type that can be used for rising an event in the proxy class, "event EventHandler <see cref="E:System.Windows.Input.ICommand.CanExecuteChanged"/>".
+            Notification delegate of types <see cref="T:System.Action"/> or <see cref="T:System.EventHandler"/> will be set or cleared synchronously when the event handler will be add or removed in 
+            "event EventHandler <see cref="E:System.Windows.Input.ICommand.CanExecuteChanged"/>".
+            It's mutually exclusive versus 'EventToInvokeCanExecuteChanged'.
+            </summary>
+        </member>
+        <member name="M:MvvmBindingPack.BindCommandBase.ProvideValue(System.IServiceProvider)">
+            <summary>
+            Returns an object that should be set on the property which this extension is set on.
+            </summary>
+            <param name="serviceProvider">An object that can provide services for the markup extension.</param>
+            <returns>The object value to set on the property where the markup extension provided value is evaluated.</returns>
+        </member>
+        <member name="T:MvvmBindingPack.BindCommandIoc">
+            <summary>
+            WPF and WinRt XAML mark-up extension of Inversion of Controls binding.
+            Binds <see cref="T:System.Windows.Input.ICommand"/> interface via CommandHandlerProxy class to a target property by resolving it through the generic Service Locator interface.
+            </summary>
+        </member>
+        <member name="P:MvvmBindingPack.BindCommandIoc.ServiceType">
+            <summary>
+            Type or type name(string) of the requested object.
+            </summary>
+        </member>
+        <member name="P:MvvmBindingPack.BindCommandIoc.ServiceKey">
+            <summary>
+            Key (string) of the requested object.
+            </summary>
+        </member>
+        <member name="M:MvvmBindingPack.BindCommandIoc.#ctor">
+            <summary>
+            Default constructor.
+            </summary>
+        </member>
+        <member name="M:MvvmBindingPack.BindCommandIoc.#ctor(System.Object)">
+            <summary>
+            Constructs the class with a requested service type.
+            </summary>
+            <param name="serviceType">Type or type name of the requested object.</param>
+        </member>
+        <member name="M:MvvmBindingPack.BindCommandIoc.ObtainSourceObject(System.IServiceProvider)">
+            <summary>
+            Get source object for binding.
+            </summary>
+            <param name="serviceProvider">Object that can provide services for the markup extension</param>
+            <returns>Reference to a source object.</returns>
+        </member>
+        <member name="T:MvvmBindingPack.BindCommandResource">
+            <summary>
+            WPF and WinRt XAML mark-up extension.
+            Binds Command property to <see cref="T:System.Windows.Input.ICommand"/> interface via a proxy class when a source belongs to an object located in resource dictionaries.
+            </summary>
+        </member>
+        <member name="P:MvvmBindingPack.BindCommandResource.ResourceKey">
+            <summary>
+             Gets or sets the key value passed by this static resource reference. The
+             key is used to return the object matching that key in resource dictionaries.
+            </summary>
+        </member>
+        <member name="M:MvvmBindingPack.BindCommandResource.ObtainSourceObject(System.IServiceProvider)">
+            <summary>
+            Get a source object for binding, an object matching the key in resource dictionaries.
+            </summary>
+            <param name="serviceProvider">Object that can provide services for the markup extension.</param>
+            <returns>Reference to a source object.</returns>
+        </member>
+        <member name="M:MvvmBindingPack.BindCommandResource.#ctor">
+            <summary>
+            Default constructor.
+            </summary>
+        </member>
+        <member name="M:MvvmBindingPack.BindCommandResource.#ctor(System.Object)">
+            <summary>
+            Constructs the class with a requested resource key.
+            </summary>
+            <param name="resourceKey">Requested resource key.</param>
+        </member>
+        <member name="T:MvvmBindingPack.BindEventHandler">
+            <summary>
+            XAML mark-up, BindXAML.AddEvents and BindXAML.AddPropertyChangeEvents extensions; 
+            it binds a control event to a method with a compatible signature of the object which is located in DataContext referenced object.
+            </summary>
+        </member>
+        <member name="P:MvvmBindingPack.BindEventHandler.Source">
+            <summary>
+            It is a "back-door" feature which allows to setup the source object. If it is not set on, by default,
+            the markup extension will use the defined DataContext property value.
+            It is referring to the source object which has the method or property used by the markup extension. 
+            There may be used {IocBinding ...} or other "agnostic" mark up extension(not {Binding ...}) which provides by the independent way a source object.
+            </summary>
+        </member>
+        <member name="M:MvvmBindingPack.BindEventHandler.#ctor">
+            <summary>
+            Default constructor.
+            </summary>
+        </member>
+        <member name="M:MvvmBindingPack.BindEventHandler.#ctor(System.Object)">
+            <summary>
+            Constructs the class with a requested source.
+            </summary>
+            <param name="source">The source object.</param>
+        </member>
+        <member name="M:MvvmBindingPack.BindEventHandler.ObtainSourceObject(System.IServiceProvider)">
+            <summary>
+            Get source object for binding. 
+            If it is not set on, by default the method will search the first defined DataContext property value.
+            </summary>
+            <param name="serviceProvider">An object that can provide services for the markup extension.</param>
+            <returns>Reference to a source object.</returns>
+        </member>
+        <member name="T:MvvmBindingPack.BindEventHandlerBase">
+            <summary>
+            WPF and WinRt XAML mark-up extension.
+            The abstract RoutedEventHandler binding class of WPF XAML mark-up extension.
+            Base class for implementing of binding to control's <see cref="T:System.EventHandler"/> property type to a class member of a source object.
+            </summary>
+        </member>
+        <member name="M:MvvmBindingPack.BindEventHandlerBase.DesignRoutedEventHandler(System.Object,System.EventArgs)">
+            <summary>
+            Design time stub for event handler
+            </summary>
+        </member>
+        <member name="P:MvvmBindingPack.BindEventHandlerBase.TargetObject">
+            <summary>
+            Used for late binding to dependency property
+            </summary>
+        </member>
+        <member name="P:MvvmBindingPack.BindEventHandlerBase.TargetProperty">
+            <summary>
+            Used for late binding to dependency property
+            </summary>
+        </member>
+        <member name="P:MvvmBindingPack.BindEventHandlerBase.ResolvedEventHandler">
+            <summary>
+            Event handler hat was provided as a resulted.
+            </summary>
+        </member>
+        <member name="M:MvvmBindingPack.BindEventHandlerBase.ObtainSourceObject(System.IServiceProvider)">
+            <summary>
+            Get a source object for binding.
+            </summary>
+            <param name="serviceProvider">The object that can provide services for the markup extension.</param>
+            <returns></returns>
+        </member>
+        <member name="P:MvvmBindingPack.BindEventHandlerBase.DeepScanAllTrees">
+            <summary>
+             If it is set to “true”, all DataContext properties in the logical tree will be scanned until the math to a property
+             or method name (PropertyName, MethodName). Smart feature allows to ignore the current DataContext property value and
+             traverse to other parent DataContext value.If set on true, it will cause to scan for the DataContext property objects
+             over the trees and get the first one that contains the binding property or method. It used in case when there is need 
+             to ignore the binding ItemsSource DataContext for the ItemsControl item, just bind a Button to a View Model for 
+             the item of the ListView or so on.
+            </summary>
+        </member>
+        <member name="P:MvvmBindingPack.BindEventHandlerBase.PropertyName">
+            <summary>
+            The property name of the source instance that contains <see cref="T:System.EventHandler"/> delegate.
+            It's mutually exclusive versus 'MethodName'. The property conducts "one time target initialization" meaning.
+            Further changes of the property doesn't have any affects on event handling.
+            </summary>
+        </member>
+        <member name="P:MvvmBindingPack.BindEventHandlerBase.MethodName">
+            <summary>
+            The method name of the source instance that has RoutedEventHandler delegate signature.
+            It's mutually exclusive versus 'PropertyName'.
+            </summary>
+        </member>
+        <member name="P:MvvmBindingPack.BindEventHandlerBase.TargetPropertyName">
+            <summary>
+            The Target property name.
+            </summary>
+        </member>
+        <member name="P:MvvmBindingPack.BindEventHandlerBase.TargetEventName">
+            <summary>
+            The target event name;.
+            </summary>
+        </member>
+        <member name="M:MvvmBindingPack.BindEventHandlerBase.ProvideValue(System.IServiceProvider)">
+            <summary>
+            Returns an object that should be set on the property where this extension is applied.
+            </summary>
+            <param name="serviceProvider">An object that can provide services for the markup extension.</param>
+            <returns>The object value to set on the property where the markup extension provided value is evaluated.</returns>
+        </member>
+        <member name="T:MvvmBindingPack.BindEventHandlerIoc">
+            <summary>
+            WPF and WinRt XAML mark-up extension.
+            Binds <see cref="T:System.EventHandler"/> property type to a target property by resolving it through the generic Service Locator interface.
+            </summary>
+        </member>
+        <member name="P:MvvmBindingPack.BindEventHandlerIoc.ServiceType">
+            <summary>
+            Type or type name (string) of the requested object.
+            </summary>
+        </member>
+        <member name="P:MvvmBindingPack.BindEventHandlerIoc.ServiceKey">
+            <summary>
+            Key (string) of the requested object.
+            </summary>
+        </member>
+        <member name="M:MvvmBindingPack.BindEventHandlerIoc.#ctor">
+            <summary>
+            Default constructor.
+            </summary>
+        </member>
+        <member name="M:MvvmBindingPack.BindEventHandlerIoc.#ctor(System.Object)">
+            <summary>
+            Constructs the class with a requested service type.
+            </summary>
+            <param name="serviceType">Type or type name of the requested object.</param>
+        </member>
+        <member name="M:MvvmBindingPack.BindEventHandlerIoc.ObtainSourceObject(System.IServiceProvider)">
+            <summary>
+            Get source object for binding
+            </summary>
+            <param name="serviceProvider">Object that can provide services for the markup extension</param>
+            <returns></returns>
+        </member>
+        <member name="T:MvvmBindingPack.BindEventHandlerResource">
+            <summary>
+            WPF and WinRt XAML mark-up extension.
+            Binds control's <see cref="T:System.EventHandler"/> property type to a source class member of an object located in resource dictionaries.
+            </summary>
+        </member>
+        <member name="P:MvvmBindingPack.BindEventHandlerResource.ResourceKey">
+            <summary>
+             Gets or sets the key value passed by a static resource reference. The
+             key is used to return the object matching that key in resource dictionaries.
+            </summary>
+        </member>
+        <member name="M:MvvmBindingPack.BindEventHandlerResource.ObtainSourceObject(System.IServiceProvider)">
+            <summary>
+            Get a source object for binding, an object matching the key in resource dictionaries.
+            </summary>
+            <param name="serviceProvider">Object that can provide services for the markup extension.</param>
+            <returns></returns>
+        </member>
+        <member name="M:MvvmBindingPack.BindEventHandlerResource.#ctor">
+            <summary>
+            Default constructor.
+            </summary>
+        </member>
+        <member name="M:MvvmBindingPack.BindEventHandlerResource.#ctor(System.Object)">
+            <summary>
+            Constructs the class with a requested resource key.
+            </summary>
+            <param name="resourceKey">Requested resource key.</param>
+        </member>
+        <member name="T:MvvmBindingPack.BindHelper">
+            <summary>
+             Application Binder Helper.
+            </summary>
+            <summary>
+            Partial class contains a collection of helpers. 
+            </summary>
+            <summary>
+            Class methods extensions for extracting info type objects from a class instance.
+            </summary>
+        </member>
+        <member name="M:MvvmBindingPack.BindHelper.LocateAppendedViewModels(System.Object)">
+            <summary>
+            Locate properties and fields that marked with attribute <see cref="T:MvvmBindingPack.AppendViewModelAttribute"/>
+            </summary>
+            <param name="obj">Object to scan</param>
+            <returns>Returns the list of located objects.</returns>
+        </member>
+        <member name="M:MvvmBindingPack.BindHelper.LocateResource(System.Windows.FrameworkElement,System.Object)">
+            <summary>
+            Find an element in resource directories. The page resource directory will be 
+            check before the application resource directory.
+            </summary>
+            <param name="frameworkElement">XAML object element that contains the intended page content.</param>
+            <param name="resourceKey">A key object that referenced to an element in the resource directory.</param>/// Locate the Resource element.
+            <returns>Resolved resource element.</returns>
+        </member>
+        <member name="M:MvvmBindingPack.BindHelper.LocateResourceFromLogicalTree(System.Windows.FrameworkElement,System.Object)">
+            <summary>
+            Find an element in resource directories. The logical tree will be scanning.
+            </summary>
+            <param name="frameworkElement">XAML object element that contains the intended page content.</param>
+            <param name="resourceKey">A key object that referenced to an element in the resource directory.</param>/// Locate the Resource element.
+            <returns>Resolved resource element.</returns> 
+        </member>
+        <member name="M:MvvmBindingPack.BindHelper.LocateResourceFromVisualTree(System.Windows.FrameworkElement,System.Object)">
+            <summary>
+            Find an element in resource directories. The visual tree will be scanning.
+            </summary>
+            <param name="frameworkElement">XAML object element that contains the intended page content.</param>
+            <param name="resourceKey">A key object that referenced to an element in the resource directory.</param>/// Locate the Resource element.
+            <returns>Resolved resource element.</returns>
+        </member>
+        <member name="P:MvvmBindingPack.BindHelper.IsInDesignModeStatic">
+            <summary>
+            Gets a value indicating whether the running control is in design mode (running in Blend or Visual Studio).
+            </summary>
+        </member>
+        <member name="M:MvvmBindingPack.BindHelper.LocateValidDependencyPropertyByLogicalTree(System.Windows.DependencyObject,System.Windows.DependencyProperty,System.String,System.String,System.String,System.Type)">
+            <summary>
+            Locate the first defined value of Dependency property by walking the logical tree up to the roots.
+            </summary>
+            <param name="depObject">The DependencyObject object.</param>
+            <param name="depProp">The dependency property to locate.</param>
+            <param name="methodName">The method name in the dependency property object.
+            The properties will be scan up over the logical tree until the  method name will be in math  to the method in the object 
+            that represented by a property value.</param>
+            <param name="properyName">The property name in the dependency property object.
+            The properties will be scan up over the logical tree until the  property name will be in math  to the property in the object 
+            that represented by a property value.</param>
+            <param name="eventName">The event name in the dependency property object.
+            The properties will be scan up over the logical tree until the  event name will be in math  to the event in the object 
+            that represented by a property value.</param>
+            <param name="matchType">The type which should match with a property or event or method name or by it self.</param>
+            <returns>The value of located defined property or null.</returns>
+        </member>
+        <member name="M:MvvmBindingPack.BindHelper.LocateValidDependencyPropertyByVisualTree(System.Windows.DependencyObject,System.Windows.DependencyProperty,System.String,System.String,System.String,System.Type)">
+            <summary>
+            Locate the first defined value of Dependency property by walking the Visual tree up to the roots.
+            </summary>
+            <param name="depObject">The DependencyObject object.</param>
+            <param name="depProp">The dependency property to locate.</param>
+            <param name="methodName">The method name in the dependency property object.
+            The properties will be scan up over the visual tree until the  method name will be in math  to the method in the object 
+            that represented by a property value.</param>
+            <param name="properyName">The property name in the dependency property object.
+            The properties will be scan up over the visual tree until the  property name will be in math  to the property in the object 
+            that represented by a property value.</param>
+            <param name="eventName">The event name in the dependency property object.
+            The properties will be scan up over the visual tree until the  event name will be in math  to the event in the object 
+            that represented by a property value.</param>
+            <param name="matchType">The type which should match with a property or event or method name or by it self.</param>
+            <returns>The value of the located dependency property or null.</returns>
+        </member>
+        <member name="M:MvvmBindingPack.BindHelper.LocateValidDependencyPropertyByAllTrees(System.Windows.DependencyObject,System.Windows.DependencyProperty,System.String,System.String,System.String,System.Type)">
+            <summary>
+            Locate the first defined value of Dependency property by walking the all trees up to the roots.
+            </summary>
+            <param name="depObject">The DependencyObject object.</param>
+            <param name="depProp">The dependency property to locate.</param>
+            <param name="methodName">The method name in the dependency property object.
+            The properties will be scan up over the visual tree until the  method name will be in math  to the method in the object 
+            that represented by a property value.</param>
+            <param name="properyName">The property name in the dependency property object.
+            The properties will be scan up over the visual tree until the  property name will be in math  to the property in the object 
+            that represented by a property value.</param>
+            <param name="eventName">The event name in the dependency property object.
+            The properties will be scan up over the visual tree until the  event name will be in math  to the event in the object 
+            that represented by a property value.</param>
+            <param name="matchType">The type which should match with a property or event or method name or by it self.</param>
+            <returns>The value of the located dependency property or null.</returns>
+        </member>
+        <member name="M:MvvmBindingPack.BindHelper.ValidateValue(System.Object,System.String,System.String,System.String,System.Type)">
+            <summary>
+            Validates an object if it is match to the type or/and members content.
+            </summary>
+            <param name="value">The object to validate.</param>
+            <param name="methodName">The method name in the dependency property object.
+            The properties will be scan up over the visual tree until the  method name will be in math  to the method in the object 
+            that represented by a property value.</param>
+            <param name="propertyName">The property name in the dependency property object.
+            The properties will be scan up over the visual tree until the  property name will be in math  to the property in the object 
+            that represented by a property value.</param>
+            <param name="eventName">The event name in the dependency property object.
+            The properties will be scan up over the visual tree until the  event name will be in math  to the event in the object 
+            that represented by a property value.</param>
+            <param name="matchType">The type which should match with a property or event or method name or by it self.</param>
+            <returns>Returns true if it has a match.</returns>
+        </member>
+        <member name="M:MvvmBindingPack.BindHelper.LocateFirstParentTypeOfControlByLogicalTree(System.Windows.DependencyObject,System.Type)">
+            <summary>
+            Locate the first parent control that is a implementation or subclass of requested type by walking the Visual tree up to the root.
+            </summary>
+            <param name="depObject">The DependencyObject object.</param>
+            <param name="typeToLocate">The type of the object to locate.</param>
+            <returns>The value of located defined property or null.</returns>
+        </member>
+        <member name="M:MvvmBindingPack.BindHelper.LocateFirstParentTypeOfControlByVisualTree(System.Windows.DependencyObject,System.Type)">
+            <summary>
+            Locate the first parent control that is a implementation or subclass of requested type by walking the Visual tree up to the root.
+            </summary>
+            <param name="depObject">The DependencyObject object.</param>
+            <param name="typeToLocate">The type of the object to locate.</param>
+            <returns>The value of located defined property or null.</returns>
+        </member>
+        <member name="M:MvvmBindingPack.BindHelper.LocateFirstParentTypeOfControlByAllTrees(System.Windows.DependencyObject,System.Type)">
+            <summary>
+            Locate the first parent control that is a implementation or subclass of requested type by walking the all trees up to the root.
+            </summary>
+            <param name="depObject">The dependency object.</param>
+            <param name="typeToLocate">The type of the object to locate.</param>
+            <returns>The value of located defined property or null.</returns>
+        </member>
+        <member name="M:MvvmBindingPack.BindHelper.ResolveTypeByName(System.String,System.Boolean)">
+            <summary>
+            Windows Application, Resolves a Type by using the Type Name.
+            </summary>
+            <param name="typeName">Type name to find.</param>
+            <param name="includeInterfaces">When it is true, interfaces will included in the result list.</param>
+            <returns>Resolved type.</returns>
+        </member>
+        <member name="M:MvvmBindingPack.BindHelper.ResolveTypesByNameSpace(System.String,System.Boolean)">
+            <summary>
+            Windows Application, Resolves a Type by using the Type Name.
+            </summary>
+            <param name="nameSpace">Type name to find.</param>
+            <param name="includeInterfaces">When it is true, interfaces will included in the result list.</param>
+            <returns>Resolved type.</returns>
+        </member>
+        <member name="M:MvvmBindingPack.BindHelper.GetLoadedAssemblies(System.Boolean)">
+            <summary>
+             Get the list of loaded assemblies.
+            </summary>
+            <returns>The list of loaded assemblies.</returns>
+        </member>
+        <member name="M:MvvmBindingPack.BindHelper.TypesFromAssemblies(System.Collections.Generic.IEnumerable{System.Reflection.Assembly},System.Boolean,System.Boolean)">
+            <summary>
+            Get all types from a list of assemblies.
+            </summary>
+            <param name="assemblies">The list of assemblies.</param>
+            <param name="includeInterfaces">When it is true, interfaces will included in the result list.</param>
+            <param name="skipOnError">When it is true, then skip errors.</param>
+            <returns>The list discovered types from the list of assemblies.</returns>
+        </member>
+        <member name="M:MvvmBindingPack.BindHelper.ObtainIocValue(System.Type,System.String)">
+            <summary>
+             Extension method that helps to resolve a service reference from the DI container.
+            </summary>
+            <param name="serviceType">Service type.</param>
+            <param name="serviceKey">Service key.</param>
+            <returns>The requested service instance or has an exception.</returns>
+        </member>
+        <member name="M:MvvmBindingPack.BindHelper.ValidateElementName(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="name"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MvvmBindingPack.BindHelper.EventHandlerDelegateFromMethod(System.String,System.Object,System.Type)">
+            <summary>
+            Creates the delegate with requested type from a method.
+            </summary>
+            <param name="methodName">The method name that can be used as a delegate.</param>
+            <param name="sourceObject">The source object that contains a method.</param>
+            <param name="desiredDelegateType">The delegate type.</param>
+            <returns></returns>
+        </member>
+        <member name="M:MvvmBindingPack.BindHelper.EventHandlerDelegateFromMethodInfo(System.Object,System.Type,System.Reflection.MethodInfo)">
+            <summary>
+            Creates the delegate with requested type from a method info.
+            </summary>
+            <param name="info">The method info that can be used as a delegate.</param>
+            <param name="sourceObject">The source object that contains a method.</param>
+            <param name="desiredDelegateType">The delegate type.</param>
+            <returns></returns>
+        </member>
+        <member name="M:MvvmBindingPack.BindHelper.EventHandlerDelegateFromProperty(System.String,System.Object,System.Type)">
+            <summary>
+            Obtains the property value that expected to be a delegate.
+            </summary>
+            <param name="propertyName">The property name.</param>
+            <param name="sourceObject">The source object that contains a method</param>
+            <param name="desiredDelegateType"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MvvmBindingPack.BindHelper.CommandExecuteDelegate(System.String,System.Object)">
+            <summary>
+            Constructs the proxy class implementation of <see cref="T:System.Windows.Input.ICommand"/> interface.
+            </summary>
+            <param name="executeMethod">The method name of a source instance that performs as <see cref="M:System.Windows.Input.ICommand.Execute(System.Object)"/>.</param>
+            <param name="sourceBase">The instance of the source object.</param>
+            <returns>The proxy class that provides the implementation of <see cref="T:System.Windows.Input.ICommand"/> interface for case of command binding.</returns>
+        </member>
+        <member name="M:MvvmBindingPack.BindHelper.CommandCanExecuteDelegate(System.String,System.Object)">
+            <summary>
+            Constructs the proxy class implementation of <see cref="T:System.Windows.Input.ICommand"/> interface.
+            </summary>
+            <param name="canExecuteMethod">The method name of a source instance that performs as <see cref="M:System.Windows.Input.ICommand.CanExecute(System.Object)"/>.</param>
+            <param name="sourceBase">The instance of the source object.</param>
+            <returns>The proxy class that provides the implementation of <see cref="T:System.Windows.Input.ICommand"/> interface for case of command binding.</returns>
+        </member>
+        <member name="P:MvvmBindingPack.BindHelper.IsIocContainerActive">
+            <summary>
+            Returns true if the DI container has been setup.
+            </summary>
+        </member>
+        <member name="M:MvvmBindingPack.BindHelper.GetClrEvents(System.Object)">
+            <summary>
+            Gets all CLR events.
+            </summary>
+            <param name="obj">Object instance.</param>
+            <returns>Returns System.Collections.Generic.Dictionary(string, PropertyInfo) object.</returns>
+        </member>
+        <member name="M:MvvmBindingPack.BindHelper.LocateClrEvent(System.String,System.Object)">
+            <summary>
+            Locates a CLR event.
+            </summary>
+            <param name="eventName">Property name may be in format OwnerType.PropertyName' .</param>
+            <param name="obj">Object instance.</param>
+            <returns> Returns  object or null.</returns>
+        </member>
+        <member name="M:MvvmBindingPack.BindHelper.GetClrProperties(System.Object)">
+            <summary>
+            Gets all CLR properties.
+            </summary>
+            <param name="obj">Object instance.</param>
+            <returns>Returns System.Collections.Generic.Dictionary(string, PropertyInfo) object.</returns>
+        </member>
+        <member name="M:MvvmBindingPack.BindHelper.LocateClrProperty(System.String,System.Object)">
+            <summary>
+            Locates a CLR property.
+            </summary>
+            <param name="propertyName">Property name may be in format OwnerType.PropertyName' .</param>
+            <param name="obj">Object instance.</param>
+            <returns> Returns  object or null.</returns>
+        </member>
+        <member name="M:MvvmBindingPack.BindHelper.GetDefinedInTypeRoutedEvents(System.Windows.DependencyObject)">
+            <summary>
+            Gets all dependency properties that have set values from any kind of source.
+            </summary>
+            <param name="obj">Object instance.</param>
+            <returns>Returns System.Collections.Generic.Dictionary(string, DependencyProperty) object.</returns>
+        </member>
+        <member name="M:MvvmBindingPack.BindHelper.LocateRoutedEvent(System.String,System.Windows.DependencyObject)">
+            <summary>
+            Locates a dependency property defined in a type and including attached property.
+            </summary>
+            <param name="eventName">Property name may be in format OwnerType.PropertyName' .</param>
+            <param name="obj">Object instance.</param>
+            <returns> Returns System.Windows.DependencyProperty object or null.</returns>
+        </member>
+        <member name="M:MvvmBindingPack.BindHelper.GetDefinedInTypeDependencyProperties(System.Windows.DependencyObject)">
+            <summary>
+            Gets all dependency properties that have set values from any kind of source.
+            </summary>
+            <param name="obj">Object instance.</param>
+            <returns>Returns System.Collections.Generic.Dictionary(string, DependencyProperty) object.</returns>
+        </member>
+        <member name="M:MvvmBindingPack.BindHelper.LocateDependencyProperty(System.String,System.Windows.DependencyObject)">
+            <summary>
+            Locates a dependency property defined in a type and including attached property.
+            </summary>
+            <param name="propertyName">Property name may be in format OwnerType.PropertyName' .</param>
+            <param name="obj">Object instance.</param>
+            <returns> Returns System.Windows.DependencyProperty object or null.</returns>
+        </member>
+        <member name="M:MvvmBindingPack.BindHelper.LocateDependencyPropertyFromTypeHive(System.String,System.String)">
+            <summary>
+            Locates a dependency by looking of the proper name of static filed in located type in loaded assemblies.
+            </summary>
+            <param name="propertyName">Property name.</param>
+            <param name="typeName"></param>
+            <returns> Returns System.Windows.DependencyProperty object or null.</returns>
+        </member>
+        <member name="M:MvvmBindingPack.BindHelper.LocateDependencyPropertyKey(System.String,System.Windows.DependencyObject)">
+            <summary>
+            Locates a dependency property defined in a type and including attached property.
+            </summary>
+            <param name="propertyName">Property name may be in format OwnerType.PropertyName' .</param>
+            <param name="obj">Object instance.</param>
+            <returns> Returns System.Windows.DependencyProperty object or null.</returns>
+        </member>
+        <member name="M:MvvmBindingPack.BindHelper.LocateDependencyPropertyKeyFromTypeHive(System.String,System.String)">
+            <summary>
+            Locates a dependency by looking of the proper name of static filed in located type in loaded assemblies.
+            </summary>
+            <param name="propertyName">Property name.</param>
+            <param name="typeName"></param>
+            <returns> Returns System.Windows.DependencyProperty object or null.</returns>
+        </member>
+        <member name="M:MvvmBindingPack.BindHelper.LocateRoutedEventFromTypeHive(System.String,System.String)">
+            <summary>
+            Locates a routed event by looking of the proper name of static filed in located type in loaded assemblies.
+            </summary>
+            <param name="eventName">Event name.</param>
+            <param name="typeName"></param>
+            <returns> Returns System.Windows.DependencyProperty object or null.</returns>
+        </member>
+        <member name="M:MvvmBindingPack.BindHelper.FindVisualChildByType``1(System.Windows.DependencyObject)">
+            <summary>
+            Locates a visual child element by dedicated type;
+            </summary>
+            <typeparam name="T">Type to locate.</typeparam>
+            <param name="obj">Object which visual children will examined.</param>
+            <returns></returns>
+        </member>
+        <member name="M:MvvmBindingPack.BindHelper.SplitNameByCase(System.String)">
+            <summary>
+            Splits the name into  parts by a capital case and '_'.
+            The character '_' doesn't include into the name part.
+            </summary>
+            <param name="pascalCasedName"></param>
+            <returns>The list of parts.</returns>
+        </member>
+        <member name="P:MvvmBindingPack.BindHelper.KnownPrefixExclude">
+            <summary>
+            Known system types prefixes.
+            </summary>
+        </member>
+        <member name="M:MvvmBindingPack.BindHelper.FindNonSystemParentClassNames(System.Windows.DependencyObject,System.Boolean)">
+            <summary>
+            Finds the list of non system types by walking the logical tree up to the roots.
+            </summary>
+            <param name="obj">Start dependency object in the logical tree.</param>
+            <param name="useTheFirstOne">If it is true, the list is limited by the first found type.</param>
+            <returns></returns>
+        </member>
+        <member name="M:MvvmBindingPack.BindHelper.CheckKnownTypePrefix(System.String)">
+            <summary>
+            Checks if the method names starts from the specifics prefixes.
+            </summary>
+            <param name="fullName">The method name.</param>
+            <returns>True if it starts from the specific prefix.</returns>
+        </member>
+        <member name="M:MvvmBindingPack.BindHelper.CalculateMatchingRank(System.Collections.Generic.List{System.String},System.Collections.Generic.List{System.String})">
+            <summary>
+            
+            </summary>
+            <param name="splitCaseNameCandidate"></param>
+            <param name="splitCaselName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MvvmBindingPack.BindHelper.WpfGetTypeDescriptorDependencyProperties(System.Windows.DependencyObject)">
+            <summary>
+            
+            </summary>
+            <param name="obj"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MvvmBindingPack.BindHelper.WpfLocateTypeDescriptorDependencyProperty(System.String,System.Windows.DependencyObject)">
+            <summary>
+            
+            </summary>
+            <param name="propertyName">Property name may be in format OwnerType.PropertyName' .</param>
+            <param name="obj">Object instance.</param>
+            <returns> Returns  object or null.</returns>
+        </member>
+        <member name="M:MvvmBindingPack.BindHelper.WpfLocalOnlyDependencyProperties(System.Windows.DependencyObject)">
+            <summary>
+            Gets all dependency properties that have local values set.
+            </summary>
+            <param name="obj">Object instance.</param>
+            <returns>Returns System.Collections.Generic.Dictionary(string, DependencyProperty) object.</returns>
+        </member>
+        <member name="M:MvvmBindingPack.BindHelper.WpfLocateLocalOnlyDependencyProperty(System.String,System.Windows.DependencyObject)">
+            <summary>
+            Locates a dependency property that has a local value set.
+            </summary>
+            <param name="propertyName">Property name may be in format OwnerType.PropertyName' .</param>
+            <param name="obj">Object instance.</param>
+            <returns> Returns System.Windows.DependencyProperty object or null.</returns>
+        </member>
+        <member name="M:MvvmBindingPack.BindHelper.GetPropertyInfo(System.Object,System.String)">
+            <summary>
+            Gets property info from a class.
+            </summary>
+            <param name="obj">The target object which is to extract from.</param>
+            <param name="propertyName">The name of the subject to locate.</param>
+            <returns>Info object or null if it is not found.</returns>
+        </member>
+        <member name="M:MvvmBindingPack.BindHelper.GetPropertyInfo(System.Type,System.String)">
+            <summary>
+            Gets property info from a class.
+            </summary>
+            <param name="type">The target type which is to extract from.</param>
+            <param name="propertyName">The name of the subject to locate.</param>
+            <returns>Info object or null if it is not found.</returns>
+        </member>
+        <member name="M:MvvmBindingPack.BindHelper.GetMethodInfo(System.Object,System.String)">
+            <summary>
+            Gets methods info from a class.
+            </summary>
+            <param name="obj">The target object which is to extract from.</param>
+            <param name="methodName">The name of the subject to locate.</param>
+            <returns>Info object or null if it is not found.</returns>
+        </member>
+        <member name="M:MvvmBindingPack.BindHelper.GetMethodInfo(System.Type,System.String)">
+            <summary>
+            Gets methods info from a class.
+            </summary>
+            <param name="type">The target type which is to extract from.</param>
+            <param name="methodName">The name of the subject to locate.</param>
+            <returns>Info object or null if it is not found.</returns>
+        </member>
+        <member name="M:MvvmBindingPack.BindHelper.GetEventInfo(System.Object,System.String)">
+            <summary>
+            Gets event info from a class.
+            </summary>
+            <param name="obj">The target object which is to extract from.</param>
+            <param name="eventName">The name of the subject to locate.</param>
+            <returns>Info object or null if it is not found.</returns>
+        </member>
+        <member name="M:MvvmBindingPack.BindHelper.GetEventInfo(System.Type,System.String)">
+            <summary>
+            Gets event info from a class.
+            </summary>
+            <param name="type">The target type which is to extract from.</param>
+            <param name="eventName">The name of the subject to locate.</param>
+            <returns>Info object or null if it is not found.</returns>
+        </member>
+        <member name="M:MvvmBindingPack.BindHelper.GetFieldInfo(System.Object,System.String)">
+            <summary>
+            Gets event info from a class.
+            </summary>
+            <param name="obj">The target object which is to extract from.</param>
+            <param name="fieldName">The name of the subject to locate.</param>
+            <returns>Info object or null if it is not found.</returns>
+        </member>
+        <member name="M:MvvmBindingPack.BindHelper.GetFieldInfo(System.Type,System.String)">
+            <summary>
+            Gets field info from a class.
+            </summary>
+            <param name="type">The target type which is to extract from.</param>
+            <param name="fieldName">The name of the subject to locate.</param>
+            <returns>Info object or null if it is not found.</returns>
+        </member>
+        <member name="T:MvvmBindingPack.XClassTypeNameElement">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:MvvmBindingPack.XClassTypeNameElement.XNameForXClass">
+            <summary>
+            Dependency object "x:Name"; it used for wiring to View Model.
+            It will not match to type name.
+            </summary>
+        </member>
+        <member name="F:MvvmBindingPack.XClassTypeNameElement.XClassType">
+            <summary>
+            The type that owners this dependency object.
+            </summary>
+        </member>
+        <member name="F:MvvmBindingPack.XClassTypeNameElement.XClassDependencyObject">
+            <summary>
+            Dependency object 
+            </summary>
+        </member>
+        <member name="P:MvvmBindingPack.XClassTypeNameElement.FullxClassTypeName">
+            <summary>
+            The full type Name
+            </summary>
+        </member>
+        <member name="P:MvvmBindingPack.XClassTypeNameElement.XClassTypeNamespace">
+            <summary>
+            The type namespace
+            </summary>
+        </member>
+        <member name="P:MvvmBindingPack.XClassTypeNameElement.XClassTypeName">
+            <summary>
+            The type name
+            </summary>
+        </member>
+        <member name="T:MvvmBindingPack.BindXAML">
+            <summary>
+            The class supports an initialization/injection pattern. It's based on attached dependency property behaviors.
+            </summary>
+            <summary>
+            The class supports an initialization/injection pattern. It's based on attached dependency property behaviors.
+            XAML attached property, fake collection, is used for processing extensions: BindEventHandler, BindEventHandlerIoc, BindEventHandlerResource.
+             It binds a dependency property change event handler to the event handler in the View Model.
+            </summary>
+            <summary>
+            Supports based on the attached property behavior injection pattern.
+            </summary>
+            <summary>
+            Partial class contains a collection of attached properties. 
+            </summary>
+            <summary>
+            The class supports an initialization/injection pattern. It's based on attached dependency property behaviors.
+            </summary>
+            <summary>
+            The class supports an VM auto wiring/initialization/injection pattern. It's based on attached dependency property behaviors.
+            Partial class contains a collection of attached properties. 
+            </summary>
+        </member>
+        <member name="M:MvvmBindingPack.BindXAML.GetAddEvents(System.Windows.DependencyObject)">
+            <summary>
+            The attached dependency property returns the fake collection; it's used to add events to a FrameWorkElement object.
+            It provides the fake collection which executes the the delegate "ProcessAddEventItems" 
+            when "Add" a new item to the collection.
+            </summary>
+            <param name="dependencyObject">The target object for an attached dependency property.</param>
+            <returns>The fake collection for processing elements.</returns>
+        </member>
+        <member name="M:MvvmBindingPack.BindXAML.ProcessAddEventItems(System.Windows.DependencyObject,System.Object)">
+            <summary>
+            The method which will be called for the attached dependency property when  the new element is added to a fake collection.
+            </summary>
+            <param name="dependencyObject">The target FrameworkElement.</param>
+            <param name="item">The new object to add.</param>
+        </member>
+        <member name="M:MvvmBindingPack.BindXAML.GetAddPropertyChangeEvents(System.Windows.DependencyObject)">
+            <summary>
+            The attached dependency property returns the fake collection; it's used to add events to a FrameWorkElement object.
+            It provides the fake collection which executes the the delegate "ProcessAddEventItems" 
+            when "Add" a new item to the collection.
+            </summary>
+            <param name="dependencyObject">The target object for an attached dependency property.</param>
+            <returns>The fake collection for processing elements.</returns>
+        </member>
+        <member name="M:MvvmBindingPack.BindXAML.ProcessAddPropertyChangeEventItems(System.Windows.DependencyObject,System.Object)">
+            <summary>
+            The method which will be called for the attached dependency property when  the new element is added to a fake collection.
+            </summary>
+            <param name="dependencyObject">The target FrameworkElement.</param>
+            <param name="item">The new object to add.</param>
+        </member>
+        <member name="M:MvvmBindingPack.BindXAML.GetAssignProperties(System.Windows.DependencyObject)">
+            <summary>
+            Sets properties - (XAML attached property multi set pattern.)
+            </summary>
+            <param name="dependencyObject">The target FrameworkElement.</param>
+        </member>
+        <member name="M:MvvmBindingPack.BindXAML.ProcessSetPropertyItem(System.Windows.DependencyObject,System.Object)">
+            <summary>
+            Provides set a property - (XAML attached property set pattern.)
+            </summary>
+            <param name="dependencyObject">The target FrameworkElement.</param>
+            <param name="item">The item  object to add.</param>
+        </member>
+        <member name="F:MvvmBindingPack.BindXAML.AutoWiredViewModelProperty">
+            <summary>
+            Defines the "AutoWiredViewModel" inherited attached dependency property identifier.
+            </summary>
+        </member>
+        <member name="M:MvvmBindingPack.BindXAML.SetAutoWiredViewModel(System.Windows.DependencyObject,System.Object)">
+            <summary>
+            Attached property "AutoWiredViewModel" set accessor implementation.
+            Sets the local value of a dependency property, specified by its attached dependency property identifier.
+            </summary>
+            <param name="obj">The dependency object.</param>
+            <param name="value">The value to set to dependency property.</param>
+        </member>
+        <member name="M:MvvmBindingPack.BindXAML.GetAutoWiredViewModel(System.Windows.DependencyObject)">
+            <summary>
+            Attached property "AutoWiredViewModel" get accessor implementation.
+            Gets the local value of a dependency property, specified by its attached dependency property identifier.
+            </summary>
+            <param name="obj">The dependency object.</param>
+            <returns>Returns the current effective value.</returns>
+        </member>
+        <member name="M:MvvmBindingPack.BindXAML.SetBindToCommand(System.Windows.DependencyObject,System.Object)">
+            <summary>
+            Sets a new value for the attached dependency property.
+            Case WPF  - if an added object implements the MarkupExtension abstract class, the ProvideValue method will be called. The result 
+            of this method will be passed as a value. Otherwise the object instance will be passed as a value.
+            Case WinRt - Nothing will be called and an object instance will be passed as a value.
+            </summary>
+            <param name="dependencyObject">The target dependency object for an attached property.</param>
+            <param name="value">The value to set for a attached dependency property.</param>
+            <returns>WinRt should return a result an object for the attached property set type operation.</returns>
+        </member>
+        <member name="F:MvvmBindingPack.BindXAML.ProcessMvvmExtensionsProperty">
+            <summary>
+            XAML attached property, a fake collection, that used for processing extensions: AutoWireVmDataContext, AutoWireViewConrols
+            </summary>
+        </member>
+        <member name="M:MvvmBindingPack.BindXAML.GetProcessMvvmExtensions(System.Windows.DependencyObject)">
+            <summary>
+            The attached dependency property returns the fake collection; it's used to add events to a FrameWorkElement object.
+            It provides the fake collection which executes the the delegate "ProcessAddEventItems" 
+            when "Add" a new item to the collection.
+            </summary>
+            <param name="dependencyObject">The target object for an attached dependency property.</param>
+            <returns>The fake collection for processing elements.</returns>
+        </member>
+        <member name="M:MvvmBindingPack.BindXAML.ProcessAddMvvmExtensions(System.Windows.DependencyObject,System.Object)">
+            <summary>
+            The method which will be called for the attached dependency property when  the new element is added to a fake collection.
+            </summary>
+            <param name="dependencyObject">The target FrameworkElement.</param>
+            <param name="item">The new object to add.</param>
+        </member>
+        <member name="T:MvvmBindingPack.ViewModelClassAliasAttribute">
+            <summary>
+            The mapping attribute that adds to a class the extra alias "candidate type names".
+            It is used to map a View onto a View Model.
+            </summary>
+        </member>
+        <member name="P:MvvmBindingPack.ViewModelClassAliasAttribute.Aliases">
+            <summary>
+            Contains a collection of the View model  aliases.
+            </summary>
+        </member>
+        <member name="M:MvvmBindingPack.ViewModelClassAliasAttribute.#ctor(System.String)">
+            <summary>
+            Constructs the attribute for View model mapping.
+            </summary>
+            <param name="commaSeparatedAliases">The comma separated aliases of the candidate type name.</param>
+        </member>
+        <member name="T:MvvmBindingPack.ViewXNameAliasAttribute">
+            <summary>
+            The mapping attribute that marks a filed, method or property name (or x:Name candidate)
+            with set alias "names" + "targets" for View XAML x:Name element.
+            </summary>
+        </member>
+        <member name="P:MvvmBindingPack.ViewXNameAliasAttribute.HandledEventsToo">
+            <summary>
+            If it is true to register the handler such that it is invoked even when the routed event is marked handled in its event data.
+            </summary>
+        </member>
+        <member name="P:MvvmBindingPack.ViewXNameAliasAttribute.ValidatesOnDataErrors">
+            <summary>
+            The DataErrorValidationRule is a built-in validation rule that checks for errors that are raised by the IDataErrorInfo implementation of the source object.
+            </summary>
+        </member>
+        <member name="P:MvvmBindingPack.ViewXNameAliasAttribute.ValidatesOnNotifyDataErrors">
+            <summary>
+            When ValidatesOnNotifyDataErrors is true, the binding checks for and reports errors 
+            that are raised by a data source that implements INotifyDataErrorInfo.
+            </summary>
+        </member>
+        <member name="P:MvvmBindingPack.ViewXNameAliasAttribute.ValidatesOnExceptions">
+            <summary>
+            The ExceptionValidationRule is a built-in validation rule that checks for exceptions 
+            that are thrown during the update of the source property.
+            </summary>
+        </member>
+        <member name="P:MvvmBindingPack.ViewXNameAliasAttribute.BindingMode">
+            <summary>
+            Gets or sets a value that indicates the direction of the data flow in the binding.
+            </summary>
+        </member>
+        <member name="P:MvvmBindingPack.ViewXNameAliasAttribute.AliasName">
+            <summary>
+            Contains a collection of the XAML x:Name aliases.
+            </summary>
+        </member>
+        <member name="P:MvvmBindingPack.ViewXNameAliasAttribute.Targets">
+            <summary>
+            Contains the collection of the XAML x:Name element targets.
+            </summary>
+        </member>
+        <member name="M:MvvmBindingPack.ViewXNameAliasAttribute.#ctor(System.String,System.String)">
+            <summary>
+            Constructs the attribute for x:Name element and  target mapping.
+            </summary>
+            <param name="aliasName">Alias x:Name string. If it contains '_', it will be split on XAML x:Name element targets as well.</param>
+            <param name="commaSeparatedTargets">XAML x:Name element targets separated by comma.</param>
+        </member>
+        <member name="T:MvvmBindingPack.ViewTargetAttribute">
+            <summary>
+            Defines the mapping attribute that marks a method or property name (or x:Name candidate)
+            with set name targets for View XAML x:Name element.
+            </summary>
+        </member>
+        <member name="P:MvvmBindingPack.ViewTargetAttribute.Targets">
+            <summary>
+            Contains the collection of the XAML x:Name element targets.
+            </summary>
+        </member>
+        <member name="M:MvvmBindingPack.ViewTargetAttribute.#ctor(System.String)">
+            <summary>
+            Constructs the attribute for x:Name target mapping.
+            </summary>
+            <param name="commaSeparatedTargets">XAML x:Name element targets separated by comma.</param>
+        </member>
+        <member name="T:MvvmBindingPack.ViewXNameSourceObjectMappingAttribute">
+            <summary>
+            Defines the mapping attribute that marks the field of the System.Object type 
+            where the reference to XAML x:Named element will be set to.
+            </summary>
+        </member>
+        <member name="P:MvvmBindingPack.ViewXNameSourceObjectMappingAttribute.Sources">
+            <summary>
+            Contains the collection of the XAML x:Name source names.
+            </summary>
+        </member>
+        <member name="M:MvvmBindingPack.ViewXNameSourceObjectMappingAttribute.#ctor(System.String)">
+            <summary>
+            Constructs the attribute for XAML x:Named element mapping.
+            </summary>
+            <param name="commaSeparatedXNames">x:Names separated by comma.
+            If x:Name contains symbols '_', it will be cut at it.</param>
+        </member>
+        <member name="T:MvvmBindingPack.ViewXNameSourceTargetMappingAttribute">
+            <summary>
+            The mapping attribute that marks a field reference to ViewXNameSourceTarget type for
+             a View XAML x:Name element. This class is used to access to properties or events of the View XAML element.
+            </summary>
+        </member>
+        <member name="P:MvvmBindingPack.ViewXNameSourceTargetMappingAttribute.AliasName">
+            <summary>
+            Contains a collection of the XAML x:Name aliases.
+            </summary>
+        </member>
+        <member name="P:MvvmBindingPack.ViewXNameSourceTargetMappingAttribute.Targets">
+            <summary>
+            Contains the collection of the XAML x:Name element targets.
+            </summary>
+        </member>
+        <member name="M:MvvmBindingPack.ViewXNameSourceTargetMappingAttribute.#ctor(System.String,System.String)">
+            <summary>
+            Constructs the attribute for x:Name element and  target mapping.
+            </summary>
+            <param name="aliasName">Alias x:Name string. If it contains '_', it will be split on XAML x:Name element targets as well.</param>
+            <param name="commaSeparatedTargets">XAML x:Name element targets separated by comma.</param>
+        </member>
+        <member name="T:MvvmBindingPack.AppendViewModelAttribute">
+            <summary>
+            Defines the mapping attribute that appends(extends) the bindings list candidates with the reference type object members.
+            Value type, boxed value type and types started with "System" .. "MicroSoft" will be ignored.
+            The members are appended to a list, they are not inserted in the middle of the contained attribute class.
+            They have a low priority in the lookup. Recursive view model appending is not supported.
+            </summary>
+        </member>
+        <member name="T:MvvmBindingPack.CommandHandlerProxy">
+            <summary>
+            Proxy class that provides the proxy implementation of <see cref="T:System.Windows.Input.ICommand"/> interface for case of command binding in markup extensions.
+            </summary>
+        </member>
+        <member name="P:MvvmBindingPack.CommandHandlerProxy.ExecuteDelegate">
+            <summary>
+            The delegate that relays Execute method.
+            </summary>
+        </member>
+        <member name="P:MvvmBindingPack.CommandHandlerProxy.CanExecuteDelegate">
+            <summary>
+            The delegate that relays CanExecute method.
+            </summary>
+        </member>
+        <member name="F:MvvmBindingPack.CommandHandlerProxy._outerPropertyInfo">
+            <summary>
+            The outer property that set on with notification delegate to void NotifyCanExecuteChanged();
+            </summary>
+        </member>
+        <member name="F:MvvmBindingPack.CommandHandlerProxy._outerEventInfo">
+            <summary>
+            The outer event that subscribes with notification delegate to void NotifyCanExecuteChanged();
+            </summary>
+        </member>
+        <member name="F:MvvmBindingPack.CommandHandlerProxy._setupDelegateAction">
+            <summary>
+            The outer delegates that used to subscribes with notification delegate to void NotifyCanExecuteChanged();
+            </summary>
+        </member>
+        <member name="F:MvvmBindingPack.CommandHandlerProxy._setupDelegateEventHandler">
+            <summary>
+            The outer delegates that used to subscribes with notification delegate to void NotifyCanExecuteChanged(object sender, EventArgs e);
+            </summary>
+        </member>
+        <member name="F:MvvmBindingPack.CommandHandlerProxy._outerBooleanPropertyInfo">
+            <summary>
+            The outer Boolean property info and the target object that refers to
+            a flag which should be return by  <see cref="M:System.Windows.Input.ICommand.CanExecute(System.Object)"/> method.
+            </summary>
+        </member>
+        <member name="E:MvvmBindingPack.CommandHandlerProxy.CanExecuteChanged">
+            <summary>
+             Occurs when changes occur that affect whether or not the command should execute.
+            </summary>
+        </member>
+        <member name="M:MvvmBindingPack.CommandHandlerProxy.SetupOuterNotifications">
+            <summary>
+            Setup outer notification interfaces for engaging the <see cref="T:System.Windows.Input.ICommand"/> event notification.
+            </summary>
+        </member>
+        <member name="M:MvvmBindingPack.CommandHandlerProxy.RemoveOuterNotifications">
+            <summary>
+            Remove outer notification interfaces for engaging the <see cref="T:System.Windows.Input.ICommand"/> event notification.
+            </summary>
+        </member>
+        <member name="M:MvvmBindingPack.CommandHandlerProxy.#ctor(System.Action{System.Object},System.Func{System.Object,System.Boolean})">
+            <summary>
+            Constructs the proxy class implementation of <see cref="T:System.Windows.Input.ICommand"/> interface with using 
+            delegates of CanExecute and Execute methods. CanExecute delegate defines the method that determines whether the command can execute in its
+            current state. Execute delegate Defines the method to be called when the command is invoked.
+            </summary>
+            <param name="execute">The delegate that presents <see cref="M:System.Windows.Input.ICommand.Execute(System.Object)"/> logic.</param>
+            <param name="canExecute">The delegate that presents <see cref="M:System.Windows.Input.ICommand.CanExecute(System.Object)"/> logic.</param>
+        </member>
+        <member name="M:MvvmBindingPack.CommandHandlerProxy.#ctor(System.Action{System.Object},System.Func{System.Object,System.Boolean},System.Reflection.EventInfo,System.Object)">
+            <summary>
+            Constructs the proxy class implementation of <see cref="T:System.Windows.Input.ICommand"/> interface with using 
+            delegates of CanExecute and Execute methods. CanExecute delegate defines the method that determines whether the command can execute in its
+            current state. Execute delegate Defines the method to be called when the command is invoked.
+            Event notifications via CanExecuteChanged, when changes occur that affect whether or not the command should execute, are pushed through the subscription 
+            to the outer event.
+            </summary>
+            <param name="execute">The delegate that presents <see cref="M:System.Windows.Input.ICommand.Execute(System.Object)"/> logic.</param>
+            <param name="canExecute">The delegate that presents <see cref="M:System.Windows.Input.ICommand.CanExecute(System.Object)"/> logic.</param>
+            <param name="outerEventInfo">EventInfo type information of an event class member to which will be added a delegate that rises the proxy event <see cref="E:System.Windows.Input.ICommand.CanExecuteChanged"/>.
+            Supported event types are <see cref="T:System.Action"/> and <see cref="T:System.EventHandler"/>.</param>
+            <param name="outerEventTarget">The instance of the object that holds the event member(null for static).</param>
+        </member>
+        <member name="M:MvvmBindingPack.CommandHandlerProxy.#ctor(System.Action{System.Object},System.Func{System.Object,System.Boolean},System.Reflection.PropertyInfo,System.Object)">
+            <summary>
+            Constructs the proxy class implementation of <see cref="T:System.Windows.Input.ICommand"/> interface with using 
+            delegates of CanExecute and Execute methods. CanExecute delegate defines the method that determines whether the command can execute in its
+            current state. Execute delegate Defines the method to be called when the command is invoked.
+            Event notifications via CanExecuteChanged, when changes occur that affect whether or not the command should execute, are pushed through the providing/placing
+            the delegate on property.
+            </summary>
+            <param name="execute">The delegate that presents <see cref="M:System.Windows.Input.ICommand.Execute(System.Object)"/> logic.</param>
+            <param name="canExecute">The delegate that presents <see cref="M:System.Windows.Input.ICommand.CanExecute(System.Object)"/> logic.</param>
+            <param name="outerPropertyInfo">PropertyInfo type information of property class member which will be set with a delegate that rises the proxy event <see cref="E:System.Windows.Input.ICommand.CanExecuteChanged"/>.
+            Supported property types are <see cref="T:System.Action"/> and <see cref="T:System.EventHandler"/>.</param>
+            <param name="outerPropertyTarget">The instance of the object that hold a property of a delegate(null for static).</param>
+        </member>
+        <member name="M:MvvmBindingPack.CommandHandlerProxy.#ctor(System.Action{System.Object},System.Func{System.Object,System.Boolean},System.Action{System.Action},System.Action{System.Action})">
+            <summary>
+            Constructs the proxy class implementation of <see cref="T:System.Windows.Input.ICommand"/> interface with using 
+            delegates of CanExecute and Execute methods. CanExecute delegate defines the method that determines whether the command can execute in its
+            current state. Execute delegate Defines the method to be called when the command is invoked.
+            Event notifications via CanExecuteChanged, when changes occur that affect whether or not the command should execute, are provided by
+            a pair of the delegates(setup/remove). These delegates are called with <see cref="T:System.Action"/> type delegate which provides a notification call.
+            </summary>
+            <param name="execute">The delegate that presents <see cref="M:System.Windows.Input.ICommand.Execute(System.Object)"/> logic.</param>
+            <param name="canExecute">The delegate that presents <see cref="M:System.Windows.Input.ICommand.CanExecute(System.Object)"/> logic.</param>
+            <param name="setupDelegate">The delegate that accepts as a parameter the delegate <see cref="T:System.Action"/> to setup.</param>
+            <param name="removeDelegate">The delegate that accepts as a parameter the delegate <see cref="T:System.Action"/> to remove.</param>
+            
+        </member>
+        <member name="M:MvvmBindingPack.CommandHandlerProxy.#ctor(System.Action{System.Object},System.Func{System.Object,System.Boolean},System.Action{System.EventHandler},System.Action{System.EventHandler})">
+            <summary>
+            Constructs the proxy class implementation of <see cref="T:System.Windows.Input.ICommand"/> interface with using 
+            delegates of CanExecute and Execute methods. CanExecute delegate defines the method that determines whether the command can execute in its
+            current state. Execute delegate Defines the method to be called when the command is invoked.
+            Event notifications via CanExecuteChanged, when changes occur that affect whether or not the command should execute, are provided by
+            a pair of the delegates(setup/remove). These delegates are called with <see cref="T:System.EventHandler"/> type delegate which provides a notification call.
+            </summary>
+            <param name="execute">The delegate that presents <see cref="M:System.Windows.Input.ICommand.Execute(System.Object)"/> logic.</param>
+            <param name="canExecute">The delegate that presents <see cref="M:System.Windows.Input.ICommand.CanExecute(System.Object)"/> logic.</param>
+            <param name="setupDelegate">The delegate that accepts as a parameter the delegate <see cref="T:System.EventHandler"/>.</param>
+            <param name="removeDelegate">The delegate that accepts as a parameter the delegate <see cref="T:System.EventHandler"/> to remove.</param>
+        </member>
+        <member name="M:MvvmBindingPack.CommandHandlerProxy.#ctor(System.Action{System.Object},System.Reflection.PropertyInfo,System.Object)">
+            <summary>
+            Constructs the proxy class implementation of <see cref="T:System.Windows.Input.ICommand"/> interface with using 
+            delegates of CanExecute and Execute methods. CanExecute delegate defines the method that determines whether the command can execute in its
+            current state. Execute delegate Defines the method to be called when the command is invoked.
+            Event notifications via CanExecuteChanged, when changes occur that affect whether or not the command should execute, are provided by
+            listening a Boolean property changes and providing a notification calls.
+            </summary>
+            <param name="execute">The delegate that presents <see cref="M:System.Windows.Input.ICommand.Execute(System.Object)"/> logic.</param>
+            <param name="outerBooleanProperty">PropertyInfo type information of property class member which will be set with Action delegate that rises the proxy event <see cref="E:System.Windows.Input.ICommand.CanExecuteChanged"/>.</param>
+            <param name="propertyBooleanTarget">The instance of the object that hold a property of <see cref="T:System.Action"/> delegate(null for static).</param>
+        </member>
+        <member name="M:MvvmBindingPack.CommandHandlerProxy.#ctor(System.Action{System.Object},System.Type,System.Object,System.String)">
+            <summary>
+            Constructs the proxy class implementation of <see cref="T:System.Windows.Input.ICommand"/> interface with using 
+            delegates of CanExecute and Execute methods. CanExecute delegate defines the method that determines whether the command can execute in its
+            current state. Execute delegate Defines the method to be called when the command is invoked.
+            Event notifications via CanExecuteChanged, when changes occur that affect whether or not the command should execute, are provided by
+            listening a Boolean property changes and providing a notification calls.
+            </summary>
+            <param name="execute">The delegate that presents <see cref="M:System.Windows.Input.ICommand.Execute(System.Object)"/> logic.</param>
+            <param name="targetType">Target type that contains property.</param>
+            <param name="propertyBooleanTarget">The instance of the object that hold a property of <see cref="T:System.Action"/> delegate(null for static).</param>
+            <param name="propertyBooleanName">The property name.</param>
+        </member>
+        <member name="M:MvvmBindingPack.CommandHandlerProxy.CanExecute(System.Object)">
+            <summary>
+            Executes the delegate for <see cref="M:System.Windows.Input.ICommand.CanExecute(System.Object)"/>.
+            </summary>
+            <param name="parameter"></param>-
+        </member>
+        <member name="M:MvvmBindingPack.CommandHandlerProxy.ExecuteChangedNotify(System.Object,System.EventArgs)">
+            <summary>
+            Execute notification.
+            </summary>
+        </member>
+        <member name="M:MvvmBindingPack.CommandHandlerProxy.Execute(System.Object)">
+            <summary>
+            Executes the delegate for <see cref="M:System.Windows.Input.ICommand.Execute(System.Object)"/>.
+            </summary>
+            <param name="parameter"></param>
+        </member>
+        <member name="M:MvvmBindingPack.CommandHandlerProxy.NotifyCanExecuteChanged">
+            <summary>
+            Notifies if "can execute state" has changed.
+            </summary>
+        </member>
+        <member name="M:MvvmBindingPack.CommandHandlerProxy.NotifyCanExecuteChanged(System.Object,System.EventArgs)">
+            <summary>
+            Notifies if "can execute state" has changed.
+            </summary>
+        </member>
+        <member name="M:MvvmBindingPack.CommandHandlerProxy.PropertyChanged(System.Object,System.ComponentModel.PropertyChangedEventArgs)">
+            <summary>
+            Represents the method that will handle the System.ComponentModel.INotifyPropertyChanged.PropertyChanged
+            event raised when a property is changed on a component.
+            </summary>
+            <param name="sender">The source of the event.</param>
+            <param name="e">A System.ComponentModel.PropertyChangedEventArgs that contains the event data.</param>
+        </member>
+        <member name="T:MvvmBindingPack.DataContextProxyRoutedEventHandler">
+            <summary>
+            Represents the class that holds the proxy method that will handle various routed events. 
+            </summary>
+        </member>
+        <member name="M:MvvmBindingPack.DataContextProxyRoutedEventHandler.CreateProxyDelegate(System.Type,System.String,System.String)">
+            <summary>
+            Creates the instance of the class and returns the <see cref="T:System.Windows.RoutedEventHandler"/> type delegate to the proxy method.
+            </summary>
+            <param name="desiredDelegateType">Desired type of a delegate.</param>
+            <param name="methodName">The method name.</param>
+            <param name="propertyName">Property type.</param>
+            <returns>Delegate of the <see cref="T:System.Windows.RoutedEventHandler"/> type.</returns>
+        </member>
+        <member name="M:MvvmBindingPack.DataContextProxyRoutedEventHandlerGen`1.#ctor(System.String,System.String)">
+            <summary>
+            
+            </summary>
+            <param name="methodName"></param>
+            <param name="propertyName"></param>
+        </member>
+        <member name="M:MvvmBindingPack.DataContextProxyRoutedEventHandlerGen`1.RoutedEventHandlerProxy(System.Object,`0)">
+            <summary>
+            Represents the proxy method that will handle various routed events that do not 
+            have specific event data beyond the data that is common for all routed events.
+            </summary>
+            <param name="sender">The object which is the originator of the event.</param>
+            <param name="e">The event data.</param>
+        </member>
+        <member name="T:MvvmBindingPack.FakeCollection">
+            <summary>
+            The fake collection which is used to execute operations with binding events to their handlers.
+            </summary>
+        </member>
+        <member name="P:MvvmBindingPack.FakeCollection.ExecuteAction">
+            <summary>
+            The action processing delegate. it calls when the new element
+            has been added to collection. 
+            </summary>
+        </member>
+        <member name="P:MvvmBindingPack.FakeCollection.DependencyObjectElement">
+            <summary>
+            The dependence object as a target to process.
+            </summary>
+        </member>
+        <member name="T:MvvmBindingPack.FakeCollectionBase`1">
+            <summary>
+            The fake collection which is used to intercept the add to the collection event and execute an action delegate.
+            </summary>
+            <typeparam name="T">Type that is supported by collection.</typeparam>
+        </member>
+        <member name="T:MvvmBindingPack.IocBinding">
+            <summary>
+            WPF and WinRt XAML mark-up extension of Inversion of Controls binding.
+            Binds an object to a target property by resolving it through the generic Service Locator interface.
+            </summary>
+        </member>
+        <member name="M:MvvmBindingPack.IocBinding.#ctor">
+            <summary>
+            Default constructor.
+            </summary>
+        </member>
+        <member name="M:MvvmBindingPack.IocBinding.#ctor(System.Object)">
+            <summary>
+            Constructs the class with a requested service type.
+            </summary>
+            <param name="serviceType">Type or type name of the requested object.</param>
+        </member>
+        <member name="P:MvvmBindingPack.IocBinding.ServiceType">
+            <summary>
+            The type (System.Type) or type name (System.String) of the requested object. 
+            </summary>
+        </member>
+        <member name="P:MvvmBindingPack.IocBinding.ServiceKey">
+            <summary>
+            The key of the requested object.
+            </summary>
+        </member>
+        <member name="P:MvvmBindingPack.IocBinding.PropertyName">
+            <summary>
+            The Object property name.
+            </summary>
+        </member>
+        <member name="P:MvvmBindingPack.IocBinding.TargetPropertyName">
+            <summary>
+            The Target property name.
+            </summary>
+        </member>
+        <member name="P:MvvmBindingPack.IocBinding.ResolvedResult">
+            <summary>
+            Value that was resulted
+            </summary>
+        </member>
+        <member name="M:MvvmBindingPack.IocBinding.ProvideValue(System.IServiceProvider)">
+            <summary>
+            Returns an object that should be set on the property where this extension is applied.
+            </summary>
+            <param name="serviceProvider">Object that can provide services for the markup extension.</param>
+            <returns>The object value to set on the property where the markup extension provided
+            value is evaluated.</returns>
+            <exception cref="T:System.InvalidOperationException">serviceProvider was null, or failed to 
+            implement a required service.</exception>
+        </member>
+        <member name="T:MvvmBindingPack.LocateDataContext">
+            <summary>
+            XAML mark-up and BindXAML.AssignProperties extensions; it finds among DataContext objects, the first,
+             which contains the exact method or property. It comes through the parent elements of logical and visual trees.
+            </summary>
+        </member>
+        <member name="F:MvvmBindingPack.LocateDataContext.TargetObject">
+            <summary>
+            Used for late binding to dependency property
+            </summary>
+        </member>
+        <member name="F:MvvmBindingPack.LocateDataContext.TargetProperty">
+            <summary>
+            Used for late binding to dependency property
+            </summary>
+        </member>
+        <member name="P:MvvmBindingPack.LocateDataContext.TargetPropertyName">
+            <summary>
+            The Target property name.
+            </summary>
+        </member>
+        <member name="M:MvvmBindingPack.LocateDataContext.#ctor">
+            <summary>
+            Default constructor.
+            </summary>
+        </member>
+        <member name="M:MvvmBindingPack.LocateDataContext.#ctor(System.Object)">
+            <summary>
+            Constructs the class with a requested service type.
+            </summary>
+            <param name="dataContextType">Type or type name of the requested object.</param>
+        </member>
+        <member name="P:MvvmBindingPack.LocateDataContext.DataContextType">
+            <summary>
+            The type (System.Type) or the type name (System.String) of the required DataContext object. If it is not set, only a method or property name will be used to locate.
+            </summary>
+        </member>
+        <member name="P:MvvmBindingPack.LocateDataContext.MethodName">
+            <summary>
+            The method name of the source instance that has RoutedEventHandler delegate signature.
+            The method name is used to search in DataContext object methods.
+            It's priority versus 'PropertyName'.
+            </summary>
+        </member>
+        <member name="P:MvvmBindingPack.LocateDataContext.PropertyName">
+            <summary>
+            The property name is used to search in DataContext object properties.
+            It doesn't has a priority versus 'MethodName'. 
+            </summary>
+        </member>
+        <member name="M:MvvmBindingPack.LocateDataContext.ProvideValue(System.IServiceProvider)">
+            <summary>
+            Returns an object that should be set on the property where this extension is applied.
+            </summary>
+            <param name="serviceProvider">Object that can provide services for the markup extension.</param>
+            <returns>The object value to set on the property where the markup extension provided
+            value is evaluated.</returns>
+            <exception cref="T:System.InvalidOperationException">serviceProvider was null, or failed to 
+            implement a required service.</exception>
+        </member>
+        <member name="T:MvvmBindingPack.MvvmViewModelBase">
+            <summary>
+            Base class for all view models
+            </summary>
+        </member>
+        <member name="M:MvvmBindingPack.MvvmViewModelBase.Loaded(System.Object,System.Windows.RoutedEventArgs)">
+            <summary>
+            Occurs when a FrameworkElement has been constructed and added to the object tree, and is ready for interaction.
+            </summary>
+            <param name="sender">The Event Sender object.</param>
+            <param name="e">Event arguments.</param>
+        </member>
+        <member name="M:MvvmBindingPack.MvvmViewModelBase.Unloaded(System.Object,System.Windows.RoutedEventArgs)">
+            <summary>
+            Occurs when this object is no longer connected to the main object tree.
+            </summary>
+            <param name="sender">The Event Sender object.</param>
+            <param name="e">Event arguments.</param>
+        </member>
+        <member name="M:MvvmBindingPack.MvvmViewModelBase.NavigatedTo(System.Object,System.Windows.Navigation.NavigationEventArgs)">
+            <summary>
+            Invoked when the Page is loaded and becomes the current source of a parent Frame.
+            </summary>
+            <param name="sender">The Event Sender object.</param>
+            <param name="e">Event data that can be examined by overriding code. The event data is representative of the pending navigation that will load the current Page. </param>
+        </member>
+        <member name="M:MvvmBindingPack.MvvmViewModelBase.NavigatedFrom(System.Object,System.Windows.Navigation.NavigationEventArgs)">
+            <summary>
+            Invoked immediately after the Page is unloaded and is no longer the current source of a parent Frame.
+            </summary>
+            <param name="sender">The Event Sender object.</param>
+            <param name="e">Event data that can be examined by overriding code. The event data is representative of the navigation that has unloaded the current Page.</param>
+        </member>
+        <member name="M:MvvmBindingPack.MvvmViewModelBase.NavigatingFrom(System.Object,System.Windows.Navigation.NavigatingCancelEventArgs)">
+            <summary>
+            Invoked immediately before the Page is unloaded and is no longer the current source of a parent Frame.
+            </summary>
+            <param name="sender">The Event Sender object.</param>
+            <param name="e">Event data that can be examined by overriding code. The event data is representative of the navigation that will unload the current Page unless canceled. The navigation can potentially be canceled by setting Cancel.</param>
+        </member>
+        <member name="T:MvvmBindingPack.NotifyChangesBase">
+            <summary>
+            Class implements the basic case of : INotifyDataErrorInfo + INotifyPropertyChanged
+            </summary>
+        </member>
+        <member name="E:MvvmBindingPack.NotifyChangesBase.ErrorsChanged">
+            <summary>
+            Occurs when the validation errors have changed for a property or for the
+            entire entity.
+            </summary>
+        </member>
+        <member name="M:MvvmBindingPack.NotifyChangesBase.GetErrors(System.String)">
+            <summary>
+            Gets the validation errors for a specified property or for the entire entity.
+            </summary>
+            <param name="propertyName">The name of the property to retrieve validation errors for; or null or System.String.Empty, to retrieve entity-level errors.</param>
+            <returns> The validation errors for the property or entity.</returns>
+        </member>
+        <member name="P:MvvmBindingPack.NotifyChangesBase.HasErrors">
+            <summary>
+            Gets a value that indicates whether the entity has validation errors.
+            Returns: true if the entity currently has validation errors; otherwise, false.
+            </summary>
+        </member>
+        <member name="M:MvvmBindingPack.NotifyChangesBase.NotifyErrorsChanged(System.String)">
+            <summary>
+            Notifies of changing the property.
+            </summary>
+            <param name="propertyName">The property name.</param>
+        </member>
+        <member name="M:MvvmBindingPack.NotifyChangesBase.ClearAllErrors(System.Boolean)">
+            <summary>
+            Removes all registered errors.
+            </summary>
+            <param name="notify">The flag tells to send notification after clearing of errors.</param>
+        </member>
+        <member name="M:MvvmBindingPack.NotifyChangesBase.ValidProperty(System.String,System.Boolean)">
+            <summary>
+            Marks property as a valid.
+            </summary>
+            <param name="propertyName">The property name.</param>
+            <param name="notify">The flag tells to send notification.</param>
+        </member>
+        <member name="M:MvvmBindingPack.NotifyChangesBase.InValidProperty(System.String,System.Boolean,System.String[])">
+            <summary>
+            Marks property as invalid.
+            </summary>
+            <param name="propertyName">The property name.</param>
+            <param name="notify">The flag tells to send notification.</param>
+            <param name="errors">The errors messages.</param>
+        </member>
+        <member name="T:MvvmBindingPack.NotifyPropertyChangedBase">
+            <summary>
+            Class implements the basic case of : INotifyPropertyChanged
+            </summary>
+        </member>
+        <member name="E:MvvmBindingPack.NotifyPropertyChangedBase.PropertyChanged">
+            <summary>
+            Implementation of INotifyPropertyChanged interface
+            </summary>
+        </member>
+        <member name="M:MvvmBindingPack.NotifyPropertyChangedBase.NotifyPropertyChanged(System.String)">
+            <summary>
+            This method is called by the Set accessory of each property.
+            </summary>
+            <param name="propertyName">The CallerMemberName attribute that is applied to the optional 
+            propertyNameparameter causes the property name of the caller to be substituted as an argument.
+            </param>
+        </member>
+        <member name="M:MvvmBindingPack.NotifyPropertyChangedBase.NotifyPropertyChanged(System.Linq.Expressions.Expression{System.Func{System.Object}})">
+            <summary>
+            Implementation of INotifyPropertyChanged interface
+            </summary>
+            <param name="exp">Lambda expression.</param>
+        </member>
+        <member name="T:MvvmBindingPack.ServiceProvider">
+            <summary>
+            Proxy class simulation. Defines a mechanism for retrieving a service object; that is, an object that
+            provides custom support to other objects.
+            </summary>
+        </member>
+        <member name="M:MvvmBindingPack.ServiceProvider.#ctor(System.Windows.Markup.IProvideValueTarget)">
+            <summary>
+            constructs the proxy class provider simulation. 
+            </summary>
+            <param name="iProvideValueTarget"> Represents a service that reports situational object-property relationships
+            for markup extension evaluation.</param>
+        </member>
+        <member name="M:MvvmBindingPack.ServiceProvider.GetService(System.Type)">
+             <summary>
+             Gets the service object of the specified type.
+             </summary>
+             <param name="serviceType"> An object that specifies the type of service object to get.</param>
+             <returns>
+             A service object of type serviceType.-or- null if there is no service object
+             of type serviceType.
+            </returns>
+        </member>
+        <member name="T:MvvmBindingPack.ProvideValueTarget">
+            <summary>
+            POCO class implementation. It represents a service that reports situational object-property relationships
+            for markup extension evaluation.
+            </summary>
+        </member>
+        <member name="M:MvvmBindingPack.ProvideValueTarget.#ctor(System.Object,System.Object)">
+            <summary>
+            Constructs a class container.
+            </summary>
+            <param name="target">The target object being reported.</param>
+            <param name="property"> The target property being reported.</param>
+        </member>
+        <member name="P:MvvmBindingPack.ProvideValueTarget.TargetObject">
+             <summary>
+            The target object being reported.
+             </summary>
+        </member>
+        <member name="P:MvvmBindingPack.ProvideValueTarget.TargetProperty">
+            <summary>
+            The target property being reported.
+            </summary>
+        </member>
+        <member name="T:MvvmBindingPack.ViewXNameSourceTarget">
+            <summary>
+            Public Class container.
+            Holds the resolved View XAML-defined element target metadata.
+            It may be a property or event metadata of the x:Named View XAML-defined element target.
+            </summary>
+        </member>
+        <member name="P:MvvmBindingPack.ViewXNameSourceTarget.XName">
+            <summary>
+            The target XAML object name.
+            </summary>
+        </member>
+        <member name="P:MvvmBindingPack.ViewXNameSourceTarget.TargetName">
+            <summary>
+            The target nameof the property or event.
+            </summary>
+        </member>
+        <member name="P:MvvmBindingPack.ViewXNameSourceTarget.TargetObject">
+            <summary>
+            The target object source.
+            </summary>
+        </member>
+        <member name="P:MvvmBindingPack.ViewXNameSourceTarget.TargetType">
+            <summary>
+            The target object type.
+            </summary>
+        </member>
+        <member name="P:MvvmBindingPack.ViewXNameSourceTarget.PropertyInfo">
+            <summary>
+            The CLR property metadata.
+            </summary>
+        </member>
+        <member name="P:MvvmBindingPack.ViewXNameSourceTarget.DependencyProperty">
+            <summary>
+            The dependency property metadata.
+            </summary>
+        </member>
+        <member name="P:MvvmBindingPack.ViewXNameSourceTarget.DependencyPropertyKey">
+            <summary>
+            The readonly dependency property metadata.
+            </summary>
+        </member>
+        <member name="P:MvvmBindingPack.ViewXNameSourceTarget.DependencyPropertyDescriptor">
+            <summary>
+            The readonly dependency property metadata.
+            </summary>
+        </member>
+        <member name="P:MvvmBindingPack.ViewXNameSourceTarget.EventInfo">
+            <summary>
+            The CLR event metadata.
+            </summary>
+        </member>
+        <member name="P:MvvmBindingPack.ViewXNameSourceTarget.RoutedEvent">
+            <summary>
+            The routing event metadata.
+            </summary>
+        </member>
+        <member name="P:MvvmBindingPack.ViewXNameSourceTarget.IsReadOnlyDpProperty">
+            <summary>
+            Retruns true if the property is readonly.
+            </summary>
+        </member>
+        <member name="P:MvvmBindingPack.ViewXNameSourceTarget.IsProperty">
+            <summary>
+            Returns true if the target is a property.
+            </summary>
+        </member>
+        <member name="P:MvvmBindingPack.ViewXNameSourceTarget.IsEvent">
+            <summary>
+            Returns true if the target is an event.
+            </summary>
+        </member>
+        <member name="M:MvvmBindingPack.ViewXNameSourceTarget.GetPropertyValue">
+            <summary>
+             Returns the current effective value of a dependency property on this instance
+             of a System.Windows.DependencyObject, or returns the property value of a specified object.
+            </summary>
+            <returns>The property value.</returns>
+        </member>
+        <member name="M:MvvmBindingPack.ViewXNameSourceTarget.SetReadOnlyDpPropertyValue(System.Object)">
+            <summary>
+            Sets the local value of a read-only dependency property, specified by its dependency
+            property key identifier.
+            </summary>
+            <param name="obj">The new property value.</param>
+        </member>
+        <member name="M:MvvmBindingPack.ViewXNameSourceTarget.SetPropertyValue(System.Object)">
+            <summary>
+            Sets the local value of a dependency property, specified by its dependency
+            property identifier, or sets the property value of a specified object.
+            </summary>
+            <param name="obj">The new property value.</param>
+        </member>
+        <member name="M:MvvmBindingPack.ViewXNameSourceTarget.AddEventHandler(System.Delegate,System.Boolean)">
+            <summary>
+            Adds a routed event handler for a specified routed event, adding the handler
+             to the handler collection on the current element. Specify handledEventsToo
+             as true to have the provided handler be invoked for routed event that had
+             already been marked as handled by another element along the event route, or  adds an event handler to an event source.
+            </summary>
+            <param name="del"> A reference to the handler implementation; it encapsulates a method or methods to be invoked when the event is raised by the target.</param>
+            <param name="handledEventsToo"> true to register the handler such that it is invoked even when the routed
+             event is marked handled in its event data; false to register the handler
+             with the default condition that it will not be invoked if the routed event
+             is already marked handled. The default is false.Do not routinely ask to re-handle
+             a routed event.</param>
+        </member>
+        <member name="M:MvvmBindingPack.ViewXNameSourceTarget.RemoveEventHandler(System.Delegate)">
+            <summary>
+            Removes the specified routed event handler from this element, or removes an event handler from an event source.
+            </summary>
+            <param name="del">A reference to the handler implementation.</param>
+        </member>
+        <member name="T:MvvmBindingPack.WeakCommandHandlerProxy">
+            <summary>
+            Proxy class that provides the weak referenced implementation of <see cref="T:System.Windows.Input.ICommand"/> interface for case of command binding.
+            </summary>
+        </member>
+        <member name="M:MvvmBindingPack.WeakCommandHandlerProxy.#ctor(System.Action{System.Object},System.Func{System.Object,System.Boolean})">
+            <summary>
+            Constructs the weak proxy class implementation of <see cref="T:System.Windows.Input.ICommand"/> interface with using 
+            delegates of CanExecute and Execute methods. CanExecute delegate defines the method that determines whether the command can execute in its
+            current state. Execute delegate Defines the method to be called when the command is invoked.
+            </summary>
+            <param name="execute">The delegate that presents <see cref="M:System.Windows.Input.ICommand.Execute(System.Object)"/> logic.</param>
+            <param name="canExecute">The delegate that presents <see cref="M:System.Windows.Input.ICommand.CanExecute(System.Object)"/> logic.</param>
+        </member>
+        <member name="M:MvvmBindingPack.WeakCommandHandlerProxy.#ctor(System.Action{System.Object},System.Func{System.Object,System.Boolean},System.Reflection.EventInfo,System.Object)">
+            <summary>
+            Constructs the weak proxy class implementation of <see cref="T:System.Windows.Input.ICommand"/> interface with using 
+            delegates of CanExecute and Execute methods. CanExecute delegate defines the method that determines whether the command can execute in its
+            current state. Execute delegate Defines the method to be called when the command is invoked.
+            Event notifications via CanExecuteChanged, when changes occur that affect whether or not the command should execute, are pushed through the subscription 
+            to the outer event.
+            </summary>
+            <param name="execute">The delegate that presents <see cref="M:System.Windows.Input.ICommand.Execute(System.Object)"/> logic.</param>
+            <param name="canExecute">The delegate that presents <see cref="M:System.Windows.Input.ICommand.CanExecute(System.Object)"/> logic.</param>
+            <param name="outerEventInfo">EventInfo type information of an event class member to which will be added a delegate that rises the proxy event <see cref="E:System.Windows.Input.ICommand.CanExecuteChanged"/>.
+            Supported event types are <see cref="T:System.Action"/> and <see cref="T:System.EventHandler"/>.</param>
+            <param name="outerEventTarget">The instance of the object that holds the event member(null for static).</param>
+        </member>
+        <member name="M:MvvmBindingPack.WeakCommandHandlerProxy.#ctor(System.Action{System.Object},System.Func{System.Object,System.Boolean},System.Reflection.PropertyInfo,System.Object)">
+            <summary>
+            Constructs the weak proxy class implementation of <see cref="T:System.Windows.Input.ICommand"/> interface with using 
+            delegates of CanExecute and Execute methods. CanExecute delegate defines the method that determines whether the command can execute in its
+            current state. Execute delegate Defines the method to be called when the command is invoked.
+            Event notifications via CanExecuteChanged, when changes occur that affect whether or not the command should execute, are pushed through the providing/placing
+            the delegate on property.
+            </summary>
+            <param name="execute">The delegate that presents <see cref="M:System.Windows.Input.ICommand.Execute(System.Object)"/> logic.</param>
+            <param name="canExecute">The delegate that presents <see cref="M:System.Windows.Input.ICommand.CanExecute(System.Object)"/> logic.</param>
+            <param name="outerPropertyInfo">PropertyInfo type information of property class member which will be set with a delegate that rises the proxy event <see cref="E:System.Windows.Input.ICommand.CanExecuteChanged"/>.
+            Supported property types are <see cref="T:System.Action"/> and <see cref="T:System.EventHandler"/>.</param>
+            <param name="outerPropertyTarget">The instance of the object that hold a property of a delegate(null for static).</param>
+        </member>
+        <member name="M:MvvmBindingPack.WeakCommandHandlerProxy.#ctor(System.Action{System.Object},System.Func{System.Object,System.Boolean},System.Action{System.Action},System.Action{System.Action})">
+            <summary>
+            Constructs the weak proxy class implementation of <see cref="T:System.Windows.Input.ICommand"/> interface with using 
+            delegates of CanExecute and Execute methods. CanExecute delegate defines the method that determines whether the command can execute in its
+            current state. Execute delegate Defines the method to be called when the command is invoked.
+            Event notifications via CanExecuteChanged, when changes occur that affect whether or not the command should execute, are provided by
+            a pair of the delegates(setup/remove). These delegates are called with <see cref="T:System.Action"/> type delegate which provides a notification call.
+            </summary>
+            <param name="execute">The delegate that presents <see cref="M:System.Windows.Input.ICommand.Execute(System.Object)"/> logic.</param>
+            <param name="canExecute">The delegate that presents <see cref="M:System.Windows.Input.ICommand.CanExecute(System.Object)"/> logic.</param>
+            <param name="setupDelegate">The delegate that accepts as a parameter the delegate <see cref="T:System.Action"/> to setup.</param>
+            <param name="removeDelegate">The delegate that accepts as a parameter the delegate <see cref="T:System.Action"/> to remove.</param>
+        </member>
+        <member name="M:MvvmBindingPack.WeakCommandHandlerProxy.#ctor(System.Action{System.Object},System.Func{System.Object,System.Boolean},System.Action{System.EventHandler},System.Action{System.EventHandler})">
+            <summary>
+            Constructs the weak proxy class implementation of <see cref="T:System.Windows.Input.ICommand"/> interface with using 
+            delegates of CanExecute and Execute methods. CanExecute delegate defines the method that determines whether the command can execute in its
+            current state. Execute delegate Defines the method to be called when the command is invoked.
+            Event notifications via CanExecuteChanged, when changes occur that affect whether or not the command should execute, are provided by
+            a pair of the delegates(setup/remove). These delegates are called with <see cref="T:System.EventHandler"/> type delegate which provides a notification call.
+            </summary>
+            <param name="execute">The delegate that presents <see cref="M:System.Windows.Input.ICommand.Execute(System.Object)"/> logic.</param>
+            <param name="canExecute">The delegate that presents <see cref="M:System.Windows.Input.ICommand.CanExecute(System.Object)"/> logic.</param>
+            <param name="setupDelegate">The delegate that accepts as a parameter the delegate <see cref="T:System.EventHandler"/>.</param>
+            <param name="removeDelegate">The delegate that accepts as a parameter the delegate <see cref="T:System.EventHandler"/> to remove.</param>
+        </member>
+        <member name="M:MvvmBindingPack.WeakCommandHandlerProxy.#ctor(System.Action{System.Object},System.Reflection.PropertyInfo,System.Object)">
+            <summary>
+            Constructs the weak proxy class implementation of <see cref="T:System.Windows.Input.ICommand"/> interface with using 
+            delegates of CanExecute and Execute methods. CanExecute delegate defines the method that determines whether the command can execute in its
+            current state. Execute delegate Defines the method to be called when the command is invoked.
+            Event notifications via CanExecuteChanged, when changes occur that affect whether or not the command should execute, are provided by
+            listening a Boolean property changes and providing a notification calls.
+            </summary>
+            <param name="execute">The delegate that presents <see cref="M:System.Windows.Input.ICommand.Execute(System.Object)"/> logic.</param>
+            <param name="outerBooleanProperty">PropertyInfo type information of property class member which will be set with Action delegate that rises the proxy event <see cref="E:System.Windows.Input.ICommand.CanExecuteChanged"/>.</param>
+            <param name="propertyBooleanTarget">The instance of the object that hold a property of <see cref="T:System.Action"/> delegate(null for static).</param>
+        </member>
+        <member name="M:MvvmBindingPack.WeakCommandHandlerProxy.#ctor(System.Action{System.Object},System.Type,System.Object,System.String)">
+            <summary>
+            Constructs the proxy class implementation of <see cref="T:System.Windows.Input.ICommand"/> interface with using 
+            delegates of CanExecute and Execute methods. CanExecute delegate defines the method that determines whether the command can execute in its
+            current state. Execute delegate Defines the method to be called when the command is invoked.
+            Event notifications via CanExecuteChanged, when changes occur that affect whether or not the command should execute, are provided by
+            listening a Boolean property changes and providing a notification calls.
+            </summary>
+            <param name="execute">The delegate that presents <see cref="M:System.Windows.Input.ICommand.Execute(System.Object)"/> logic.</param>
+            <param name="targetType">The target type that contains property.</param>
+            <param name="propertyBooleanTarget">The instance of the object that hold a property of <see cref="T:System.Action"/> delegate(null for static).</param>
+            <param name="propertyBooleanName">The property name.</param>
+        </member>
+        <member name="E:MvvmBindingPack.WeakCommandHandlerProxy.CanExecuteChanged">
+            <summary>
+             Occurs when changes occur that affect whether or not the command should execute.
+            </summary>
+        </member>
+        <member name="M:MvvmBindingPack.WeakCommandHandlerProxy.ExecuteChangedNotify(System.Object,System.EventArgs)">
+            <summary>
+            Notifies if "can execute state" has changed.
+            </summary>
+        </member>
+    </members>
+</doc>
