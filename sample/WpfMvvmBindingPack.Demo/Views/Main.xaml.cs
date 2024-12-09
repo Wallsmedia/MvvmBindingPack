@@ -12,16 +12,15 @@
 // implied. See the License for the specific language governing permissions
 // and limitations under the License.
 
-namespace WpfMvvmBindingPackDemo
+namespace WpfMvvmBindingPackDemo;
+
+/// <summary>
+/// Interaction logic for MainWindow.xaml
+/// </summary>
+public partial class Main
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
-    public partial class Main
+    public Main()
     {
-        public Main()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

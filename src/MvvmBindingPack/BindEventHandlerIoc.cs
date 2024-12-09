@@ -28,66 +28,65 @@ using System.Windows.Media;
 using System.Windows.Markup;
 #endif
 
-namespace MvvmBindingPack
+namespace MvvmBindingPack;
+
+/// <summary>
+/// WPF and WinRt XAML mark-up extension.
+/// Binds <see cref="EventHandler"/> property type to a target property by resolving it through the generic Service Locator interface.
+/// </summary>
+#if !WINDOWS_UWP
+[MarkupExtensionReturnTypeAttribute(typeof(RoutedEventHandler))]
+#endif
+public class BindEventHandlerIoc : BindEventHandlerBase
 {
+
+    readonly IocBinding _iocSource;
     /// <summary>
-    /// WPF and WinRt XAML mark-up extension.
-    /// Binds <see cref="EventHandler"/> property type to a target property by resolving it through the generic Service Locator interface.
+    /// Type or type name (string) of the requested object.
     /// </summary>
 #if !WINDOWS_UWP
-    [MarkupExtensionReturnTypeAttribute(typeof(RoutedEventHandler))]
+    [ConstructorArgument("serviceType")]
 #endif
-    public class BindEventHandlerIoc : BindEventHandlerBase
+    public object ServiceType
     {
-
-        readonly IocBinding _iocSource;
-        /// <summary>
-        /// Type or type name (string) of the requested object.
-        /// </summary>
-#if !WINDOWS_UWP
-        [ConstructorArgument("serviceType")]
-#endif
-        public object ServiceType
-        {
-            get { return _iocSource.ServiceType; }
-            set { _iocSource.ServiceType = value; }
-        }
-
-        /// <summary>
-        /// Key (string) of the requested object.
-        /// </summary>
-        [Obsolete("ServiceKey not supported and ignored")]
-        public string ServiceKey
-        {
-            get;set;
-        }
-
-        /// <summary>
-        /// Default constructor.
-        /// </summary>
-        public BindEventHandlerIoc()
-        {
-            _iocSource = new IocBinding();
-        }
-
-        /// <summary>
-        /// Constructs the class with a requested service type.
-        /// </summary>
-        /// <param name="serviceType">Type or type name of the requested object.</param>
-        public BindEventHandlerIoc(object serviceType)
-        {
-            _iocSource = new IocBinding(serviceType);
-        }
-
-        /// <summary>
-        /// Get source object for binding
-        /// </summary>
-        /// <param name="serviceProvider">Object that can provide services for the markup extension</param>
-        /// <returns></returns>
-        protected override object ObtainSourceObject(IServiceProvider serviceProvider)
-        {
-            return _iocSource.ProvideValue(serviceProvider);
-        }
-
+        get { return _iocSource.ServiceType; }
+        set { _iocSource.ServiceType = value; }
     }
+
+    /// <summary>
+    /// Key (string) of the requested object.
+    /// </summary>
+    [Obsolete("ServiceKey not supported and ignored")]
+    public string ServiceKey
+    {
+        get;set;
+    }
+
+    /// <summary>
+    /// Default constructor.
+    /// </summary>
+    public BindEventHandlerIoc()
+    {
+        _iocSource = new IocBinding();
+    }
+
+    /// <summary>
+    /// Constructs the class with a requested service type.
+    /// </summary>
+    /// <param name="serviceType">Type or type name of the requested object.</param>
+    public BindEventHandlerIoc(object serviceType)
+    {
+        _iocSource = new IocBinding(serviceType);
+    }
+
+    /// <summary>
+    /// Get source object for binding
+    /// </summary>
+    /// <param name="serviceProvider">Object that can provide services for the markup extension</param>
+    /// <returns></returns>
+    protected override object ObtainSourceObject(IServiceProvider serviceProvider)
+    {
+        return _iocSource.ProvideValue(serviceProvider);
+    }
+
 }

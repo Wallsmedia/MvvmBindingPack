@@ -17,50 +17,49 @@ using System.ComponentModel;
 using System.Linq.Expressions;
 using System.Runtime.CompilerServices;
 
-namespace MvvmBindingPack
+namespace MvvmBindingPack;
+
+/// <summary>
+/// Class implements the basic case of : INotifyPropertyChanged
+/// </summary>
+public class NotifyPropertyChangedBase : INotifyPropertyChanged
 {
     /// <summary>
-    /// Class implements the basic case of : INotifyPropertyChanged
+    /// Implementation of INotifyPropertyChanged interface
     /// </summary>
-    public class NotifyPropertyChangedBase : INotifyPropertyChanged
-    {
-        /// <summary>
-        /// Implementation of INotifyPropertyChanged interface
-        /// </summary>
-        public event PropertyChangedEventHandler PropertyChanged;
+    public event PropertyChangedEventHandler PropertyChanged;
 
-        /// <summary>
-        /// This method is called by the Set accessory of each property.
-        /// </summary>
-        /// <param name="propertyName">The CallerMemberName attribute that is applied to the optional 
-        /// propertyNameparameter causes the property name of the caller to be substituted as an argument.
-        /// </param>
+    /// <summary>
+    /// This method is called by the Set accessory of each property.
+    /// </summary>
+    /// <param name="propertyName">The CallerMemberName attribute that is applied to the optional 
+    /// propertyNameparameter causes the property name of the caller to be substituted as an argument.
+    /// </param>
 #if !NET40
-        protected void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
+    protected void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
 #else
-        protected void NotifyPropertyChanged(String propertyName)
+    protected void NotifyPropertyChanged(String propertyName)
 #endif
+    {
+        if (PropertyChanged != null)
         {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-            }
+            PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
         }
+    }
 
-        /// <summary>
-        /// Implementation of INotifyPropertyChanged interface
-        /// </summary>
-        /// <param name="exp">Lambda expression.</param>
-        public void NotifyPropertyChanged(Expression<Func<object>> exp)
+    /// <summary>
+    /// Implementation of INotifyPropertyChanged interface
+    /// </summary>
+    /// <param name="exp">Lambda expression.</param>
+    public void NotifyPropertyChanged(Expression<Func<object>> exp)
+    {
+        MemberExpression body = exp.Body as MemberExpression;
+
+        if (body == null)
         {
-            MemberExpression body = exp.Body as MemberExpression;
-
-            if (body == null)
-            {
-                UnaryExpression ubody = (UnaryExpression)exp.Body;
-                body = ubody.Operand as MemberExpression;
-            }
-            NotifyPropertyChanged(body.Member.Name);
+            UnaryExpression ubody = (UnaryExpression)exp.Body;
+            body = ubody.Operand as MemberExpression;
         }
+        NotifyPropertyChanged(body.Member.Name);
     }
 }

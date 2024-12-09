@@ -26,126 +26,125 @@ using System.Windows.Markup;
 
 #endif
 
-namespace MvvmBindingPack
-{
+namespace MvvmBindingPack;
+
 #if WINDOWS_UWP
 
-    /// <summary>
-    ///  Provides a base class for XAML markup extension implementations that can
-    ///  be supported by .NET Framework XAML Services and other XAML readers and XAML
-    ///  writers.
-    /// </summary>
-    public abstract class MarkupExtension
-    {
-
-        /// <summary>
-        /// When implemented in a derived class, returns an object that is provided as
-        /// the value of the target property for this markup extension.
-        /// </summary>
-        /// <param name="serviceProvider"> A service provider helper that can provide services for the markup extension.</param>
-        /// <returns>The object value to set on the property where the extension is applied.</returns>
-        public abstract object ProvideValue(IServiceProvider serviceProvider);
-    }
+/// <summary>
+///  Provides a base class for XAML markup extension implementations that can
+///  be supported by .NET Framework XAML Services and other XAML readers and XAML
+///  writers.
+/// </summary>
+public abstract class MarkupExtension
+{
 
     /// <summary>
-    ///  Defines a mechanism for retrieving a service object; that is, an object that
-    ///     provides custom support to other objects.
+    /// When implemented in a derived class, returns an object that is provided as
+    /// the value of the target property for this markup extension.
     /// </summary>
-    public interface IServiceProvider
-    {
-        /// <summary>
-        /// Gets the service object of the specified type.
-        /// </summary>
-        /// <param name="serviceType"> An object that specifies the type of service object to get.</param>
-        /// <returns>A service object of type serviceType.-or- null if there is no service object
-        /// of type serviceType.</returns>
-        object GetService(Type serviceType);
-    }
+    /// <param name="serviceProvider"> A service provider helper that can provide services for the markup extension.</param>
+    /// <returns>The object value to set on the property where the extension is applied.</returns>
+    public abstract object ProvideValue(IServiceProvider serviceProvider);
+}
 
+/// <summary>
+///  Defines a mechanism for retrieving a service object; that is, an object that
+///     provides custom support to other objects.
+/// </summary>
+public interface IServiceProvider
+{
     /// <summary>
-    /// Represents a service that reports situational object-property relationships
-    /// for markup extension evaluation.
+    /// Gets the service object of the specified type.
     /// </summary>
-    public interface IProvideValueTarget
-    {
-        ///<summary>
-        /// Gets the target object being reported.
-        ///</summary>
-        ///<returns>
-        /// The target object being reported.
-        ///</returns>
-        object TargetObject { get; set; }
+    /// <param name="serviceType"> An object that specifies the type of service object to get.</param>
+    /// <returns>A service object of type serviceType.-or- null if there is no service object
+    /// of type serviceType.</returns>
+    object GetService(Type serviceType);
+}
 
-        ///<summary>
-        /// Gets an identifier for the target property being reported.
-        ///</summary>
-        ///<returns>
-        /// An identifier for the target property being reported.
-        ///</returns>
-        object TargetProperty { get; set; }
-    }
+/// <summary>
+/// Represents a service that reports situational object-property relationships
+/// for markup extension evaluation.
+/// </summary>
+public interface IProvideValueTarget
+{
+    ///<summary>
+    /// Gets the target object being reported.
+    ///</summary>
+    ///<returns>
+    /// The target object being reported.
+    ///</returns>
+    object TargetObject { get; set; }
+
+    ///<summary>
+    /// Gets an identifier for the target property being reported.
+    ///</summary>
+    ///<returns>
+    /// An identifier for the target property being reported.
+    ///</returns>
+    object TargetProperty { get; set; }
+}
 #endif
 
+/// <summary>
+/// Proxy class simulation. Defines a mechanism for retrieving a service object; that is, an object that
+/// provides custom support to other objects.
+/// </summary>
+public class ServiceProvider : IServiceProvider
+{
+    IProvideValueTarget _iProvideValueTarget;
     /// <summary>
-    /// Proxy class simulation. Defines a mechanism for retrieving a service object; that is, an object that
-    /// provides custom support to other objects.
+    /// constructs the proxy class provider simulation. 
     /// </summary>
-    public class ServiceProvider : IServiceProvider
+    /// <param name="iProvideValueTarget"> Represents a service that reports situational object-property relationships
+    /// for markup extension evaluation.</param>
+    public ServiceProvider(IProvideValueTarget iProvideValueTarget)
     {
-        IProvideValueTarget _iProvideValueTarget;
-        /// <summary>
-        /// constructs the proxy class provider simulation. 
-        /// </summary>
-        /// <param name="iProvideValueTarget"> Represents a service that reports situational object-property relationships
-        /// for markup extension evaluation.</param>
-        public ServiceProvider(IProvideValueTarget iProvideValueTarget)
-        {
-            _iProvideValueTarget = iProvideValueTarget;
-        }
-
-        /// <summary>
-        /// Gets the service object of the specified type.
-        /// </summary>
-        /// <param name="serviceType"> An object that specifies the type of service object to get.</param>
-        /// <returns>
-        /// A service object of type serviceType.-or- null if there is no service object
-        /// of type serviceType.
-        ///</returns>
-        public object GetService(Type serviceType)
-        {
-            if (serviceType == typeof(IProvideValueTarget))
-            {
-                return _iProvideValueTarget;
-            }
-            return null;
-        }
+        _iProvideValueTarget = iProvideValueTarget;
     }
 
     /// <summary>
-    /// POCO class implementation. It represents a service that reports situational object-property relationships
-    /// for markup extension evaluation.
+    /// Gets the service object of the specified type.
     /// </summary>
-    public class ProvideValueTarget : IProvideValueTarget
+    /// <param name="serviceType"> An object that specifies the type of service object to get.</param>
+    /// <returns>
+    /// A service object of type serviceType.-or- null if there is no service object
+    /// of type serviceType.
+    ///</returns>
+    public object GetService(Type serviceType)
     {
-        /// <summary>
-        /// Constructs a class container.
-        /// </summary>
-        /// <param name="target">The target object being reported.</param>
-        /// <param name="property"> The target property being reported.</param>
-        public ProvideValueTarget(object target, object property)
+        if (serviceType == typeof(IProvideValueTarget))
         {
-            TargetObject = target;
-            TargetProperty = property;
+            return _iProvideValueTarget;
         }
-        /// <summary>
-        ///The target object being reported.
-        /// </summary>
-        public object TargetObject { get; set; }
-
-        /// <summary>
-        /// The target property being reported.
-        /// </summary>
-        public object TargetProperty { get; set; }
+        return null;
     }
+}
+
+/// <summary>
+/// POCO class implementation. It represents a service that reports situational object-property relationships
+/// for markup extension evaluation.
+/// </summary>
+public class ProvideValueTarget : IProvideValueTarget
+{
+    /// <summary>
+    /// Constructs a class container.
+    /// </summary>
+    /// <param name="target">The target object being reported.</param>
+    /// <param name="property"> The target property being reported.</param>
+    public ProvideValueTarget(object target, object property)
+    {
+        TargetObject = target;
+        TargetProperty = property;
+    }
+    /// <summary>
+    ///The target object being reported.
+    /// </summary>
+    public object TargetObject { get; set; }
+
+    /// <summary>
+    /// The target property being reported.
+    /// </summary>
+    public object TargetProperty { get; set; }
 }
 

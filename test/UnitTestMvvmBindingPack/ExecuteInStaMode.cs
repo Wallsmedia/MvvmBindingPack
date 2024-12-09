@@ -1,14 +1,13 @@
 ﻿
-namespace UnitTestMvvmBindingPack
+namespace UnitTestMvvmBindingPack;
+
+public static class ExecuteInStaMode
 {
-    public static class ExecuteInStaMode
+    public static void Invoke(ThreadStart action)
     {
-        public static void Invoke(ThreadStart action)
-        {
-            Thread t = new Thread(action);
-            t.SetApartmentState(ApartmentState.STA);
-            t.Start();
-            t.Join();
-        }
+        Thread t = new Thread(action);
+        t.SetApartmentState(ApartmentState.STA);
+        t.Start();
+        t.Join();
     }
 }

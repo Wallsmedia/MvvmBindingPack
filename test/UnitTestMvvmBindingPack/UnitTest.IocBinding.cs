@@ -16,51 +16,50 @@ using Xunit;
 using Microsoft.Extensions.DependencyInjection;
 using MvvmBindingPack;
 
-namespace UnitTestMvvmBindingPack
+namespace UnitTestMvvmBindingPack;
+
+/// <summary>
+/// Unit test for IocBinding class 
+/// </summary>
+public class UnitTestIocBinding
 {
-    /// <summary>
-    /// Unit test for IocBinding class 
-    /// </summary>
-    public class UnitTestIocBinding
+
+    public UnitTestIocBinding()
     {
-
-        public UnitTestIocBinding()
-        {
-            ServiceCollection services = new ServiceCollection();
-            services.AddTransient<TestTypeIocClass>();
-            AutoWireVmDataContext.ServiceProvider = services.BuildServiceProvider();
-        }
-
-
-        [Fact]
-        public void TestMethodIocBindingConstructing1()
-        {
-            var iocBinding = new IocBinding();
-            Assert.Equal(iocBinding.ServiceKey, null);
-            Assert.Equal(iocBinding.ServiceType, null);
-        }
-
-        [Fact]
-        public void TestMethodIocBindingConstructing2()
-        {
-            var iocBinding = new IocBinding(typeof(TestTypeIocClass));
-            Assert.Equal(iocBinding.ServiceKey, null);
-            Assert.Equal(iocBinding.ServiceType, typeof(TestTypeIocClass));
-        }
-
-
-        [Fact]
-        public void TestMethodIocBindingException()
-        {
-            var iocBinding = new IocBinding();
-            // ReSharper disable AssignNullToNotNullAttribute
-            UnitTestInternal.AssertThrows(typeof(ArgumentNullException), () => iocBinding.ProvideValue(null), " IocBinding - expected ArgumentNullException");
-            // ReSharper restore AssignNullToNotNullAttribute
-        }
-
+        ServiceCollection services = new ServiceCollection();
+        services.AddTransient<TestTypeIocClass>();
+        AutoWireVmDataContext.ServiceProvider = services.BuildServiceProvider();
     }
 
-    public class TestTypeIocClass
+
+    [Fact]
+    public void TestMethodIocBindingConstructing1()
     {
+        var iocBinding = new IocBinding();
+        Assert.Equal(iocBinding.ServiceKey, null);
+        Assert.Equal(iocBinding.ServiceType, null);
     }
+
+    [Fact]
+    public void TestMethodIocBindingConstructing2()
+    {
+        var iocBinding = new IocBinding(typeof(TestTypeIocClass));
+        Assert.Equal(iocBinding.ServiceKey, null);
+        Assert.Equal(iocBinding.ServiceType, typeof(TestTypeIocClass));
+    }
+
+
+    [Fact]
+    public void TestMethodIocBindingException()
+    {
+        var iocBinding = new IocBinding();
+        // ReSharper disable AssignNullToNotNullAttribute
+        UnitTestInternal.AssertThrows(typeof(ArgumentNullException), () => iocBinding.ProvideValue(null), " IocBinding - expected ArgumentNullException");
+        // ReSharper restore AssignNullToNotNullAttribute
+    }
+
+}
+
+public class TestTypeIocClass
+{
 }

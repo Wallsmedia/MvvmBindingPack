@@ -31,94 +31,93 @@ using System.Windows;
 using System.ComponentModel;
 #endif
 
-namespace MvvmBindingPack
+namespace MvvmBindingPack;
+
+/// <summary>
+/// The class supports an initialization/injection pattern. It's based on attached dependency property behaviors.
+/// XAML attached property, fake collection, is used for processing extensions: BindEventHandler, BindEventHandlerIoc, BindEventHandlerResource.
+///  It binds a dependency property change event handler to the event handler in the View Model.
+/// </summary>
+public static partial class BindXAML
 {
-    /// <summary>
-    /// The class supports an initialization/injection pattern. It's based on attached dependency property behaviors.
-    /// XAML attached property, fake collection, is used for processing extensions: BindEventHandler, BindEventHandlerIoc, BindEventHandlerResource.
-    ///  It binds a dependency property change event handler to the event handler in the View Model.
-    /// </summary>
-    public static partial class BindXAML
-    {
 #if WINDOWS_UWP
-        internal static readonly DependencyProperty AddPropertyChangeEventsProperty = DependencyProperty.RegisterAttached("AddPropertyChangeEvents", typeof(FakeCollectionEventHandler), typeof(BindXAML), new PropertyMetadata(null));
+    internal static readonly DependencyProperty AddPropertyChangeEventsProperty = DependencyProperty.RegisterAttached("AddPropertyChangeEvents", typeof(FakeCollectionEventHandler), typeof(BindXAML), new PropertyMetadata(null));
 #else
-        // "Shadow" prefix is used in WPF for preventing XAML optimization, access directly dependency property.
-        internal static readonly DependencyProperty AddPropertyChangeEventsProperty = DependencyProperty.RegisterAttached("AddPropertyChangeEvents.Shadow", typeof(FakeCollection), typeof(BindXAML), new PropertyMetadata(null));
+    // "Shadow" prefix is used in WPF for preventing XAML optimization, access directly dependency property.
+    internal static readonly DependencyProperty AddPropertyChangeEventsProperty = DependencyProperty.RegisterAttached("AddPropertyChangeEvents.Shadow", typeof(FakeCollection), typeof(BindXAML), new PropertyMetadata(null));
 #endif
-        /// <summary>
-        /// The attached dependency property returns the fake collection; it's used to add events to a FrameWorkElement object.
-        /// It provides the fake collection which executes the the delegate "ProcessAddEventItems" 
-        /// when "Add" a new item to the collection.
-        /// </summary>
-        /// <param name="dependencyObject">The target object for an attached dependency property.</param>
-        /// <returns>The fake collection for processing elements.</returns>
-        public static FakeCollection GetAddPropertyChangeEvents(DependencyObject dependencyObject)
-        {
-            var fakecol = new FakeCollection();
-            fakecol.DependencyObjectElement = dependencyObject as FrameworkElement;
-            fakecol.ExecuteAction = ProcessAddPropertyChangeEventItems;
-            return fakecol;
-        }
-
-        /// <summary>
-        /// The method which will be called for the attached dependency property when  the new element is added to a fake collection.
-        /// </summary>
-        /// <param name="dependencyObject">The target FrameworkElement.</param>
-        /// <param name="item">The new object to add.</param>
-        public static void ProcessAddPropertyChangeEventItems(DependencyObject dependencyObject, object item)
-        {
-            if ((item == null) || (dependencyObject == null))
-            {
-                return;
-            }
-
-            if (BindHelper.IsInDesignModeStatic)
-            {
-                // Cannot correctly set in the design mode.
-                return;
-            }
-
-            if (BindHelper.IsInDesignModeStatic)
-            {
-                // Cannot correctly set in the design mode.
-                return;
-            }
-
-            BindEventHandler bindItem = item as BindEventHandler;
-            if (bindItem == null)
-            {
-                throw new ArgumentException("AddPropertyChangeEvents accepts only BindEventHandlers Type instances ");
-            }
-
-            if (String.IsNullOrEmpty(bindItem.TargetPropertyName))
-            {
-                throw new ArgumentException("AddPropertyChangeEvents accepts only BindEventHandlers with set TargetPropertyName");
-            }
-
-            var listenDependencyProp = BindHelper.LocateDependencyProperty(bindItem.TargetPropertyName, dependencyObject);
-            if (listenDependencyProp == null)
-            {
-                throw new ArgumentException("AddPropertyChangeEvents cannot obtain proper Type of TargetPropertyName = " + bindItem.TargetPropertyName);
-            }
-
-            DependencyPropertyDescriptor dependencyPropertyDescriptor = DependencyPropertyDescriptor.FromProperty(listenDependencyProp, listenDependencyProp.OwnerType);
-            if (dependencyPropertyDescriptor == null)
-            {
-                throw new ArgumentException("AddPropertyChangeEvents cannot obtain proper Descriptor of TargetPropertyName = " + bindItem.TargetPropertyName);
-            }
-
-            var methodInfo = BindHelper.GetMethodInfo(bindItem.Source.GetType(), bindItem.MethodName);
-
-            Type desiredDelegateType = typeof(EventHandler);
-
-            var result = methodInfo.CreateDelegate(desiredDelegateType, bindItem.Source);
-
-            if (result != null)
-            {
-                dependencyPropertyDescriptor.AddValueChanged(dependencyObject, (EventHandler)result);
-            }
-        }
-
+    /// <summary>
+    /// The attached dependency property returns the fake collection; it's used to add events to a FrameWorkElement object.
+    /// It provides the fake collection which executes the the delegate "ProcessAddEventItems" 
+    /// when "Add" a new item to the collection.
+    /// </summary>
+    /// <param name="dependencyObject">The target object for an attached dependency property.</param>
+    /// <returns>The fake collection for processing elements.</returns>
+    public static FakeCollection GetAddPropertyChangeEvents(DependencyObject dependencyObject)
+    {
+        var fakecol = new FakeCollection();
+        fakecol.DependencyObjectElement = dependencyObject as FrameworkElement;
+        fakecol.ExecuteAction = ProcessAddPropertyChangeEventItems;
+        return fakecol;
     }
+
+    /// <summary>
+    /// The method which will be called for the attached dependency property when  the new element is added to a fake collection.
+    /// </summary>
+    /// <param name="dependencyObject">The target FrameworkElement.</param>
+    /// <param name="item">The new object to add.</param>
+    public static void ProcessAddPropertyChangeEventItems(DependencyObject dependencyObject, object item)
+    {
+        if ((item == null) || (dependencyObject == null))
+        {
+            return;
+        }
+
+        if (BindHelper.IsInDesignModeStatic)
+        {
+            // Cannot correctly set in the design mode.
+            return;
+        }
+
+        if (BindHelper.IsInDesignModeStatic)
+        {
+            // Cannot correctly set in the design mode.
+            return;
+        }
+
+        BindEventHandler bindItem = item as BindEventHandler;
+        if (bindItem == null)
+        {
+            throw new ArgumentException("AddPropertyChangeEvents accepts only BindEventHandlers Type instances ");
+        }
+
+        if (String.IsNullOrEmpty(bindItem.TargetPropertyName))
+        {
+            throw new ArgumentException("AddPropertyChangeEvents accepts only BindEventHandlers with set TargetPropertyName");
+        }
+
+        var listenDependencyProp = BindHelper.LocateDependencyProperty(bindItem.TargetPropertyName, dependencyObject);
+        if (listenDependencyProp == null)
+        {
+            throw new ArgumentException("AddPropertyChangeEvents cannot obtain proper Type of TargetPropertyName = " + bindItem.TargetPropertyName);
+        }
+
+        DependencyPropertyDescriptor dependencyPropertyDescriptor = DependencyPropertyDescriptor.FromProperty(listenDependencyProp, listenDependencyProp.OwnerType);
+        if (dependencyPropertyDescriptor == null)
+        {
+            throw new ArgumentException("AddPropertyChangeEvents cannot obtain proper Descriptor of TargetPropertyName = " + bindItem.TargetPropertyName);
+        }
+
+        var methodInfo = BindHelper.GetMethodInfo(bindItem.Source.GetType(), bindItem.MethodName);
+
+        Type desiredDelegateType = typeof(EventHandler);
+
+        var result = methodInfo.CreateDelegate(desiredDelegateType, bindItem.Source);
+
+        if (result != null)
+        {
+            dependencyPropertyDescriptor.AddValueChanged(dependencyObject, (EventHandler)result);
+        }
+    }
+
 }

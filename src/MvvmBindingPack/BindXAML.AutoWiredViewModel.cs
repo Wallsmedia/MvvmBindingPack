@@ -35,46 +35,44 @@ using System.Windows.Interactivity;
 using System.Windows.Threading;
 #endif
 
-namespace MvvmBindingPack
+namespace MvvmBindingPack;
+
+
+/// <summary>
+/// Partial class contains a collection of attached properties. 
+/// </summary>
+public static partial class BindXAML
 {
 
     /// <summary>
-    /// Partial class contains a collection of attached properties. 
+    /// Defines the "AutoWiredViewModel" inherited attached dependency property identifier.
     /// </summary>
-    public static partial class BindXAML
-    {
-
-        /// <summary>
-        /// Defines the "AutoWiredViewModel" inherited attached dependency property identifier.
-        /// </summary>
 #if WINDOWS_UWP
-        public static readonly DependencyProperty AutoWiredViewModelProperty = DependencyProperty.RegisterAttached("AutoWiredViewModel", typeof(object), typeof(BindXAML), new PropertyMetadata(null));
+    public static readonly DependencyProperty AutoWiredViewModelProperty = DependencyProperty.RegisterAttached("AutoWiredViewModel", typeof(object), typeof(BindXAML), new PropertyMetadata(null));
 #else
-        public static readonly DependencyProperty AutoWiredViewModelProperty = DependencyProperty.RegisterAttached("AutoWiredViewModel", typeof(object), typeof(BindXAML), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.Inherits));
+    public static readonly DependencyProperty AutoWiredViewModelProperty = DependencyProperty.RegisterAttached("AutoWiredViewModel", typeof(object), typeof(BindXAML), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.Inherits));
 #endif
 
-        /// <summary>
-        /// Attached property "AutoWiredViewModel" set accessor implementation.
-        /// Sets the local value of a dependency property, specified by its attached dependency property identifier.
-        /// </summary>
-        /// <param name="obj">The dependency object.</param>
-        /// <param name="value">The value to set to dependency property.</param>
-        public static void SetAutoWiredViewModel(DependencyObject obj, object value)
-        {
-            obj.SetValue(AutoWiredViewModelProperty, value);
-        }
+    /// <summary>
+    /// Attached property "AutoWiredViewModel" set accessor implementation.
+    /// Sets the local value of a dependency property, specified by its attached dependency property identifier.
+    /// </summary>
+    /// <param name="obj">The dependency object.</param>
+    /// <param name="value">The value to set to dependency property.</param>
+    public static void SetAutoWiredViewModel(DependencyObject obj, object value)
+    {
+        obj.SetValue(AutoWiredViewModelProperty, value);
+    }
 
-        /// <summary>
-        /// Attached property "AutoWiredViewModel" get accessor implementation.
-        /// Gets the local value of a dependency property, specified by its attached dependency property identifier.
-        /// </summary>
-        /// <param name="obj">The dependency object.</param>
-        /// <returns>Returns the current effective value.</returns>
-        public static object GetAutoWiredViewModel(DependencyObject obj)
-        {
-            return obj.GetValue(AutoWiredViewModelProperty);
-        }
-
+    /// <summary>
+    /// Attached property "AutoWiredViewModel" get accessor implementation.
+    /// Gets the local value of a dependency property, specified by its attached dependency property identifier.
+    /// </summary>
+    /// <param name="obj">The dependency object.</param>
+    /// <returns>Returns the current effective value.</returns>
+    public static object GetAutoWiredViewModel(DependencyObject obj)
+    {
+        return obj.GetValue(AutoWiredViewModelProperty);
     }
 
 }

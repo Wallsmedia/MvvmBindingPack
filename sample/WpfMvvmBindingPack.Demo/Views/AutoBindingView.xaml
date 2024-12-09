@@ -12,8 +12,22 @@
         <mvvm:AutoWireViewConrols/>
     </mvvm:BindXAML.ProcessMvvmExtensions>
 
+    <UserControl.Resources>
+        <DataTemplate x:Key="GridViewButton">
+            <DockPanel>
+                <Button Content="Action" Tag="{Binding}"
+                        Click="{mvvm:BindEventHandler MethodName=ActionClickColumnMethod, DeepScanAllTrees=True}"/>
+            </DockPanel>
+        </DataTemplate>
+    </UserControl.Resources>
+    
     <Grid>
-        <StackPanel>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="2*"/>
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0">
             <Label x:Name="TextOfTitleApnd" Content="AutoBindingView" />
             <Label x:Name="TextOfTitle" Content="AutoBindingView" />
             <DockPanel>
@@ -29,13 +43,13 @@
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
                     <Button Grid.Row="0" x:Name="EnableDisable"   Content="Enable/Disable" HorizontalAlignment="Left" Margin="3" VerticalAlignment="Center" Width="100"/>
-                    
+
                     <Button Grid.Row="1" x:Name="IncCounterClick" Content="Inc by Click" HorizontalAlignment="Left" Margin="3" VerticalAlignment="Center" Width="100"/>
                     <TextBox Grid.Row="1" Grid.Column="1" IsReadOnly="True" x:Name="CountClick"    HorizontalAlignment="Left" Margin="3" VerticalAlignment="Center" Width="100"/>
 
                     <Button Grid.Row="2" x:Name="IncCounterCmd"   Content="Inc By Cmd"   HorizontalAlignment="Left" Margin="3" VerticalAlignment="Center" Width="100"/>
                     <TextBox Grid.Row="2" Grid.Column="1" IsReadOnly="True" x:Name="CountCmd"    HorizontalAlignment="Left" Margin="3" VerticalAlignment="Center" Width="100"/>
-                    
+
                     <Button Grid.Row="3" x:Name="IncCounterCmdEx"   Content="Inc By CmdEx"   HorizontalAlignment="Left" Margin="3" VerticalAlignment="Center" Width="100"/>
                     <TextBox Grid.Row="3" Grid.Column="1" IsReadOnly="True" x:Name="CountCmdEx"    HorizontalAlignment="Left" Margin="3" VerticalAlignment="Center" Width="100"/>
 
@@ -44,6 +58,27 @@
 
             </DockPanel>
         </StackPanel>
+        <StackPanel Grid.Row="1">
+            <ListView x:Name="ListViewItemsSource">
+                <ListView.View>
+
+                    <GridView AllowsColumnReorder="true" ColumnHeaderToolTip="Person Information">
+                        <GridViewColumn DisplayMemberBinding="{Binding Path=FirstName}" Header="First Name" Width="100"/>
+                        <GridViewColumn DisplayMemberBinding="{Binding Path=LastName}" Width="100" Header="LastName"/>
+                        <GridViewColumn DisplayMemberBinding="{Binding Path=HomeTown}" Header="Home town" Width="100"/>
+                        <GridViewColumn CellTemplate="{StaticResource GridViewButton}"
+                                        Header="Custom Action" Width="100"/>
+
+                    </GridView>
+
+                </ListView.View>
+            </ListView>
+        </StackPanel>
+
+        <StackPanel Grid.Row="2">
+            <Label Content="{Binding Path=ActionPerson}" />
+        </StackPanel>
 
     </Grid>
+
 </UserControl>

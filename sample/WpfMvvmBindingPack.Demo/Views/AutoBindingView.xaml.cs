@@ -13,16 +13,15 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace WpfMvvmBindingPackDemo.Views
+namespace WpfMvvmBindingPackDemo.Views;
+
+/// <summary>
+/// Interaction logic for AutoBindingView.xaml
+/// </summary>
+public partial class AutoBindingView : UserControl
 {
-    /// <summary>
-    /// Interaction logic for AutoBindingView.xaml
-    /// </summary>
-    public partial class AutoBindingView : UserControl
+    public AutoBindingView()
     {
-        public AutoBindingView()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

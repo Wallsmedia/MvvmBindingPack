@@ -27,84 +27,83 @@ using System.Windows.Media;
 using System.Windows.Markup;
 #endif
 
-namespace MvvmBindingPack
+namespace MvvmBindingPack;
+
+/// <summary>
+/// WPF and WinRt XAML mark-up extension.
+/// Binds Command property to <see cref="ICommand"/> interface via a proxy class when a source belongs to an object located in resource dictionaries.
+/// </summary>
+#if !WINDOWS_UWP
+[MarkupExtensionReturnTypeAttribute(typeof(ICommand))]
+#endif
+public class BindCommandResource : BindCommandBase
 {
+#if !WINDOWS_UWP
+    StaticResourceExtension ResourceSource { get; }
+#else
+#endif
+
+#if !WINDOWS_UWP
     /// <summary>
-    /// WPF and WinRt XAML mark-up extension.
-    /// Binds Command property to <see cref="ICommand"/> interface via a proxy class when a source belongs to an object located in resource dictionaries.
+    ///  Gets or sets the key value passed by this static resource reference. The
+    ///  key is used to return the object matching that key in resource dictionaries.
     /// </summary>
-#if !WINDOWS_UWP
-    [MarkupExtensionReturnTypeAttribute(typeof(ICommand))]
-#endif
-    public class BindCommandResource : BindCommandBase
+    [ConstructorArgument("resourceKey")]
+    public object ResourceKey
     {
-#if !WINDOWS_UWP
-        StaticResourceExtension ResourceSource { get; }
+        get { return ResourceSource.ResourceKey; }
+        set { ResourceSource.ResourceKey = value; }
+    }
 #else
+    object _resourceKey;
+    /// <summary>
+    ///  Gets or sets the key value passed by a static resource reference. The
+    ///  key is used to return the object matching that key in resource dictionaries.
+    /// </summary>
+    public object ResourceKey
+    {
+        get { return _resourceKey; }
+        set { _resourceKey = value; }
+    }
 #endif
-
-#if !WINDOWS_UWP
-        /// <summary>
-        ///  Gets or sets the key value passed by this static resource reference. The
-        ///  key is used to return the object matching that key in resource dictionaries.
-        /// </summary>
-        [ConstructorArgument("resourceKey")]
-        public object ResourceKey
-        {
-            get { return ResourceSource.ResourceKey; }
-            set { ResourceSource.ResourceKey = value; }
-        }
-#else
-        object _resourceKey;
-        /// <summary>
-        ///  Gets or sets the key value passed by a static resource reference. The
-        ///  key is used to return the object matching that key in resource dictionaries.
-        /// </summary>
-        public object ResourceKey
-        {
-            get { return _resourceKey; }
-            set { _resourceKey = value; }
-        }
-#endif
-        /// <summary>
-        /// Get a source object for binding, an object matching the key in resource dictionaries.
-        /// </summary>
-        /// <param name="serviceProvider">Object that can provide services for the markup extension.</param>
-        /// <returns>Reference to a source object.</returns>
-        protected override object ObtainSourceObject(IServiceProvider serviceProvider)
-        {
+    /// <summary>
+    /// Get a source object for binding, an object matching the key in resource dictionaries.
+    /// </summary>
+    /// <param name="serviceProvider">Object that can provide services for the markup extension.</param>
+    /// <returns>Reference to a source object.</returns>
+    protected override object ObtainSourceObject(IServiceProvider serviceProvider)
+    {
 #if WINDOWS_UWP
-            // ReSharper disable SuggestUseVarKeywordEvident
-            IProvideValueTarget service = serviceProvider.GetService(typeof(IProvideValueTarget)) as IProvideValueTarget;
-            // ReSharper restore SuggestUseVarKeywordEvident
-            // For WinRT we provide a valid targets through BindXAML class. 
-            object obj = BindHelper.LocateResource(service.TargetObject as FrameworkElement, ResourceKey);
-            return obj;
+        // ReSharper disable SuggestUseVarKeywordEvident
+        IProvideValueTarget service = serviceProvider.GetService(typeof(IProvideValueTarget)) as IProvideValueTarget;
+        // ReSharper restore SuggestUseVarKeywordEvident
+        // For WinRT we provide a valid targets through BindXAML class. 
+        object obj = BindHelper.LocateResource(service.TargetObject as FrameworkElement, ResourceKey);
+        return obj;
 #else
-            // For WPF we have got a StaticResourceExtension to get a Resource
-            return ResourceSource.ProvideValue(serviceProvider);
-#endif
-
-        }
-
-#if !WINDOWS_UWP
-        /// <summary>
-        /// Default constructor.
-        /// </summary>
-        public BindCommandResource()
-        {
-            ResourceSource = new StaticResourceExtension();
-        }
-
-        /// <summary>
-        /// Constructs the class with a requested resource key.
-        /// </summary>
-        /// <param name="resourceKey">Requested resource key.</param>
-        public BindCommandResource(object resourceKey)
-        {
-            ResourceSource = new StaticResourceExtension(resourceKey);
-        }
+        // For WPF we have got a StaticResourceExtension to get a Resource
+        return ResourceSource.ProvideValue(serviceProvider);
 #endif
 
     }
+
+#if !WINDOWS_UWP
+    /// <summary>
+    /// Default constructor.
+    /// </summary>
+    public BindCommandResource()
+    {
+        ResourceSource = new StaticResourceExtension();
+    }
+
+    /// <summary>
+    /// Constructs the class with a requested resource key.
+    /// </summary>
+    /// <param name="resourceKey">Requested resource key.</param>
+    public BindCommandResource(object resourceKey)
+    {
+        ResourceSource = new StaticResourceExtension(resourceKey);
+    }
+#endif
+
 }

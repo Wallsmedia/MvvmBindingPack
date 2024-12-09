@@ -13,16 +13,15 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace WpfMvvmBindingPackDemo.Views
+namespace WpfMvvmBindingPackDemo.Views;
+
+/// <summary>
+/// Interaction logic for IocBindingView.xaml
+/// </summary>
+public partial class IocBindingView : UserControl
 {
-    /// <summary>
-    /// Interaction logic for IocBindingView.xaml
-    /// </summary>
-    public partial class IocBindingView : UserControl
+    public IocBindingView()
     {
-        public IocBindingView()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

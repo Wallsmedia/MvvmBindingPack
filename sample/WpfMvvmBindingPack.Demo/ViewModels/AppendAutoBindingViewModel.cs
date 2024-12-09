@@ -14,11 +14,10 @@
 
 using MvvmBindingPack;
 
-namespace WpfMvvmBindingPackDemo.ViewModels
+namespace WpfMvvmBindingPackDemo.ViewModels;
+
+public class AppendAutoBindingViewModel : NotifyChangesBase
 {
-    public class AppendAutoBindingViewModel : NotifyChangesBase
-    {
-        [ViewXNameAlias("TextOfTitleApnd","Content")]
-        private static string _textOfTitle = "AutoBindingViewModel-Title binding Example from Append to View Model";
-    }
+    [ViewXNameAlias("TextOfTitleApnd","Content")]
+    private static string _textOfTitle = "AutoBindingViewModel-Title binding Example from Append to View Model";
 }

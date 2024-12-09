@@ -27,166 +27,165 @@ using System.Windows.Markup;
 using System.ComponentModel;
 #endif
 
-namespace MvvmBindingPack
+namespace MvvmBindingPack;
+
+/// <summary>
+/// WPF and WinRt XAML mark-up extension.
+/// Binds Command property to <see cref="ICommand"/> interface via a proxy class to a class member of a source object.
+/// </summary>
+#if !WINDOWS_UWP
+[MarkupExtensionReturnTypeAttribute(typeof(ICommand))]
+#endif
+public class BindCommand : BindCommandBase, ICommand
 {
+
     /// <summary>
-    /// WPF and WinRt XAML mark-up extension.
-    /// Binds Command property to <see cref="ICommand"/> interface via a proxy class to a class member of a source object.
+    /// It is a "back-door" feature which allows to setup the source object. If it is not set on, by default,
+    /// the markup extension will use the defined DataContext property value.
+    /// It is referring to the source object which has the method or property used by the markup extension. 
+    /// There may be used {IocBinding ...} or other "agnostic" mark up extension(not {Binding ...}) which provides by the independent way a source object.
     /// </summary>
 #if !WINDOWS_UWP
-    [MarkupExtensionReturnTypeAttribute(typeof(ICommand))]
+    [ConstructorArgument("source")]
 #endif
-    public class BindCommand : BindCommandBase, ICommand
+    public object Source { get; set; }
+
+    /// <summary>
+    /// Default constructor.
+    /// </summary>
+    public BindCommand() { }
+
+    /// <summary>
+    /// Constructs the class with a requested source.
+    /// </summary>
+    /// <param name="source">The source object.</param>
+    public BindCommand(object source) { Source = source; }
+
+    /// <summary>
+    /// Get a source object for binding. 
+    /// If it is not set on, by default the method will search the first defined DataContext property value.
+    /// </summary>
+    /// <param name="serviceProvider">Object that can provide services for the markup extension.</param>
+    /// <returns>Reference to a source object.</returns>
+    protected override object ObtainSourceObject(IServiceProvider serviceProvider)
     {
-
-        /// <summary>
-        /// It is a "back-door" feature which allows to setup the source object. If it is not set on, by default,
-        /// the markup extension will use the defined DataContext property value.
-        /// It is referring to the source object which has the method or property used by the markup extension. 
-        /// There may be used {IocBinding ...} or other "agnostic" mark up extension(not {Binding ...}) which provides by the independent way a source object.
-        /// </summary>
-#if !WINDOWS_UWP
-        [ConstructorArgument("source")]
-#endif
-        public object Source { get; set; }
-
-        /// <summary>
-        /// Default constructor.
-        /// </summary>
-        public BindCommand() { }
-
-        /// <summary>
-        /// Constructs the class with a requested source.
-        /// </summary>
-        /// <param name="source">The source object.</param>
-        public BindCommand(object source) { Source = source; }
-
-        /// <summary>
-        /// Get a source object for binding. 
-        /// If it is not set on, by default the method will search the first defined DataContext property value.
-        /// </summary>
-        /// <param name="serviceProvider">Object that can provide services for the markup extension.</param>
-        /// <returns>Reference to a source object.</returns>
-        protected override object ObtainSourceObject(IServiceProvider serviceProvider)
+        // For WinRT we provide a valid targets through BindXAML class. 
+        if (Source == null)
         {
-            // For WinRT we provide a valid targets through BindXAML class. 
-            if (Source == null)
-            {
-                // ReSharper disable SuggestUseVarKeywordEvident
-                IProvideValueTarget service = serviceProvider.GetService(typeof(IProvideValueTarget)) as IProvideValueTarget;
-                // ReSharper restore SuggestUseVarKeywordEvident
+            // ReSharper disable SuggestUseVarKeywordEvident
+            IProvideValueTarget service = serviceProvider.GetService(typeof(IProvideValueTarget)) as IProvideValueTarget;
+            // ReSharper restore SuggestUseVarKeywordEvident
 
-                if ((service != null) && (service.TargetObject != null))
+            if ((service != null) && (service.TargetObject != null))
+            {
+                if (DeepScanAllTrees)
                 {
-                    if (DeepScanAllTrees)
-                    {
-                        return BindHelper.LocateValidDependencyPropertyByAllTrees(service.TargetObject as DependencyObject, FrameworkElement.DataContextProperty, ExecuteMethodName, ExecutePropertyName);
-                    }
-                    else
-                    {
-                        return BindHelper.LocateValidDependencyPropertyByAllTrees(service.TargetObject as DependencyObject, FrameworkElement.DataContextProperty);
-                    }
+                    return BindHelper.LocateValidDependencyPropertyByAllTrees(service.TargetObject as DependencyObject, FrameworkElement.DataContextProperty, ExecuteMethodName, ExecutePropertyName);
+                }
+                else
+                {
+                    return BindHelper.LocateValidDependencyPropertyByAllTrees(service.TargetObject as DependencyObject, FrameworkElement.DataContextProperty);
                 }
             }
-
-            if (Source is string)
-            {
-
-            }
-
-            return Source;
         }
 
-        bool ICommand.CanExecute(object parameter)
+        if (Source is string)
         {
-            return false;
+
         }
+
+        return Source;
+    }
+
+    bool ICommand.CanExecute(object parameter)
+    {
+        return false;
+    }
 
 #if !WINDOWS_UWP
-        void LateBiningOfCommandInterface(object obj, EventArgs args)
+    void LateBiningOfCommandInterface(object obj, EventArgs args)
 #else
-        void LateBiningOfCommandInterface(object obj, RoutedEventArgs args)
+    void LateBiningOfCommandInterface(object obj, RoutedEventArgs args)
 #endif
+    {
+        object dataContext;
+        if (DeepScanAllTrees)
         {
-            object dataContext;
-            if (DeepScanAllTrees)
+            dataContext = BindHelper.LocateValidDependencyPropertyByAllTrees(TargetObject as DependencyObject, FrameworkElement.DataContextProperty, ExecuteMethodName, ExecutePropertyName);
+        }
+        else
+        {
+            dataContext = BindHelper.LocateValidDependencyPropertyByAllTrees(TargetObject as DependencyObject, FrameworkElement.DataContextProperty);
+        }
+
+        var frameworkElement = TargetObject as FrameworkElement;
+        if (frameworkElement == null)
+        {
+            return;
+        }
+        // Remove handler back
+
+#if !WINDOWS_UWP
+        DependencyPropertyDescriptor dppDescr = DependencyPropertyDescriptor.FromProperty(FrameworkElement.DataContextProperty, FrameworkElement.DataContextProperty.OwnerType);
+        dppDescr.RemoveValueChanged(frameworkElement, LateBiningOfCommandInterface);
+#else
+        frameworkElement.Loaded -= LateBiningOfCommandInterface;
+#endif
+
+        if (dataContext != null)
+        {
+            var replaceCommand = ResolvePropertyValues(dataContext);
+
+#if !WINDOWS_UWP
+            if (TargetProperty is DependencyProperty)
             {
-                dataContext = BindHelper.LocateValidDependencyPropertyByAllTrees(TargetObject as DependencyObject, FrameworkElement.DataContextProperty, ExecuteMethodName, ExecutePropertyName);
-            }
-            else
-            {
-                dataContext = BindHelper.LocateValidDependencyPropertyByAllTrees(TargetObject as DependencyObject, FrameworkElement.DataContextProperty);
+                frameworkElement.SetValue((DependencyProperty)TargetProperty, replaceCommand);
             }
 
+#else
+            if (TargetProperty as PropertyInfo != null)
+            {
+                ((PropertyInfo)TargetProperty).SetValue(TargetObject, replaceCommand);
+            }
+#endif
+
+        }
+    }
+
+    event EventHandler ICommand.CanExecuteChanged
+    {
+        add
+        {
             var frameworkElement = TargetObject as FrameworkElement;
-            if (frameworkElement == null)
+            if (frameworkElement != null)
             {
-                return;
-            }
-            // Remove handler back
-
 #if !WINDOWS_UWP
-            DependencyPropertyDescriptor dppDescr = DependencyPropertyDescriptor.FromProperty(FrameworkElement.DataContextProperty, FrameworkElement.DataContextProperty.OwnerType);
-            dppDescr.RemoveValueChanged(frameworkElement, LateBiningOfCommandInterface);
+                DependencyPropertyDescriptor dppDescr = DependencyPropertyDescriptor.FromProperty(FrameworkElement.DataContextProperty, FrameworkElement.DataContextProperty.OwnerType);
+                dppDescr.AddValueChanged(frameworkElement, LateBiningOfCommandInterface);
 #else
-            frameworkElement.Loaded -= LateBiningOfCommandInterface;
+                frameworkElement.Loaded += LateBiningOfCommandInterface;
 #endif
-
-            if (dataContext != null)
-            {
-                var replaceCommand = ResolvePropertyValues(dataContext);
-
-#if !WINDOWS_UWP
-                if (TargetProperty is DependencyProperty)
-                {
-                    frameworkElement.SetValue((DependencyProperty)TargetProperty, replaceCommand);
-                }
-
-#else
-                if (TargetProperty as PropertyInfo != null)
-                {
-                    ((PropertyInfo)TargetProperty).SetValue(TargetObject, replaceCommand);
-                }
-#endif
-
             }
+
+
         }
-
-        event EventHandler ICommand.CanExecuteChanged
+        remove
         {
-            add
+            var frameworkElement = TargetObject as FrameworkElement;
+            if (frameworkElement != null)
             {
-                var frameworkElement = TargetObject as FrameworkElement;
-                if (frameworkElement != null)
-                {
 #if !WINDOWS_UWP
-                    DependencyPropertyDescriptor dppDescr = DependencyPropertyDescriptor.FromProperty(FrameworkElement.DataContextProperty, FrameworkElement.DataContextProperty.OwnerType);
-                    dppDescr.AddValueChanged(frameworkElement, LateBiningOfCommandInterface);
+                DependencyPropertyDescriptor dppDescr = DependencyPropertyDescriptor.FromProperty(FrameworkElement.DataContextProperty, FrameworkElement.DataContextProperty.OwnerType);
+                dppDescr.RemoveValueChanged(frameworkElement, LateBiningOfCommandInterface);
 #else
-                    frameworkElement.Loaded += LateBiningOfCommandInterface;
+                frameworkElement.Loaded -= LateBiningOfCommandInterface;
 #endif
-                }
-
-
             }
-            remove
-            {
-                var frameworkElement = TargetObject as FrameworkElement;
-                if (frameworkElement != null)
-                {
-#if !WINDOWS_UWP
-                    DependencyPropertyDescriptor dppDescr = DependencyPropertyDescriptor.FromProperty(FrameworkElement.DataContextProperty, FrameworkElement.DataContextProperty.OwnerType);
-                    dppDescr.RemoveValueChanged(frameworkElement, LateBiningOfCommandInterface);
-#else
-                    frameworkElement.Loaded -= LateBiningOfCommandInterface;
-#endif
-                }
 
-            }
         }
+    }
 
-        void ICommand.Execute(object parameter)
-        {
-        }
+    void ICommand.Execute(object parameter)
+    {
     }
 }

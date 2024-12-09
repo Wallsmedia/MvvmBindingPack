@@ -31,102 +31,101 @@ using System.Xaml;
 #endif
 
 
-namespace MvvmBindingPack
-{
-    /// <summary>
-    /// WPF and WinRt XAML mark-up extension.
-    /// Binds control's <see cref="EventHandler"/> property type to a source class member of an object located in resource dictionaries.
-    /// </summary>
+namespace MvvmBindingPack;
+
+/// <summary>
+/// WPF and WinRt XAML mark-up extension.
+/// Binds control's <see cref="EventHandler"/> property type to a source class member of an object located in resource dictionaries.
+/// </summary>
 
 #if !WINDOWS_UWP
-    [MarkupExtensionReturnTypeAttribute(typeof(RoutedEventHandler))]
+[MarkupExtensionReturnTypeAttribute(typeof(RoutedEventHandler))]
 #endif
-    public class BindEventHandlerResource : BindEventHandlerBase
-    {
+public class BindEventHandlerResource : BindEventHandlerBase
+{
 
 #if  !WINDOWS_UWP
-        readonly StaticResourceExtension _resourceSource;
+    readonly StaticResourceExtension _resourceSource;
 #endif
 
 #if !WINDOWS_UWP
-        /// <summary>
-        ///  Gets or sets the key value passed by a static resource reference. The
-        ///  key is used to return the object matching that key in resource dictionaries.
-        /// </summary>
-        [ConstructorArgument("resourceKey")]
-        public object ResourceKey
-        {
-            get { return _resourceSource.ResourceKey; }
-            set { _resourceSource.ResourceKey = value; }
-        }
-#else
-        /// <summary>
-        ///  Gets or sets the key value passed by a static resource reference. The
-        ///  key is used to return the object matching that key in resource dictionaries.
-        /// </summary>
-        public object ResourceKey { get; set; }
-
-#endif
-
-        /// <summary>
-        /// Get a source object for binding, an object matching the key in resource dictionaries.
-        /// </summary>
-        /// <param name="serviceProvider">Object that can provide services for the markup extension.</param>
-        /// <returns></returns>
-        protected override object ObtainSourceObject(IServiceProvider serviceProvider)
-        {
-
-#if WINDOWS_UWP
-            // ReSharper disable SuggestUseVarKeywordEvident
-            IProvideValueTarget service = serviceProvider.GetService(typeof(IProvideValueTarget)) as IProvideValueTarget;
-            // ReSharper restore SuggestUseVarKeywordEvident
-            // For WinRT we provide a valid targets through BindXAML class. 
-            object obj = BindHelper.LocateResource(service.TargetObject as FrameworkElement, ResourceKey);
-            return obj;
-#else
-            // For WPF we have got a StaticResourceExtension to get a Resource
-            return _resourceSource.ProvideValue(serviceProvider);
-#endif
-        }
-
-#if !WINDOWS_UWP
-        /// <summary>
-        /// Default constructor.
-        /// </summary>
-        public BindEventHandlerResource()
-        {
-            _resourceSource = new StaticResourceExtension();
-        }
-
-        /// <summary>
-        /// Constructs the class with a requested resource key.
-        /// </summary>
-        /// <param name="resourceKey">Requested resource key.</param>
-        public BindEventHandlerResource(object resourceKey)
-        {
-            _resourceSource = new StaticResourceExtension(resourceKey);
-        }
-#endif
-
-#if WINDOWS_UWP
-
-        /// <summary>
-        /// Default constructor.
-        /// </summary>
-        public BindEventHandlerResource()
-        {
-        }
-
-        /// <summary>
-        /// Constructs the class with a requested resource key.
-        /// </summary>
-        /// <param name="resourceKey">Requested resource key.</param>
-        public BindEventHandlerResource(object resourceKey)
-        {
-            ResourceKey = resourceKey;
-        }
-
-#endif
-
+    /// <summary>
+    ///  Gets or sets the key value passed by a static resource reference. The
+    ///  key is used to return the object matching that key in resource dictionaries.
+    /// </summary>
+    [ConstructorArgument("resourceKey")]
+    public object ResourceKey
+    {
+        get { return _resourceSource.ResourceKey; }
+        set { _resourceSource.ResourceKey = value; }
     }
+#else
+    /// <summary>
+    ///  Gets or sets the key value passed by a static resource reference. The
+    ///  key is used to return the object matching that key in resource dictionaries.
+    /// </summary>
+    public object ResourceKey { get; set; }
+
+#endif
+
+    /// <summary>
+    /// Get a source object for binding, an object matching the key in resource dictionaries.
+    /// </summary>
+    /// <param name="serviceProvider">Object that can provide services for the markup extension.</param>
+    /// <returns></returns>
+    protected override object ObtainSourceObject(IServiceProvider serviceProvider)
+    {
+
+#if WINDOWS_UWP
+        // ReSharper disable SuggestUseVarKeywordEvident
+        IProvideValueTarget service = serviceProvider.GetService(typeof(IProvideValueTarget)) as IProvideValueTarget;
+        // ReSharper restore SuggestUseVarKeywordEvident
+        // For WinRT we provide a valid targets through BindXAML class. 
+        object obj = BindHelper.LocateResource(service.TargetObject as FrameworkElement, ResourceKey);
+        return obj;
+#else
+        // For WPF we have got a StaticResourceExtension to get a Resource
+        return _resourceSource.ProvideValue(serviceProvider);
+#endif
+    }
+
+#if !WINDOWS_UWP
+    /// <summary>
+    /// Default constructor.
+    /// </summary>
+    public BindEventHandlerResource()
+    {
+        _resourceSource = new StaticResourceExtension();
+    }
+
+    /// <summary>
+    /// Constructs the class with a requested resource key.
+    /// </summary>
+    /// <param name="resourceKey">Requested resource key.</param>
+    public BindEventHandlerResource(object resourceKey)
+    {
+        _resourceSource = new StaticResourceExtension(resourceKey);
+    }
+#endif
+
+#if WINDOWS_UWP
+
+    /// <summary>
+    /// Default constructor.
+    /// </summary>
+    public BindEventHandlerResource()
+    {
+    }
+
+    /// <summary>
+    /// Constructs the class with a requested resource key.
+    /// </summary>
+    /// <param name="resourceKey">Requested resource key.</param>
+    public BindEventHandlerResource(object resourceKey)
+    {
+        ResourceKey = resourceKey;
+    }
+
+#endif
+
 }

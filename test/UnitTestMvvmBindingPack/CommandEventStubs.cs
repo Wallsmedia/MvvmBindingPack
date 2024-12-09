@@ -15,82 +15,81 @@ using System.Windows;
 using MvvmBindingPack;
 
 
-namespace UnitTestMvvmBindingPack
+namespace UnitTestMvvmBindingPack;
+
+public class CommandEventStubs:NotifyPropertyChangedBase
 {
-    public class CommandEventStubs:NotifyPropertyChangedBase
+
+    bool _buttonClickExternalCalled;
+    public bool ButtonClickExternalCalled
     {
-
-        bool _buttonClickExternalCalled;
-        public bool ButtonClickExternalCalled
-        {
-            get { return _buttonClickExternalCalled; }
-            set { _buttonClickExternalCalled = value; }
-        }
-
-        bool _executeButtonClickExternalCalled;
-        public bool ExecuteButtonClickExternalCalled
-        {
-            get { return _executeButtonClickExternalCalled; }
-            set { _executeButtonClickExternalCalled = value; }
-        }
-
-        bool _canExecuteButtonClickExternal = true;
-        public bool CanExecuteButtonClickExternalFlag
-        {
-            get { return _canExecuteButtonClickExternal; }
-            set { _canExecuteButtonClickExternal = value; }
-        }
-
-        bool _canExecuteFlag = false;
-        public bool CanExecuteFlag
-        {
-            get { return _canExecuteFlag; }
-            set
-            {
-                _canExecuteFlag = value;
-                NotifyPropertyChanged();
-            }
-        }
-
-        public void ResetTestFlags()
-        {
-            _buttonClickExternalCalled = false;
-            _executeButtonClickExternalCalled = false;
-            _canExecuteButtonClickExternal = true;
-        }
-
-        public void Button_Click_External(object sender, RoutedEventArgs e)
-        {
-            _buttonClickExternalCalled = true;
-        }
-
-        public RoutedEventHandler ClickDelegate
-        {
-            get { return Button_Click_External; }
-        }
-
-        public void ExecuteButton_Click_External(object sender)
-        {
-            _executeButtonClickExternalCalled = true;
-        }
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1009:DeclareEventHandlersCorrectly")]
-        public event Action IssueNotifyExecuteButtonChanged;
-
-        public bool IsNullIssueNotifyExecuteButtonChanged
-        {
-            get { return IssueNotifyExecuteButtonChanged == null; }
-        }
-
-        public void InvokeNotifyChanged()
-        {
-            IssueNotifyExecuteButtonChanged();
-        }
-
-        public bool CanExecuteButton_Click_External(object sender)
-        {
-            return _canExecuteButtonClickExternal;
-        }
-
+        get { return _buttonClickExternalCalled; }
+        set { _buttonClickExternalCalled = value; }
     }
+
+    bool _executeButtonClickExternalCalled;
+    public bool ExecuteButtonClickExternalCalled
+    {
+        get { return _executeButtonClickExternalCalled; }
+        set { _executeButtonClickExternalCalled = value; }
+    }
+
+    bool _canExecuteButtonClickExternal = true;
+    public bool CanExecuteButtonClickExternalFlag
+    {
+        get { return _canExecuteButtonClickExternal; }
+        set { _canExecuteButtonClickExternal = value; }
+    }
+
+    bool _canExecuteFlag = false;
+    public bool CanExecuteFlag
+    {
+        get { return _canExecuteFlag; }
+        set
+        {
+            _canExecuteFlag = value;
+            NotifyPropertyChanged();
+        }
+    }
+
+    public void ResetTestFlags()
+    {
+        _buttonClickExternalCalled = false;
+        _executeButtonClickExternalCalled = false;
+        _canExecuteButtonClickExternal = true;
+    }
+
+    public void Button_Click_External(object sender, RoutedEventArgs e)
+    {
+        _buttonClickExternalCalled = true;
+    }
+
+    public RoutedEventHandler ClickDelegate
+    {
+        get { return Button_Click_External; }
+    }
+
+    public void ExecuteButton_Click_External(object sender)
+    {
+        _executeButtonClickExternalCalled = true;
+    }
+
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1009:DeclareEventHandlersCorrectly")]
+    public event Action IssueNotifyExecuteButtonChanged;
+
+    public bool IsNullIssueNotifyExecuteButtonChanged
+    {
+        get { return IssueNotifyExecuteButtonChanged == null; }
+    }
+
+    public void InvokeNotifyChanged()
+    {
+        IssueNotifyExecuteButtonChanged();
+    }
+
+    public bool CanExecuteButton_Click_External(object sender)
+    {
+        return _canExecuteButtonClickExternal;
+    }
+
 }

@@ -14,63 +14,62 @@
 
 using System.Windows;
 
-namespace UnitTestMvvmBindingPack
+namespace UnitTestMvvmBindingPack;
+
+public static class StaticCommandEventStubs
 {
-    public static class StaticCommandEventStubs
+    static bool _buttonClickExternalCalled;
+    static public bool ButtonClickExternalCalled
     {
-        static bool _buttonClickExternalCalled;
-        static public bool ButtonClickExternalCalled
-        {
-            get { return _buttonClickExternalCalled; }
-            set { _buttonClickExternalCalled = value; }
-        }
-        static public void ResetTestFlags()
-        {
-            _buttonClickExternalCalled = false;
-            _executeButtonClickExternalCalled = false;
-            _canExecuteButtonClickExternal = true;
-        }
-
-        static public void Button_Click_External(object sender, RoutedEventArgs e)
-        {
-            _buttonClickExternalCalled = true;
-        }
-
-        static public RoutedEventHandler ClickDelegate
-        {
-            get { return Button_Click_External; }
-        }
-
-        static bool _executeButtonClickExternalCalled;
-        static public bool ExecuteButtonClickExternalCalled
-        {
-            get { return _executeButtonClickExternalCalled; }
-            set { _executeButtonClickExternalCalled = value; }
-        }
-
-        static public void ExecuteButton_Click_External(object sender)
-        {
-            _executeButtonClickExternalCalled = true;
-        }
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1009:DeclareEventHandlersCorrectly")]
-        static public event Action IssueNotifyExecuteButtonChanged;
-        static public void InvokeNotifyChanged()
-        {
-            IssueNotifyExecuteButtonChanged();
-        }
-
-        static bool _canExecuteButtonClickExternal = true;
-        static public bool CanExecuteButtonClickExternalFlag
-        {
-            get { return _canExecuteButtonClickExternal; }
-            set { _canExecuteButtonClickExternal = value; }
-        }
-
-        static public bool CanExecuteButton_Click_External(object sender)
-        {
-            return _canExecuteButtonClickExternal;
-        }
-
+        get { return _buttonClickExternalCalled; }
+        set { _buttonClickExternalCalled = value; }
     }
+    static public void ResetTestFlags()
+    {
+        _buttonClickExternalCalled = false;
+        _executeButtonClickExternalCalled = false;
+        _canExecuteButtonClickExternal = true;
+    }
+
+    static public void Button_Click_External(object sender, RoutedEventArgs e)
+    {
+        _buttonClickExternalCalled = true;
+    }
+
+    static public RoutedEventHandler ClickDelegate
+    {
+        get { return Button_Click_External; }
+    }
+
+    static bool _executeButtonClickExternalCalled;
+    static public bool ExecuteButtonClickExternalCalled
+    {
+        get { return _executeButtonClickExternalCalled; }
+        set { _executeButtonClickExternalCalled = value; }
+    }
+
+    static public void ExecuteButton_Click_External(object sender)
+    {
+        _executeButtonClickExternalCalled = true;
+    }
+
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1009:DeclareEventHandlersCorrectly")]
+    static public event Action IssueNotifyExecuteButtonChanged;
+    static public void InvokeNotifyChanged()
+    {
+        IssueNotifyExecuteButtonChanged();
+    }
+
+    static bool _canExecuteButtonClickExternal = true;
+    static public bool CanExecuteButtonClickExternalFlag
+    {
+        get { return _canExecuteButtonClickExternal; }
+        set { _canExecuteButtonClickExternal = value; }
+    }
+
+    static public bool CanExecuteButton_Click_External(object sender)
+    {
+        return _canExecuteButtonClickExternal;
+    }
+
 }

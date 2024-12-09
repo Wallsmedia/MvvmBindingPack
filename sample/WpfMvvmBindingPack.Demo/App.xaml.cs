@@ -18,26 +18,25 @@ using System.Windows;
 using System.Windows.Input;
 using WpfMvvmBindingPackDemo.ViewModels;
 
-namespace WpfDemoApplication
+namespace WpfDemoApplication;
+
+/// <summary>
+/// Interaction logic for App.xaml
+/// </summary>
+[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1001:TypesThatOwnDisposableFieldsShouldBeDisposable")]
+public partial class App
 {
-    /// <summary>
-    /// Interaction logic for App.xaml
-    /// </summary>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1001:TypesThatOwnDisposableFieldsShouldBeDisposable")]
-    public partial class App
+    
+
+    private void Application_Startup(object sender, StartupEventArgs e)
     {
-        
 
-        private void Application_Startup(object sender, StartupEventArgs e)
-        {
+        ServiceCollection services = new ServiceCollection();
+        services.AddSingleton<AutoBindingViewModel>();
+        services.AddSingleton<AppendAutoBindingViewModel>();
+        services.AddSingleton<IocBindingViewModel>();
+        services.AddSingleton<AppendCommonViewModel>();
+        AutoWireVmDataContext.ServiceProvider = services.BuildServiceProvider();
 
-            ServiceCollection services = new ServiceCollection();
-            services.AddSingleton<AutoBindingViewModel>();
-            services.AddSingleton<AppendAutoBindingViewModel>();
-            services.AddSingleton<IocBindingViewModel>();
-            services.AddSingleton<AppendCommonViewModel>();
-            AutoWireVmDataContext.ServiceProvider = services.BuildServiceProvider();
-
-        }
     }
 }

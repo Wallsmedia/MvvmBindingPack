@@ -30,69 +30,68 @@ using System.Xaml;
 #endif
 
 
-namespace MvvmBindingPack
+namespace MvvmBindingPack;
+
+/// <summary>
+/// XAML mark-up, BindXAML.AddEvents and BindXAML.AddPropertyChangeEvents extensions; 
+/// it binds a control event to a method with a compatible signature of the object which is located in DataContext referenced object.
+/// </summary>
+
+#if !WINDOWS_UWP
+[MarkupExtensionReturnTypeAttribute(typeof(RoutedEventHandler))]
+#endif
+public class BindEventHandler : BindEventHandlerBase
 {
     /// <summary>
-    /// XAML mark-up, BindXAML.AddEvents and BindXAML.AddPropertyChangeEvents extensions; 
-    /// it binds a control event to a method with a compatible signature of the object which is located in DataContext referenced object.
+    /// It is a "back-door" feature which allows to setup the source object. If it is not set on, by default,
+    /// the markup extension will use the defined DataContext property value.
+    /// It is referring to the source object which has the method or property used by the markup extension. 
+    /// There may be used {IocBinding ...} or other "agnostic" mark up extension(not {Binding ...}) which provides by the independent way a source object.
     /// </summary>
-
 #if !WINDOWS_UWP
-    [MarkupExtensionReturnTypeAttribute(typeof(RoutedEventHandler))]
+    [ConstructorArgument("serviceType")]
 #endif
-    public class BindEventHandler : BindEventHandlerBase
+    public object Source { get; set; }
+
+    /// <summary>
+    /// Default constructor.
+    /// </summary>
+    public BindEventHandler() { }
+
+    /// <summary>
+    /// Constructs the class with a requested source.
+    /// </summary>
+    /// <param name="source">The source object.</param>
+    public BindEventHandler(object source) { Source = source; }
+
+    /// <summary>
+    /// Get source object for binding. 
+    /// If it is not set on, by default the method will search the first defined DataContext property value.
+    /// </summary>
+    /// <param name="serviceProvider">An object that can provide services for the markup extension.</param>
+    /// <returns>Reference to a source object.</returns>
+
+    protected override object ObtainSourceObject(IServiceProvider serviceProvider)
     {
-        /// <summary>
-        /// It is a "back-door" feature which allows to setup the source object. If it is not set on, by default,
-        /// the markup extension will use the defined DataContext property value.
-        /// It is referring to the source object which has the method or property used by the markup extension. 
-        /// There may be used {IocBinding ...} or other "agnostic" mark up extension(not {Binding ...}) which provides by the independent way a source object.
-        /// </summary>
-#if !WINDOWS_UWP
-        [ConstructorArgument("serviceType")]
-#endif
-        public object Source { get; set; }
-
-        /// <summary>
-        /// Default constructor.
-        /// </summary>
-        public BindEventHandler() { }
-
-        /// <summary>
-        /// Constructs the class with a requested source.
-        /// </summary>
-        /// <param name="source">The source object.</param>
-        public BindEventHandler(object source) { Source = source; }
-
-        /// <summary>
-        /// Get source object for binding. 
-        /// If it is not set on, by default the method will search the first defined DataContext property value.
-        /// </summary>
-        /// <param name="serviceProvider">An object that can provide services for the markup extension.</param>
-        /// <returns>Reference to a source object.</returns>
-
-        protected override object ObtainSourceObject(IServiceProvider serviceProvider)
+        if (Source == null)
         {
-            if (Source == null)
+            // For WinRT we provide a valid targets through BindXAML class. 
+            // ReSharper disable SuggestUseVarKeywordEvident
+            IProvideValueTarget service = serviceProvider.GetService(typeof(IProvideValueTarget)) as IProvideValueTarget;
+            // ReSharper restore SuggestUseVarKeywordEvident
+            if ((service != null) && (service.TargetObject != null))
             {
-                // For WinRT we provide a valid targets through BindXAML class. 
-                // ReSharper disable SuggestUseVarKeywordEvident
-                IProvideValueTarget service = serviceProvider.GetService(typeof(IProvideValueTarget)) as IProvideValueTarget;
-                // ReSharper restore SuggestUseVarKeywordEvident
-                if ((service != null) && (service.TargetObject != null))
+                if (DeepScanAllTrees)
                 {
-                    if (DeepScanAllTrees)
-                    {
-                        Source = BindHelper.LocateValidDependencyPropertyByAllTrees(service.TargetObject as DependencyObject, FrameworkElement.DataContextProperty, MethodName, PropertyName);
-                    }
-                    else
-                    {
-                        Source = BindHelper.LocateValidDependencyPropertyByAllTrees(service.TargetObject as DependencyObject, FrameworkElement.DataContextProperty);
-                    }
+                    Source = BindHelper.LocateValidDependencyPropertyByAllTrees(service.TargetObject as DependencyObject, FrameworkElement.DataContextProperty, MethodName, PropertyName);
+                }
+                else
+                {
+                    Source = BindHelper.LocateValidDependencyPropertyByAllTrees(service.TargetObject as DependencyObject, FrameworkElement.DataContextProperty);
                 }
             }
-            return Source;
         }
-
+        return Source;
     }
+
 }

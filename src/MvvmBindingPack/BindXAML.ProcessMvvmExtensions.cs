@@ -38,69 +38,68 @@ using System.Reflection;
 #endif
 
 
-namespace MvvmBindingPack
+namespace MvvmBindingPack;
+
+
+/// <summary>
+/// The class supports an VM auto wiring/initialization/injection pattern. It's based on attached dependency property behaviors.
+/// Partial class contains a collection of attached properties. 
+/// </summary>
+public static partial class BindXAML
 {
 
-    /// <summary>
-    /// The class supports an VM auto wiring/initialization/injection pattern. It's based on attached dependency property behaviors.
-    /// Partial class contains a collection of attached properties. 
-    /// </summary>
-    public static partial class BindXAML
-    {
-
 #if WINDOWS_UWP
-        /// <summary>
-        /// XAML attached property, a fake collection, that used for processing extensions: AutoWireVmDataContext, AutoWireViewConrols
-        /// </summary>
-        public static readonly DependencyProperty ProcessMvvmExtensionsProperty = DependencyProperty.RegisterAttached("ProcessMvvmExtensions", typeof(FakeCollection), typeof(BindXAML), new PropertyMetadata(null));
+    /// <summary>
+    /// XAML attached property, a fake collection, that used for processing extensions: AutoWireVmDataContext, AutoWireViewConrols
+    /// </summary>
+    public static readonly DependencyProperty ProcessMvvmExtensionsProperty = DependencyProperty.RegisterAttached("ProcessMvvmExtensions", typeof(FakeCollection), typeof(BindXAML), new PropertyMetadata(null));
 #else
-        // ".Shadow" suffix is used in WPF for preventing XAML optimization, access directly dependency property.
-        /// <summary>
-        /// XAML attached property, a fake collection, that used for processing extensions: AutoWireVmDataContext, AutoWireViewConrols
-        /// </summary>
-        public static readonly DependencyProperty ProcessMvvmExtensionsProperty = DependencyProperty.RegisterAttached("ProcessMvvmExtensions.Shadow", typeof(FakeCollection), typeof(BindXAML), new PropertyMetadata(null));
+    // ".Shadow" suffix is used in WPF for preventing XAML optimization, access directly dependency property.
+    /// <summary>
+    /// XAML attached property, a fake collection, that used for processing extensions: AutoWireVmDataContext, AutoWireViewConrols
+    /// </summary>
+    public static readonly DependencyProperty ProcessMvvmExtensionsProperty = DependencyProperty.RegisterAttached("ProcessMvvmExtensions.Shadow", typeof(FakeCollection), typeof(BindXAML), new PropertyMetadata(null));
 #endif
-        /// <summary>
-        /// The attached dependency property returns the fake collection; it's used to add events to a FrameWorkElement object.
-        /// It provides the fake collection which executes the the delegate "ProcessAddEventItems" 
-        /// when "Add" a new item to the collection.
-        /// </summary>
-        /// <param name="dependencyObject">The target object for an attached dependency property.</param>
-        /// <returns>The fake collection for processing elements.</returns>
-        public static FakeCollection GetProcessMvvmExtensions(DependencyObject dependencyObject)
+    /// <summary>
+    /// The attached dependency property returns the fake collection; it's used to add events to a FrameWorkElement object.
+    /// It provides the fake collection which executes the the delegate "ProcessAddEventItems" 
+    /// when "Add" a new item to the collection.
+    /// </summary>
+    /// <param name="dependencyObject">The target object for an attached dependency property.</param>
+    /// <returns>The fake collection for processing elements.</returns>
+    public static FakeCollection GetProcessMvvmExtensions(DependencyObject dependencyObject)
+    {
+        var fakecol = new FakeCollection();
+        fakecol.DependencyObjectElement = dependencyObject;
+        fakecol.ExecuteAction = ProcessAddMvvmExtensions;
+        return fakecol;
+    }
+
+    /// <summary>
+    /// The method which will be called for the attached dependency property when  the new element is added to a fake collection.
+    /// </summary>
+    /// <param name="dependencyObject">The target FrameworkElement.</param>
+    /// <param name="item">The new object to add.</param>
+    internal static void ProcessAddMvvmExtensions(DependencyObject dependencyObject, object item)
+    {
+        if ((item == null) || (dependencyObject == null))
         {
-            var fakecol = new FakeCollection();
-            fakecol.DependencyObjectElement = dependencyObject;
-            fakecol.ExecuteAction = ProcessAddMvvmExtensions;
-            return fakecol;
+            return;
         }
 
-        /// <summary>
-        /// The method which will be called for the attached dependency property when  the new element is added to a fake collection.
-        /// </summary>
-        /// <param name="dependencyObject">The target FrameworkElement.</param>
-        /// <param name="item">The new object to add.</param>
-        internal static void ProcessAddMvvmExtensions(DependencyObject dependencyObject, object item)
+        if (BindHelper.IsInDesignModeStatic)
         {
-            if ((item == null) || (dependencyObject == null))
-            {
-                return;
-            }
-
-            if (BindHelper.IsInDesignModeStatic)
-            {
-                // Cannot correctly set in the design mode.
-                return;
-            }
-
-            //Item has 'void Execute(DependencyObject dependencyObject)' or 'void Execute(object frameworkElement)'  method
-            MethodInfo executeMethodInfo = item.GetMethodInfo("Execute");
-            if (executeMethodInfo != null)
-            {
-                //Execute the enhancer to dependency object element
-                executeMethodInfo.Invoke(item, new object[] { dependencyObject });
-            }
-
+            // Cannot correctly set in the design mode.
+            return;
         }
+
+        //Item has 'void Execute(DependencyObject dependencyObject)' or 'void Execute(object frameworkElement)'  method
+        MethodInfo executeMethodInfo = item.GetMethodInfo("Execute");
+        if (executeMethodInfo != null)
+        {
+            //Execute the enhancer to dependency object element
+            executeMethodInfo.Invoke(item, new object[] { dependencyObject });
+        }
+
     }
 }

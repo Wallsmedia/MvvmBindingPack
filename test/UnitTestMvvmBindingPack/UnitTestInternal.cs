@@ -14,104 +14,103 @@
 
 using Xunit;
 
-namespace UnitTestMvvmBindingPack
+namespace UnitTestMvvmBindingPack;
+
+static class UnitTestInternal
 {
-    static class UnitTestInternal
+    /// <summary>
+    /// Asserts that the given testedAction throws an expected of the type specified in the generic parameter, or a subtype thereof.
+    /// </summary>
+    /// <typeparam name="TExpectedException">Type of the expected to check for.</typeparam>
+    /// <param name="testedAction is null">Action to run.</param>
+    /// <param name="testedAction"></param>
+    /// <expected cref="ArgumentNullException"><paramref name="testedAction"/> is null.</expected>
+    public static void AssertThrows<TExpectedException>(Action testedAction) where TExpectedException : Exception
     {
-        /// <summary>
-        /// Asserts that the given testedAction throws an expected of the type specified in the generic parameter, or a subtype thereof.
-        /// </summary>
-        /// <typeparam name="TExpectedException">Type of the expected to check for.</typeparam>
-        /// <param name="testedAction is null">Action to run.</param>
-        /// <param name="testedAction"></param>
-        /// <expected cref="ArgumentNullException"><paramref name="testedAction"/> is null.</expected>
-        public static void AssertThrows<TExpectedException>(Action testedAction) where TExpectedException : Exception
+        if (testedAction == null)
+            throw new ArgumentNullException("testedAction");
+
+        var exceptionFaild = false;
+        try
         {
-            if (testedAction == null)
-                throw new ArgumentNullException("testedAction");
-
-            var exceptionFaild = false;
-            try
-            {
-                testedAction();
-                exceptionFaild = true;
-            }
-            catch (TExpectedException)
-            {
-            }
-            catch (Exception ex)
-            {
-                // ReSharper disable RedundantStringFormatCall
-                Assert.False(true, string.Format("Expected {0} threw {1}.\r\n\r\nStack trace:\r\n{2}", typeof(TExpectedException).Name, ex.GetType().Name, ex.StackTrace));
-                // ReSharper restore RedundantStringFormatCall
-            }
-
-            if (exceptionFaild)
-                // ReSharper disable RedundantStringFormatCall
-                Assert.False(true, string.Format("Expected {0}.", typeof(TExpectedException).Name));
+            testedAction();
+            exceptionFaild = true;
+        }
+        catch (TExpectedException)
+        {
+        }
+        catch (Exception ex)
+        {
+            // ReSharper disable RedundantStringFormatCall
+            Assert.False(true, string.Format("Expected {0} threw {1}.\r\n\r\nStack trace:\r\n{2}", typeof(TExpectedException).Name, ex.GetType().Name, ex.StackTrace));
             // ReSharper restore RedundantStringFormatCall
         }
 
-        /// <summary>
-        /// Asserts that the given testedAction throws an expected of the type specified in the generic parameter, or a subtype thereof.
-        /// </summary>
-        /// <typeparam name="TExpectedException">Type of the expected to check for.</typeparam>
-        /// <param name="testedAction is null">Action to run.</param>
-        /// <param name="testedAction"></param>
-        /// <param name="message">Error message for assert failure.</param>
-        /// <expected cref="ArgumentNullException"><paramref name="testedAction"/> is null.</expected>
-        public static void AssertThrows<TExpectedException>(Action testedAction, string message) where TExpectedException : Exception
+        if (exceptionFaild)
+            // ReSharper disable RedundantStringFormatCall
+            Assert.False(true, string.Format("Expected {0}.", typeof(TExpectedException).Name));
+        // ReSharper restore RedundantStringFormatCall
+    }
+
+    /// <summary>
+    /// Asserts that the given testedAction throws an expected of the type specified in the generic parameter, or a subtype thereof.
+    /// </summary>
+    /// <typeparam name="TExpectedException">Type of the expected to check for.</typeparam>
+    /// <param name="testedAction is null">Action to run.</param>
+    /// <param name="testedAction"></param>
+    /// <param name="message">Error message for assert failure.</param>
+    /// <expected cref="ArgumentNullException"><paramref name="testedAction"/> is null.</expected>
+    public static void AssertThrows<TExpectedException>(Action testedAction, string message) where TExpectedException : Exception
+    {
+        if (testedAction == null)
+            throw new ArgumentNullException("testedAction");
+
+        var exceptionFaild = false;
+        try
         {
-            if (testedAction == null)
-                throw new ArgumentNullException("testedAction");
-
-            var exceptionFaild = false;
-            try
-            {
-                testedAction();
-                exceptionFaild = true;
-            }
-            catch (TExpectedException)
-            {
-            }
-            catch
-            {
-                Assert.False(true,message);
-            }
-
-            if (exceptionFaild)
-                Assert.False(true, message);
-
+            testedAction();
+            exceptionFaild = true;
+        }
+        catch (TExpectedException)
+        {
+        }
+        catch
+        {
+            Assert.False(true,message);
         }
 
-
-        /// <summary>
-        /// Asserts that the given testedAction throws the specified expected.
-        /// </summary>
-        /// <param name="expected">Exception to assert being thrown.</param>
-        /// <param name="testedAction">Action to run.</param>
-        /// <param name="message">Error message for assert failure.</param>
-        /// <expected cref="ArgumentNullException"><paramref name="testedAction is null"/> is null.</expected>
-        public static void AssertThrows(Type expected, Action testedAction, string message)
-        {
-            if (testedAction == null)
-                throw new ArgumentNullException("testedAction");
-
-            var exceptionFaild = false;
-            try
-            {
-                testedAction();
-                exceptionFaild = true;
-            }
-            catch (Exception ex)
-            {
-                Assert.Equal(expected, ex.GetType());
-            }
-
-            if (exceptionFaild)
-                Assert.False(true, message);
-
-        }
+        if (exceptionFaild)
+            Assert.False(true, message);
 
     }
+
+
+    /// <summary>
+    /// Asserts that the given testedAction throws the specified expected.
+    /// </summary>
+    /// <param name="expected">Exception to assert being thrown.</param>
+    /// <param name="testedAction">Action to run.</param>
+    /// <param name="message">Error message for assert failure.</param>
+    /// <expected cref="ArgumentNullException"><paramref name="testedAction is null"/> is null.</expected>
+    public static void AssertThrows(Type expected, Action testedAction, string message)
+    {
+        if (testedAction == null)
+            throw new ArgumentNullException("testedAction");
+
+        var exceptionFaild = false;
+        try
+        {
+            testedAction();
+            exceptionFaild = true;
+        }
+        catch (Exception ex)
+        {
+            Assert.Equal(expected, ex.GetType());
+        }
+
+        if (exceptionFaild)
+            Assert.False(true, message);
+
+    }
+
 }

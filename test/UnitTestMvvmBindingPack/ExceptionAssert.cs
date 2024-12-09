@@ -14,30 +14,29 @@
 
 using Xunit;
 
-namespace UnitTest
-{
-    public class ExceptionAssertHelper
-    {
-        public static void ExceptionAssert(Type expectedException, Action action, string message)
-        {
-            Exception exp = RunAction(action);
-            if ((exp == null) || (exp.GetType() != expectedException))
-            {
-                Assert.False(true,message);
-            }
-        }
+namespace UnitTest;
 
-        private static Exception RunAction(Action action)
+public class ExceptionAssertHelper
+{
+    public static void ExceptionAssert(Type expectedException, Action action, string message)
+    {
+        Exception exp = RunAction(action);
+        if ((exp == null) || (exp.GetType() != expectedException))
         {
-            try
-            {
-                action();
-                return null;
-            }
-            catch (Exception ex)
-            {
-                return ex;
-            }
+            Assert.False(true,message);
+        }
+    }
+
+    private static Exception RunAction(Action action)
+    {
+        try
+        {
+            action();
+            return null;
+        }
+        catch (Exception ex)
+        {
+            return ex;
         }
     }
 }

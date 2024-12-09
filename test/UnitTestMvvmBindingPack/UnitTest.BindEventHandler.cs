@@ -16,123 +16,119 @@ using Xunit;
 using MvvmBindingPack;
 using System.Windows;
 
-namespace UnitTestMvvmBindingPack
+namespace UnitTestMvvmBindingPack;
+
+/// <summary>
+/// Summary description for BindEventHandler
+/// </summary>
+public class UnitTestBindEventHandler
 {
-    /// <summary>
-    /// Summary description for BindEventHandler
-    /// </summary>
-    public class UnitTestBindEventHandler
+
+    public event RoutedEventHandler FakeTargetHandler;
+
+    [Fact]
+    public void BindEventHandlerConstructor()
+    {
+        const string source = "Source";
+        var bindEvent = new BindEventHandler(source);
+        Assert.Equal(source, bindEvent.Source);
+    }
+
+    [Fact]
+    public void BindEventHandlerByPropertyName()
     {
 
-        public event RoutedEventHandler FakeTargetHandler;
+        var stubServiceProvider = MockServiceProvider.Instance;
 
-        [Fact]
-        public void BindEventHandlerConstructor()
-        {
-            const string source = "Source";
-            var bindEvent = new BindEventHandler(source);
-            Assert.Equal(source, bindEvent.Source);
-        }
+        var bindEvent = new BindEventHandler();
+        var viewModel = new _TestBindEventHandler();
+        bindEvent.Source = viewModel;
+        bindEvent.PropertyName = "ButtonClickPropDelegate";
 
-        [Fact]
-        public void BindEventHandlerByPropertyName()
-        {
+        var bindResolve = bindEvent.ProvideValue(stubServiceProvider);
+        FakeTargetHandler += (RoutedEventHandler)bindResolve;
+        FakeTargetHandler(null, null);
+        Assert.Equal(viewModel.Count, int.MaxValue);
+        FakeTargetHandler -= (RoutedEventHandler)bindResolve;
 
-            var stubServiceProvider = MockServiceProvider.Instance;
-
-            var bindEvent = new BindEventHandler();
-            var viewModel = new _TestBindEventHandler();
-            bindEvent.Source = viewModel;
-            bindEvent.PropertyName = "ButtonClickPropDelegate";
-
-            var bindResolve = bindEvent.ProvideValue(stubServiceProvider);
-            FakeTargetHandler += (RoutedEventHandler)bindResolve;
-            FakeTargetHandler(null, null);
-            Assert.Equal(viewModel.Count, int.MaxValue);
-            FakeTargetHandler -= (RoutedEventHandler)bindResolve;
-
-        }
-
-
-        [Fact]
-        public void BindEventHandlerByMethodName()
-        {
-
-            var stubServiceProvider = MockServiceProvider.Instance;
-
-            var bindEvent = new BindEventHandler();
-            var viewModel = new _TestBindEventHandler();
-            bindEvent.Source = viewModel;
-            bindEvent.MethodName = "ButtonClick";
-
-            var bindResolve = bindEvent.ProvideValue(stubServiceProvider);
-            FakeTargetHandler += (RoutedEventHandler)bindResolve;
-            FakeTargetHandler(null, null);
-            Assert.Equal(viewModel.Count, int.MaxValue);
-            FakeTargetHandler -= (RoutedEventHandler)bindResolve;
-        }
-
-
-        [Fact]
-        public void ProvideValueExceptions()
-        {
-            var stubServiceProvider = MockServiceProvider.Instance;
-
-            var bindEvent = new BindEventHandler();
-            var viewModel = new _TestBindEventHandler();
-            bindEvent.Source = viewModel;
-
-            // ReSharper disable AccessToModifiedClosure
-            UnitTestInternal.AssertThrows(typeof(ArgumentException), () => bindEvent.ProvideValue(stubServiceProvider),
-            // ReSharper restore AccessToModifiedClosure
-            "ProvideValueExceptions - expected exception - ArgumentException");
-            bindEvent.PropertyName = "ButtonClickPropDelegate";
-            bindEvent.MethodName = "ButtonClick";
-
-            // ReSharper disable AccessToModifiedClosure
-            UnitTestInternal.AssertThrows(typeof(ArgumentException), () => bindEvent.ProvideValue(stubServiceProvider),
-                // ReSharper restore AccessToModifiedClosure
-                "ProvideValueExceptions - expected exception - ArgumentException");
-
-            bindEvent.PropertyName = null;
-            bindEvent.MethodName = null;
-
-            stubServiceProvider = MockServiceProvider.Instance;
-
-            UnitTestInternal.AssertThrows(typeof(ArgumentException), () => bindEvent.ProvideValue(stubServiceProvider),
-                "ProvideValueExceptions - expected exception - ArgumentException");
-        }
-
-
-        class _TestBindEventHandler
-        {
-            public int Count;
-
-            /// <summary>
-            /// Just Constructor
-            /// </summary>
-
-            public _TestBindEventHandler()
-            {
-            }
-
-            public void ExecuteMethod(object sender)
-            {
-                Count = int.MinValue;
-            }
-
-            public void ButtonClick(object sender, RoutedEventArgs e)
-            {
-                Count = int.MaxValue;
-            }
-            public RoutedEventHandler ButtonClickPropDelegate
-            {
-                get { return ButtonClick; }
-            }
-
-        }
     }
 
 
+    [Fact]
+    public void BindEventHandlerByMethodName()
+    {
 
+        var stubServiceProvider = MockServiceProvider.Instance;
+
+        var bindEvent = new BindEventHandler();
+        var viewModel = new _TestBindEventHandler();
+        bindEvent.Source = viewModel;
+        bindEvent.MethodName = "ButtonClick";
+
+        var bindResolve = bindEvent.ProvideValue(stubServiceProvider);
+        FakeTargetHandler += (RoutedEventHandler)bindResolve;
+        FakeTargetHandler(null, null);
+        Assert.Equal(viewModel.Count, int.MaxValue);
+        FakeTargetHandler -= (RoutedEventHandler)bindResolve;
+    }
+
+
+    [Fact]
+    public void ProvideValueExceptions()
+    {
+        var stubServiceProvider = MockServiceProvider.Instance;
+
+        var bindEvent = new BindEventHandler();
+        var viewModel = new _TestBindEventHandler();
+        bindEvent.Source = viewModel;
+
+        // ReSharper disable AccessToModifiedClosure
+        UnitTestInternal.AssertThrows(typeof(ArgumentException), () => bindEvent.ProvideValue(stubServiceProvider),
+        // ReSharper restore AccessToModifiedClosure
+        "ProvideValueExceptions - expected exception - ArgumentException");
+        bindEvent.PropertyName = "ButtonClickPropDelegate";
+        bindEvent.MethodName = "ButtonClick";
+
+        // ReSharper disable AccessToModifiedClosure
+        UnitTestInternal.AssertThrows(typeof(ArgumentException), () => bindEvent.ProvideValue(stubServiceProvider),
+            // ReSharper restore AccessToModifiedClosure
+            "ProvideValueExceptions - expected exception - ArgumentException");
+
+        bindEvent.PropertyName = null;
+        bindEvent.MethodName = null;
+
+        stubServiceProvider = MockServiceProvider.Instance;
+
+        UnitTestInternal.AssertThrows(typeof(ArgumentException), () => bindEvent.ProvideValue(stubServiceProvider),
+            "ProvideValueExceptions - expected exception - ArgumentException");
+    }
+
+
+    class _TestBindEventHandler
+    {
+        public int Count;
+
+        /// <summary>
+        /// Just Constructor
+        /// </summary>
+
+        public _TestBindEventHandler()
+        {
+        }
+
+        public void ExecuteMethod(object sender)
+        {
+            Count = int.MinValue;
+        }
+
+        public void ButtonClick(object sender, RoutedEventArgs e)
+        {
+            Count = int.MaxValue;
+        }
+        public RoutedEventHandler ButtonClickPropDelegate
+        {
+            get { return ButtonClick; }
+        }
+
+    }
 }

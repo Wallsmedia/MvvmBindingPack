@@ -28,68 +28,67 @@ using System.Windows.Markup;
 #endif
 
 // ReSharper disable CheckNamespace
-namespace MvvmBindingPack
+namespace MvvmBindingPack;
 // ReSharper restore CheckNamespace
+
+/// <summary>
+/// WPF and WinRt XAML mark-up extension of Inversion of Controls binding.
+/// Binds <see cref="ICommand"/> interface via CommandHandlerProxy class to a target property by resolving it through the generic Service Locator interface.
+/// </summary>
+#if !WINDOWS_UWP
+[MarkupExtensionReturnTypeAttribute(typeof(ICommand))]
+#endif
+public class BindCommandIoc : BindCommandBase
 {
+
+    IocBinding IocSource { get; }
+
     /// <summary>
-    /// WPF and WinRt XAML mark-up extension of Inversion of Controls binding.
-    /// Binds <see cref="ICommand"/> interface via CommandHandlerProxy class to a target property by resolving it through the generic Service Locator interface.
+    /// Type or type name(string) of the requested object.
     /// </summary>
 #if !WINDOWS_UWP
-    [MarkupExtensionReturnTypeAttribute(typeof(ICommand))]
+    [ConstructorArgument("serviceType")]
 #endif
-    public class BindCommandIoc : BindCommandBase
+    public Object ServiceType
     {
-
-        IocBinding IocSource { get; }
-
-        /// <summary>
-        /// Type or type name(string) of the requested object.
-        /// </summary>
-#if !WINDOWS_UWP
-        [ConstructorArgument("serviceType")]
-#endif
-        public Object ServiceType
-        {
-            get { return IocSource.ServiceType; }
-            set { IocSource.ServiceType = value; }
-        }
-
-        /// <summary>
-        /// Key (string) of the requested object.
-        /// </summary>
-        [Obsolete("ServiceKey not supported and ignored")]
-        public String ServiceKey
-        {
-            get;set;
-        }
-
-        /// <summary>
-        /// Default constructor.
-        /// </summary>
-        public BindCommandIoc()
-        {
-            IocSource = new IocBinding();
-        }
-
-        /// <summary>
-        /// Constructs the class with a requested service type.
-        /// </summary>
-        /// <param name="serviceType">Type or type name of the requested object.</param>
-        public BindCommandIoc(object serviceType)
-        {
-            IocSource = new IocBinding(serviceType);
-        }
-
-        /// <summary>
-        /// Get source object for binding.
-        /// </summary>
-        /// <param name="serviceProvider">Object that can provide services for the markup extension</param>
-        /// <returns>Reference to a source object.</returns>
-        protected override object ObtainSourceObject(IServiceProvider serviceProvider)
-        {
-            return IocSource.ProvideValue(serviceProvider);
-        }
-
+        get { return IocSource.ServiceType; }
+        set { IocSource.ServiceType = value; }
     }
+
+    /// <summary>
+    /// Key (string) of the requested object.
+    /// </summary>
+    [Obsolete("ServiceKey not supported and ignored")]
+    public String ServiceKey
+    {
+        get;set;
+    }
+
+    /// <summary>
+    /// Default constructor.
+    /// </summary>
+    public BindCommandIoc()
+    {
+        IocSource = new IocBinding();
+    }
+
+    /// <summary>
+    /// Constructs the class with a requested service type.
+    /// </summary>
+    /// <param name="serviceType">Type or type name of the requested object.</param>
+    public BindCommandIoc(object serviceType)
+    {
+        IocSource = new IocBinding(serviceType);
+    }
+
+    /// <summary>
+    /// Get source object for binding.
+    /// </summary>
+    /// <param name="serviceProvider">Object that can provide services for the markup extension</param>
+    /// <returns>Reference to a source object.</returns>
+    protected override object ObtainSourceObject(IServiceProvider serviceProvider)
+    {
+        return IocSource.ProvideValue(serviceProvider);
+    }
+
 }

@@ -42,241 +42,240 @@ using System.Diagnostics;
 using System.Windows.Data;
 #endif
 
-namespace MvvmBindingPack
+namespace MvvmBindingPack;
+
+
+/// <summary>
+/// Public Class container.
+/// Holds the resolved View XAML-defined element target metadata.
+/// It may be a property or event metadata of the x:Named View XAML-defined element target.
+/// </summary>
+[DebuggerDisplay("XName = {XName},TargetName = {TargetName}, IsProperty = {IsProperty}, IsEvent = {IsEvent}")]
+public class ViewXNameSourceTarget
 {
+    /// <summary>
+    /// The target XAML object name.
+    /// </summary>
+    public string XName { get; set; }
+    /// <summary>
+    /// The target nameof the property or event.
+    /// </summary>
+    public string TargetName { get; set; }
+    /// <summary>
+    /// The target object source.
+    /// </summary>
+    public Object TargetObject { get; set; }
+    /// <summary>
+    /// The target object type.
+    /// </summary>
+    public Type TargetType { get; set; }
+    /// <summary>
+    /// The CLR property metadata.
+    /// </summary>
+    public PropertyInfo PropertyInfo { get; set; }
+    /// <summary>
+    /// The dependency property metadata.
+    /// </summary>
+    public DependencyProperty DependencyProperty { get; set; }
+#if !WINDOWS_UWP
+    /// <summary>
+    /// The readonly dependency property metadata.
+    /// </summary>
+    public DependencyPropertyKey DependencyPropertyKey { get; set; }
 
     /// <summary>
-    /// Public Class container.
-    /// Holds the resolved View XAML-defined element target metadata.
-    /// It may be a property or event metadata of the x:Named View XAML-defined element target.
+    /// The readonly dependency property metadata.
     /// </summary>
-    [DebuggerDisplay("XName = {XName},TargetName = {TargetName}, IsProperty = {IsProperty}, IsEvent = {IsEvent}")]
-    public class ViewXNameSourceTarget
+    public DependencyPropertyDescriptor DependencyPropertyDescriptor
     {
-        /// <summary>
-        /// The target XAML object name.
-        /// </summary>
-        public string XName { get; set; }
-        /// <summary>
-        /// The target nameof the property or event.
-        /// </summary>
-        public string TargetName { get; set; }
-        /// <summary>
-        /// The target object source.
-        /// </summary>
-        public Object TargetObject { get; set; }
-        /// <summary>
-        /// The target object type.
-        /// </summary>
-        public Type TargetType { get; set; }
-        /// <summary>
-        /// The CLR property metadata.
-        /// </summary>
-        public PropertyInfo PropertyInfo { get; set; }
-        /// <summary>
-        /// The dependency property metadata.
-        /// </summary>
-        public DependencyProperty DependencyProperty { get; set; }
-#if !WINDOWS_UWP
-        /// <summary>
-        /// The readonly dependency property metadata.
-        /// </summary>
-        public DependencyPropertyKey DependencyPropertyKey { get; set; }
-
-        /// <summary>
-        /// The readonly dependency property metadata.
-        /// </summary>
-        public DependencyPropertyDescriptor DependencyPropertyDescriptor
+        get
         {
-            get
+            if ((TargetObject as DependencyObject != null) && (DependencyProperty != null) && (TargetObject != null))
             {
-                if ((TargetObject as DependencyObject != null) && (DependencyProperty != null) && (TargetObject != null))
-                {
-                    return DependencyPropertyDescriptor.FromProperty(DependencyProperty, TargetType);
-                }
-                return null;
-            }
-        }
-#endif
-        /// <summary>
-        /// The CLR event metadata.
-        /// </summary>
-        public EventInfo EventInfo { get; set; }
-        /// <summary>
-        /// The routing event metadata.
-        /// </summary>
-        public RoutedEvent RoutedEvent { get; set; }
-#if !WINDOWS_UWP
-        /// <summary>
-        /// Retruns true if the property is readonly.
-        /// </summary>
-        public bool IsReadOnlyDpProperty { get { return DependencyPropertyKey != null; } }
-#endif
-        /// <summary>
-        /// Returns true if the target is a property.
-        /// </summary>
-        public bool IsProperty { get { return PropertyInfo != null || DependencyProperty != null; } }
-        /// <summary>
-        /// Returns true if the target is an event.
-        /// </summary>
-        public bool IsEvent { get { return EventInfo != null || RoutedEvent != null; } }
-
-        /// <summary>
-        ///  Returns the current effective value of a dependency property on this instance
-        ///  of a System.Windows.DependencyObject, or returns the property value of a specified object.
-        /// </summary>
-        /// <returns>The property value.</returns>
-        public Object GetPropertyValue()
-        {
-            if (IsProperty && TargetObject != null)
-            {
-                try
-                {
-                    if (DependencyProperty != null)
-                    {
-                        DependencyObject dp = TargetObject as DependencyObject;
-                        if (dp != null)
-                        {
-                            return dp.GetValue(DependencyProperty);
-                        }
-                    }
-                    else if (PropertyInfo != null)
-                    {
-                        return PropertyInfo.GetValue(TargetObject, null);
-                    }
-                }
-                catch
-                {
-                    // ignored
-                }
+                return DependencyPropertyDescriptor.FromProperty(DependencyProperty, TargetType);
             }
             return null;
         }
+    }
+#endif
+    /// <summary>
+    /// The CLR event metadata.
+    /// </summary>
+    public EventInfo EventInfo { get; set; }
+    /// <summary>
+    /// The routing event metadata.
+    /// </summary>
+    public RoutedEvent RoutedEvent { get; set; }
+#if !WINDOWS_UWP
+    /// <summary>
+    /// Retruns true if the property is readonly.
+    /// </summary>
+    public bool IsReadOnlyDpProperty { get { return DependencyPropertyKey != null; } }
+#endif
+    /// <summary>
+    /// Returns true if the target is a property.
+    /// </summary>
+    public bool IsProperty { get { return PropertyInfo != null || DependencyProperty != null; } }
+    /// <summary>
+    /// Returns true if the target is an event.
+    /// </summary>
+    public bool IsEvent { get { return EventInfo != null || RoutedEvent != null; } }
+
+    /// <summary>
+    ///  Returns the current effective value of a dependency property on this instance
+    ///  of a System.Windows.DependencyObject, or returns the property value of a specified object.
+    /// </summary>
+    /// <returns>The property value.</returns>
+    public Object GetPropertyValue()
+    {
+        if (IsProperty && TargetObject != null)
+        {
+            try
+            {
+                if (DependencyProperty != null)
+                {
+                    DependencyObject dp = TargetObject as DependencyObject;
+                    if (dp != null)
+                    {
+                        return dp.GetValue(DependencyProperty);
+                    }
+                }
+                else if (PropertyInfo != null)
+                {
+                    return PropertyInfo.GetValue(TargetObject, null);
+                }
+            }
+            catch
+            {
+                // ignored
+            }
+        }
+        return null;
+    }
 
 #if !WINDOWS_UWP
-        /// <summary>
-        /// Sets the local value of a read-only dependency property, specified by its dependency
-        /// property key identifier.
-        /// </summary>
-        /// <param name="obj">The new property value.</param>
-        public void SetReadOnlyDpPropertyValue(object obj)
+    /// <summary>
+    /// Sets the local value of a read-only dependency property, specified by its dependency
+    /// property key identifier.
+    /// </summary>
+    /// <param name="obj">The new property value.</param>
+    public void SetReadOnlyDpPropertyValue(object obj)
+    {
+        if (IsReadOnlyDpProperty && TargetObject != null)
         {
-            if (IsReadOnlyDpProperty && TargetObject != null)
+            try
             {
-                try
+                if (DependencyPropertyKey != null)
                 {
-                    if (DependencyPropertyKey != null)
+                    DependencyObject dp = TargetObject as DependencyObject;
+                    if (dp != null)
                     {
-                        DependencyObject dp = TargetObject as DependencyObject;
-                        if (dp != null)
-                        {
-                            dp.SetValue(DependencyPropertyKey, obj);
-                        }
+                        dp.SetValue(DependencyPropertyKey, obj);
                     }
                 }
-                catch { }
             }
+            catch { }
         }
+    }
 #endif
 
-        /// <summary>
-        /// Sets the local value of a dependency property, specified by its dependency
-        /// property identifier, or sets the property value of a specified object.
-        /// </summary>
-        /// <param name="obj">The new property value.</param>
-        public void SetPropertyValue(object obj)
+    /// <summary>
+    /// Sets the local value of a dependency property, specified by its dependency
+    /// property identifier, or sets the property value of a specified object.
+    /// </summary>
+    /// <param name="obj">The new property value.</param>
+    public void SetPropertyValue(object obj)
+    {
+        if (IsProperty && TargetObject != null)
         {
-            if (IsProperty && TargetObject != null)
+            try
             {
-                try
+                if (DependencyProperty != null)
                 {
-                    if (DependencyProperty != null)
+                    DependencyObject dp = TargetObject as DependencyObject;
+                    if (dp != null)
                     {
-                        DependencyObject dp = TargetObject as DependencyObject;
-                        if (dp != null)
-                        {
-                            dp.SetValue(DependencyProperty, obj);
-                        }
-                    }
-                    else if (PropertyInfo != null)
-                    {
-                        PropertyInfo.SetValue(TargetObject, obj, null);
+                        dp.SetValue(DependencyProperty, obj);
                     }
                 }
-                catch
+                else if (PropertyInfo != null)
                 {
-                    // ignored
+                    PropertyInfo.SetValue(TargetObject, obj, null);
                 }
             }
-        }
-
-        /// <summary>
-        /// Adds a routed event handler for a specified routed event, adding the handler
-        ///  to the handler collection on the current element. Specify handledEventsToo
-        ///  as true to have the provided handler be invoked for routed event that had
-        ///  already been marked as handled by another element along the event route, or  adds an event handler to an event source.
-        /// </summary>
-        /// <param name="del"> A reference to the handler implementation; it encapsulates a method or methods to be invoked when the event is raised by the target.</param>
-        /// <param name="handledEventsToo"> true to register the handler such that it is invoked even when the routed
-        ///  event is marked handled in its event data; false to register the handler
-        ///  with the default condition that it will not be invoked if the routed event
-        ///  is already marked handled. The default is false.Do not routinely ask to re-handle
-        ///  a routed event.</param>
-        public void AddEventHandler(Delegate del, bool handledEventsToo = false)
-        {
-            if (IsEvent && TargetObject != null)
+            catch
             {
-                try
-                {
-                    if (RoutedEvent != null)
-                    {
-                        UIElement uie = TargetObject as UIElement;
-                        if (uie != null)
-                        {
-                            uie.AddHandler(RoutedEvent, del, handledEventsToo);
-                        }
-                    }
-                    else if (EventInfo != null)
-                    {
-                        EventInfo.AddEventHandler(TargetObject, del);
-                    }
-                }
-                catch
-                {
-                    // ignored
-                }
+                // ignored
             }
         }
-
-        /// <summary>
-        /// Removes the specified routed event handler from this element, or removes an event handler from an event source.
-        /// </summary>
-        /// <param name="del">A reference to the handler implementation.</param>
-        public void RemoveEventHandler(Delegate del)
-        {
-            if (IsEvent && TargetObject != null)
-            {
-                try
-                {
-                    if (RoutedEvent != null)
-                    {
-                        UIElement uie = TargetObject as UIElement;
-                        if (uie != null)
-                        {
-                            uie.RemoveHandler(RoutedEvent, del);
-                        }
-                    }
-                    else if (EventInfo != null)
-                    {
-                        EventInfo.RemoveEventHandler(TargetObject, del);
-                    }
-                }
-                catch
-                {
-                    // ignored
-                }
-            }
-        }
-
     }
+
+    /// <summary>
+    /// Adds a routed event handler for a specified routed event, adding the handler
+    ///  to the handler collection on the current element. Specify handledEventsToo
+    ///  as true to have the provided handler be invoked for routed event that had
+    ///  already been marked as handled by another element along the event route, or  adds an event handler to an event source.
+    /// </summary>
+    /// <param name="del"> A reference to the handler implementation; it encapsulates a method or methods to be invoked when the event is raised by the target.</param>
+    /// <param name="handledEventsToo"> true to register the handler such that it is invoked even when the routed
+    ///  event is marked handled in its event data; false to register the handler
+    ///  with the default condition that it will not be invoked if the routed event
+    ///  is already marked handled. The default is false.Do not routinely ask to re-handle
+    ///  a routed event.</param>
+    public void AddEventHandler(Delegate del, bool handledEventsToo = false)
+    {
+        if (IsEvent && TargetObject != null)
+        {
+            try
+            {
+                if (RoutedEvent != null)
+                {
+                    UIElement uie = TargetObject as UIElement;
+                    if (uie != null)
+                    {
+                        uie.AddHandler(RoutedEvent, del, handledEventsToo);
+                    }
+                }
+                else if (EventInfo != null)
+                {
+                    EventInfo.AddEventHandler(TargetObject, del);
+                }
+            }
+            catch
+            {
+                // ignored
+            }
+        }
+    }
+
+    /// <summary>
+    /// Removes the specified routed event handler from this element, or removes an event handler from an event source.
+    /// </summary>
+    /// <param name="del">A reference to the handler implementation.</param>
+    public void RemoveEventHandler(Delegate del)
+    {
+        if (IsEvent && TargetObject != null)
+        {
+            try
+            {
+                if (RoutedEvent != null)
+                {
+                    UIElement uie = TargetObject as UIElement;
+                    if (uie != null)
+                    {
+                        uie.RemoveHandler(RoutedEvent, del);
+                    }
+                }
+                else if (EventInfo != null)
+                {
+                    EventInfo.RemoveEventHandler(TargetObject, del);
+                }
+            }
+            catch
+            {
+                // ignored
+            }
+        }
+    }
+
 }

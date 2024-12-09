@@ -18,60 +18,59 @@ using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Navigation;
 
-namespace MvvmBindingPack
+namespace MvvmBindingPack;
+
+/// <summary>
+/// Base class for all view models
+/// </summary>
+abstract public class MvvmViewModelBase : NotifyPropertyChangedBase
 {
+
+    #region View - Model Notifications
     /// <summary>
-    /// Base class for all view models
+    /// Occurs when a FrameworkElement has been constructed and added to the object tree, and is ready for interaction.
     /// </summary>
-    abstract public class MvvmViewModelBase : NotifyPropertyChangedBase
+    /// <param name="sender">The Event Sender object.</param>
+    /// <param name="e">Event arguments.</param>
+    virtual public void Loaded(object sender, RoutedEventArgs e)
     {
-
-        #region View - Model Notifications
-        /// <summary>
-        /// Occurs when a FrameworkElement has been constructed and added to the object tree, and is ready for interaction.
-        /// </summary>
-        /// <param name="sender">The Event Sender object.</param>
-        /// <param name="e">Event arguments.</param>
-        virtual public void Loaded(object sender, RoutedEventArgs e)
-        {
-        }
-
-        /// <summary>
-        /// Occurs when this object is no longer connected to the main object tree.
-        /// </summary>
-        /// <param name="sender">The Event Sender object.</param>
-        /// <param name="e">Event arguments.</param>
-        virtual public void Unloaded(object sender, RoutedEventArgs e)
-        {
-        }
-
-        /// <summary>
-        /// Invoked when the Page is loaded and becomes the current source of a parent Frame.
-        /// </summary>
-        /// <param name="sender">The Event Sender object.</param>
-        /// <param name="e">Event data that can be examined by overriding code. The event data is representative of the pending navigation that will load the current Page. </param>
-        virtual public void NavigatedTo(object sender, NavigationEventArgs e)
-        {
-        }
-
-        /// <summary>
-        /// Invoked immediately after the Page is unloaded and is no longer the current source of a parent Frame.
-        /// </summary>
-        /// <param name="sender">The Event Sender object.</param>
-        /// <param name="e">Event data that can be examined by overriding code. The event data is representative of the navigation that has unloaded the current Page.</param>
-        virtual public void NavigatedFrom(object sender, NavigationEventArgs e)
-        {
-        }
-
-        /// <summary>
-        /// Invoked immediately before the Page is unloaded and is no longer the current source of a parent Frame.
-        /// </summary>
-        /// <param name="sender">The Event Sender object.</param>
-        /// <param name="e">Event data that can be examined by overriding code. The event data is representative of the navigation that will unload the current Page unless canceled. The navigation can potentially be canceled by setting Cancel.</param>
-        virtual public void NavigatingFrom(object sender, NavigatingCancelEventArgs e)
-        {
-        }
-
-        #endregion  View - Model Notifications
     }
+
+    /// <summary>
+    /// Occurs when this object is no longer connected to the main object tree.
+    /// </summary>
+    /// <param name="sender">The Event Sender object.</param>
+    /// <param name="e">Event arguments.</param>
+    virtual public void Unloaded(object sender, RoutedEventArgs e)
+    {
+    }
+
+    /// <summary>
+    /// Invoked when the Page is loaded and becomes the current source of a parent Frame.
+    /// </summary>
+    /// <param name="sender">The Event Sender object.</param>
+    /// <param name="e">Event data that can be examined by overriding code. The event data is representative of the pending navigation that will load the current Page. </param>
+    virtual public void NavigatedTo(object sender, NavigationEventArgs e)
+    {
+    }
+
+    /// <summary>
+    /// Invoked immediately after the Page is unloaded and is no longer the current source of a parent Frame.
+    /// </summary>
+    /// <param name="sender">The Event Sender object.</param>
+    /// <param name="e">Event data that can be examined by overriding code. The event data is representative of the navigation that has unloaded the current Page.</param>
+    virtual public void NavigatedFrom(object sender, NavigationEventArgs e)
+    {
+    }
+
+    /// <summary>
+    /// Invoked immediately before the Page is unloaded and is no longer the current source of a parent Frame.
+    /// </summary>
+    /// <param name="sender">The Event Sender object.</param>
+    /// <param name="e">Event data that can be examined by overriding code. The event data is representative of the navigation that will unload the current Page unless canceled. The navigation can potentially be canceled by setting Cancel.</param>
+    virtual public void NavigatingFrom(object sender, NavigatingCancelEventArgs e)
+    {
+    }
+
+    #endregion  View - Model Notifications
 }

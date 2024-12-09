@@ -16,155 +16,153 @@ using Xunit;
 using MvvmBindingPack;
 using System.Windows;
 using Microsoft.Extensions.DependencyInjection;
-namespace UnitTestMvvmBindingPack
+namespace UnitTestMvvmBindingPack;
+
+/// <summary>
+/// Summary description for BindEventHandlerIoc
+/// </summary>
+public class UnitTestBindEventHandlerIoc
 {
-    /// <summary>
-    /// Summary description for BindEventHandlerIoc
-    /// </summary>
-    public class UnitTestBindEventHandlerIoc
+    _TestBindEventHandlerIoc _viewModel;
+    public UnitTestBindEventHandlerIoc()
     {
-        _TestBindEventHandlerIoc _viewModel;
-        public UnitTestBindEventHandlerIoc()
-        {
-            ServiceCollection services = new ServiceCollection();
-            services.AddSingleton<_TestBindEventHandlerIoc>();
-            AutoWireVmDataContext.ServiceProvider = services.BuildServiceProvider();
-            _viewModel = AutoWireVmDataContext.ServiceProvider.GetService<_TestBindEventHandlerIoc>();
-        }
-
-
-        #region Additional test attributes
-        //
-        // You can use the following additional attributes as you write your tests:
-        //
-        // Use ClassInitialize to run code before running the first test in the class
-        // [ClassInitialize()]
-        // public static void MyClassInitialize(TestContext testContext) { }
-        //
-        // Use ClassCleanup to run code after all tests in a class have run
-        // [ClassCleanup()]
-        // public static void MyClassCleanup() { }
-        //
-        // Use TestInitialize to run code before running each test 
-        // [TestInitialize()]
-        // public void MyTestInitialize() { }
-        //
-        // Use TestCleanup to run code after each test has run
-        // [TestCleanup()]
-        // public void MyTestCleanup() { }
-        //
-        #endregion
-
-        public event RoutedEventHandler FakeTargetHandler;
-
-        [Fact]
-        public void BindEventHandlerConstructor()
-        {
-            Type serviceType = typeof(String);
-            var bindEvent = new BindEventHandlerIoc(serviceType);
-            Assert.Equal(serviceType, bindEvent.ServiceType);
-        }
-
-        [Fact]
-        public void ProvideValueFromSourceByPropertyName()
-        {
-
-            var stubServiceProvider = MockServiceProvider.Instance;
-
-            var bindEvent = new BindEventHandlerIoc
-            {
-                ServiceType = typeof(_TestBindEventHandlerIoc),
-                PropertyName = "ButtonClickPropDelegate"
-            };
-
-            var bindResolve = bindEvent.ProvideValue(stubServiceProvider);
-            FakeTargetHandler += (RoutedEventHandler)bindResolve;
-            FakeTargetHandler(null, null);
-            Assert.Equal(_viewModel.Count, int.MaxValue);
-            FakeTargetHandler -= (RoutedEventHandler)bindResolve;
-
-        }
-
-        [Fact]
-        public void ProvideValueFromSourceByMethodName()
-        {
-
-            var stubServiceProvider = MockServiceProvider.Instance;
-
-            var bindEvent = new BindEventHandlerIoc
-            {
-                ServiceType = typeof(_TestBindEventHandlerIoc),
-                MethodName = "ButtonClick"
-            };
-
-            var bindResolve = bindEvent.ProvideValue(stubServiceProvider);
-            FakeTargetHandler += (RoutedEventHandler)bindResolve;
-            FakeTargetHandler(null, null);
-            Assert.Equal(_viewModel.Count, int.MaxValue);
-            FakeTargetHandler -= (RoutedEventHandler)bindResolve;
-        }
-
-
-        [Fact]
-        public void ProvideValueExceptions()
-        {
-            var stubServiceProvider = MockServiceProvider.Instance;
-
-            var bindEvent = new BindEventHandlerIoc { ServiceType = typeof(_TestBindEventHandlerIoc) };
-
-            var provider = stubServiceProvider;
-            // ReSharper disable ImplicitlyCapturedClosure
-            UnitTestInternal.AssertThrows(typeof(ArgumentException), () => bindEvent.ProvideValue(provider),
-            "ProvideValueExceptions - expected exception - ArgumentException");
-            // ReSharper restore ImplicitlyCapturedClosure
-            bindEvent.PropertyName = "ButtonClickPropDelegate";
-            bindEvent.MethodName = "ButtonClick";
-
-            // ReSharper disable ImplicitlyCapturedClosure
-            UnitTestInternal.AssertThrows(typeof(ArgumentException), () => bindEvent.ProvideValue(provider),
-                // ReSharper restore ImplicitlyCapturedClosure
-                "ProvideValueExceptions - expected exception - ArgumentException");
-
-            bindEvent.PropertyName = null;
-            bindEvent.MethodName = null;
-            stubServiceProvider = MockServiceProvider.Instance;
-            // ReSharper disable ImplicitlyCapturedClosure
-            UnitTestInternal.AssertThrows(typeof(ArgumentException), () => bindEvent.ProvideValue(stubServiceProvider),
-                "ProvideValueExceptions - expected exception - ArgumentException");
-            // ReSharper restore ImplicitlyCapturedClosure
-        }
-
-
-        class _TestBindEventHandlerIoc
-        {
-            public int Count;
-
-            public CommandHandlerProxy CommandProxy { get; set; }
-
-            /// <summary>
-            /// Just Constructor
-            /// </summary>
-
-            public _TestBindEventHandlerIoc()
-            {
-                CommandProxy = new CommandHandlerProxy(ExecuteMethod);
-            }
-
-            public void ExecuteMethod(object sender)
-            {
-                Count = int.MinValue;
-            }
-
-            public void ButtonClick(object sender, RoutedEventArgs e)
-            {
-                Count = int.MaxValue;
-            }
-            public RoutedEventHandler ButtonClickPropDelegate
-            {
-                get { return ButtonClick; }
-            }
-
-        }
+        ServiceCollection services = new ServiceCollection();
+        services.AddSingleton<_TestBindEventHandlerIoc>();
+        AutoWireVmDataContext.ServiceProvider = services.BuildServiceProvider();
+        _viewModel = AutoWireVmDataContext.ServiceProvider.GetService<_TestBindEventHandlerIoc>();
     }
 
+
+    #region Additional test attributes
+    //
+    // You can use the following additional attributes as you write your tests:
+    //
+    // Use ClassInitialize to run code before running the first test in the class
+    // [ClassInitialize()]
+    // public static void MyClassInitialize(TestContext testContext) { }
+    //
+    // Use ClassCleanup to run code after all tests in a class have run
+    // [ClassCleanup()]
+    // public static void MyClassCleanup() { }
+    //
+    // Use TestInitialize to run code before running each test 
+    // [TestInitialize()]
+    // public void MyTestInitialize() { }
+    //
+    // Use TestCleanup to run code after each test has run
+    // [TestCleanup()]
+    // public void MyTestCleanup() { }
+    //
+    #endregion
+
+    public event RoutedEventHandler FakeTargetHandler;
+
+    [Fact]
+    public void BindEventHandlerConstructor()
+    {
+        Type serviceType = typeof(String);
+        var bindEvent = new BindEventHandlerIoc(serviceType);
+        Assert.Equal(serviceType, bindEvent.ServiceType);
+    }
+
+    [Fact]
+    public void ProvideValueFromSourceByPropertyName()
+    {
+
+        var stubServiceProvider = MockServiceProvider.Instance;
+
+        var bindEvent = new BindEventHandlerIoc
+        {
+            ServiceType = typeof(_TestBindEventHandlerIoc),
+            PropertyName = "ButtonClickPropDelegate"
+        };
+
+        var bindResolve = bindEvent.ProvideValue(stubServiceProvider);
+        FakeTargetHandler += (RoutedEventHandler)bindResolve;
+        FakeTargetHandler(null, null);
+        Assert.Equal(_viewModel.Count, int.MaxValue);
+        FakeTargetHandler -= (RoutedEventHandler)bindResolve;
+
+    }
+
+    [Fact]
+    public void ProvideValueFromSourceByMethodName()
+    {
+
+        var stubServiceProvider = MockServiceProvider.Instance;
+
+        var bindEvent = new BindEventHandlerIoc
+        {
+            ServiceType = typeof(_TestBindEventHandlerIoc),
+            MethodName = "ButtonClick"
+        };
+
+        var bindResolve = bindEvent.ProvideValue(stubServiceProvider);
+        FakeTargetHandler += (RoutedEventHandler)bindResolve;
+        FakeTargetHandler(null, null);
+        Assert.Equal(_viewModel.Count, int.MaxValue);
+        FakeTargetHandler -= (RoutedEventHandler)bindResolve;
+    }
+
+
+    [Fact]
+    public void ProvideValueExceptions()
+    {
+        var stubServiceProvider = MockServiceProvider.Instance;
+
+        var bindEvent = new BindEventHandlerIoc { ServiceType = typeof(_TestBindEventHandlerIoc) };
+
+        var provider = stubServiceProvider;
+        // ReSharper disable ImplicitlyCapturedClosure
+        UnitTestInternal.AssertThrows(typeof(ArgumentException), () => bindEvent.ProvideValue(provider),
+        "ProvideValueExceptions - expected exception - ArgumentException");
+        // ReSharper restore ImplicitlyCapturedClosure
+        bindEvent.PropertyName = "ButtonClickPropDelegate";
+        bindEvent.MethodName = "ButtonClick";
+
+        // ReSharper disable ImplicitlyCapturedClosure
+        UnitTestInternal.AssertThrows(typeof(ArgumentException), () => bindEvent.ProvideValue(provider),
+            // ReSharper restore ImplicitlyCapturedClosure
+            "ProvideValueExceptions - expected exception - ArgumentException");
+
+        bindEvent.PropertyName = null;
+        bindEvent.MethodName = null;
+        stubServiceProvider = MockServiceProvider.Instance;
+        // ReSharper disable ImplicitlyCapturedClosure
+        UnitTestInternal.AssertThrows(typeof(ArgumentException), () => bindEvent.ProvideValue(stubServiceProvider),
+            "ProvideValueExceptions - expected exception - ArgumentException");
+        // ReSharper restore ImplicitlyCapturedClosure
+    }
+
+
+    class _TestBindEventHandlerIoc
+    {
+        public int Count;
+
+        public CommandHandlerProxy CommandProxy { get; set; }
+
+        /// <summary>
+        /// Just Constructor
+        /// </summary>
+
+        public _TestBindEventHandlerIoc()
+        {
+            CommandProxy = new CommandHandlerProxy(ExecuteMethod);
+        }
+
+        public void ExecuteMethod(object sender)
+        {
+            Count = int.MinValue;
+        }
+
+        public void ButtonClick(object sender, RoutedEventArgs e)
+        {
+            Count = int.MaxValue;
+        }
+        public RoutedEventHandler ButtonClickPropDelegate
+        {
+            get { return ButtonClick; }
+        }
+
+    }
 }

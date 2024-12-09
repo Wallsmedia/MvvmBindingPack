@@ -16,46 +16,45 @@ using Xunit;
 using MvvmBindingPack;
 using System.Reflection;
 
-namespace UnitTestMvvmBindingPack
+namespace UnitTestMvvmBindingPack;
+
+/// <summary>
+///  Unit tests for CommandHandlerProxy class 
+/// </summary>
+public class UnitTestBindPackExt
 {
     /// <summary>
-    ///  Unit tests for CommandHandlerProxy class 
+    /// Test's stub class
     /// </summary>
-    public class UnitTestBindPackExt
+    readonly CommandEventStubs _testStubs;
+
+    public UnitTestBindPackExt()
     {
-        /// <summary>
-        /// Test's stub class
-        /// </summary>
-        readonly CommandEventStubs _testStubs;
-
-        public UnitTestBindPackExt()
-        {
-            _testStubs = new CommandEventStubs();
-        }
-
-        [Fact]
-        public void GetMethodInfoTests()
-        {
-            var info = _testStubs.GetType().GetMethod("Button_Click_External");
-            MethodInfo testInfo = _testStubs.GetMethodInfo("Button_Click_External");
-            Assert.Equal(info, testInfo);
-        }
-
-        [Fact]
-        public void GetPropertyInfoTests()
-        {
-            var info = _testStubs.GetType().GetProperty("CanExecuteFlag");
-            PropertyInfo testInfo = _testStubs.GetPropertyInfo("CanExecuteFlag");
-            Assert.Equal(info, testInfo);
-        }
-
-        [Fact]
-        public void GetEventInfoTests()
-        {
-            var info = _testStubs.GetType().GetEvent("IssueNotifyExecuteButtonChanged");
-            EventInfo testInfo = _testStubs.GetEventInfo("IssueNotifyExecuteButtonChanged");
-            Assert.Equal(info, testInfo);
-        }
-
+        _testStubs = new CommandEventStubs();
     }
+
+    [Fact]
+    public void GetMethodInfoTests()
+    {
+        var info = _testStubs.GetType().GetMethod("Button_Click_External");
+        MethodInfo testInfo = _testStubs.GetMethodInfo("Button_Click_External");
+        Assert.Equal(info, testInfo);
+    }
+
+    [Fact]
+    public void GetPropertyInfoTests()
+    {
+        var info = _testStubs.GetType().GetProperty("CanExecuteFlag");
+        PropertyInfo testInfo = _testStubs.GetPropertyInfo("CanExecuteFlag");
+        Assert.Equal(info, testInfo);
+    }
+
+    [Fact]
+    public void GetEventInfoTests()
+    {
+        var info = _testStubs.GetType().GetEvent("IssueNotifyExecuteButtonChanged");
+        EventInfo testInfo = _testStubs.GetEventInfo("IssueNotifyExecuteButtonChanged");
+        Assert.Equal(info, testInfo);
+    }
+
 }
