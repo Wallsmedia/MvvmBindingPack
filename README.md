@@ -6,9 +6,9 @@ Full details of package using link: [MvvmBindingPack - Wiki ](https://github.com
 - NuGet.org package http://www.nuget.org/packages/MvvmBindingPack/ 
 - NuGet.org package http://www.nuget.org/packages/MvvmBindingPack.Debug/ 
 
-# Version: 8.0.0
+# Version: 9.0.0
 **.Net Core App windows Desktop support**
-- Supports: **net8.0**
+- Supports: **net9.0**
 
 
 ## Setup DotNet Core DI container example for App.xaml.cs
